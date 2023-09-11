@@ -1,0 +1,54 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
+    xmlns:components="clr-namespace:ZtmDataViewer.Components"
+    xmlns:pages="clr-namespace:ZtmDataViewer.Pages">
+
+    <ResourceDictionary.MergedDictionaries>
+        <!-- BASE -->
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ButtonEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/CheckBoxEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ColorsPaletteEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ComboBoxEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ContextMenuEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ExpanderEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ListViewEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/ScrollViewerEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/TextBoxEx.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Base/UpDownTextBoxEx.xaml"/>
+        <!-- COMPONENTS -->
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Components/SettingsButton.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Components/SettingsItem.xaml"/>
+        <!-- PAGES -->
+        <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Pages/BasePage.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- BASE -->
+
+    <Style BasedOn="{StaticResource ButtonExStyle}" TargetType="{x:Type cex:ButtonEx}"/>
+    <Style BasedOn="{StaticResource CheckBoxExStyle}" TargetType="{x:Type cex:CheckBoxEx}"/>
+    <Style BasedOn="{StaticResource ColorsPaletteExStyle}" TargetType="{x:Type cex:ColorsPaletteEx}"/>
+    <Style BasedOn="{StaticResource ComboBoxItemExStyle}" TargetType="{x:Type cex:ComboBoxItemEx}"/>
+    <Style BasedOn="{StaticResource ComboBoxExStyle}" TargetType="{x:Type cex:ComboBoxEx}"/>
+    <Style BasedOn="{StaticResource ContextMenuItemExStyle}" TargetType="{x:Type cex:ContextMenuItemEx}"/>
+    <Style BasedOn="{StaticResource ContextMenuExStyle}" TargetType="{x:Type cex:ContextMenuEx}"/>
+    <Style BasedOn="{StaticResource ExpanderExStyle}" TargetType="{x:Type cex:ExpanderEx}"/>
+    <Style BasedOn="{StaticResource ListViewItemExStyle}" TargetType="{x:Type cex:ListViewItemEx}"/>
+    <Style BasedOn="{StaticResource ListViewExStyle}" TargetType="{x:Type cex:ListViewEx}"/>
+    <Style BasedOn="{StaticResource ScrollViewerExStyle}" TargetType="{x:Type cex:ScrollViewerEx}"/>
+    <Style BasedOn="{StaticResource TextBoxExStyle}" TargetType="{x:Type cex:TextBoxEx}"/>
+    <Style BasedOn="{StaticResource UpDownTextBoxExStyle}" TargetType="{x:Type cex:UpDownTextBoxEx}"/>
+    <Style BasedOn="{StaticResource UpDownDoubleTextBoxExStyle}" TargetType="{x:Type cex:UpDownDoubleTextBoxEx}"/>
+    <Style BasedOn="{StaticResource UpDownLongTextBoxExStyle}" TargetType="{x:Type cex:UpDownLongTextBoxEx}"/>
+
+    <!-- COMPONENTS -->
+
+    <Style BasedOn="{StaticResource SettingsButtonStyle}" TargetType="{x:Type components:SettingsButton}"/>
+    <Style BasedOn="{StaticResource SettingsItemStyle}" TargetType="{x:Type components:SettingsItem}"/>
+
+    <!-- PAGES -->
+
+    <Style BasedOn="{StaticResource BasePageStyle}" TargetType="{x:Type pages:BasePage}"/>
+
+</ResourceDictionary>

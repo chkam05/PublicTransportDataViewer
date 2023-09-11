@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
+	<Title>ZtmDataDownloader</Title>
+	<Copyright>Copyright (c) Kamil Karpiński</Copyright>
+	<Description>Silesian Metropolitan Transport Authority (Śląski Zarząd Transportu Metropolitalnego) data downloader</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DownloaderCore\DownloaderCore.csproj" />
+  </ItemGroup>
+
+</Project>
