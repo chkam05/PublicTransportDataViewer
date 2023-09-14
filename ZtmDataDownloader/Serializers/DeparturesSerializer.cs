@@ -1,4 +1,5 @@
 ﻿using DownloaderCore;
+using DownloaderCore.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using ZtmDataDownloader.Data.Departures;
-using ZtmDataDownloader.Utilities;
 
 namespace ZtmDataDownloader.Serializers
 {
