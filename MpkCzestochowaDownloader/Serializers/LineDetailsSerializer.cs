@@ -13,6 +13,12 @@ namespace MpkCzestochowaDownloader.Serializers
     public class LineDetailsSerializer : BaseSerializer<LineDetailsResponseModel>
     {
 
+        //  CONST
+
+        private static readonly string _startTrimmer = "<section class=\"section\">";
+        private static readonly string _endTrimmer = "</section>";
+
+
         //  METHODS
 
         #region CLASS METHODS
@@ -77,7 +83,10 @@ namespace MpkCzestochowaDownloader.Serializers
             List<string> lines = rawData.Split(new string[] { Environment.NewLine, "\n" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            List<string> dataLines = lines;
+            int startIndex = lines.IndexOf(lines.FirstOrDefault(l => l.Contains(_startTrimmer)));
+            int endIndex = lines.IndexOf(lines.LastOrDefault(l=> l.Contains(_endTrimmer)));
+
+            List<string> dataLines = lines.GetRange(startIndex, endIndex - startIndex + 1);
 
             return string.Join(string.Empty, dataLines);
         }

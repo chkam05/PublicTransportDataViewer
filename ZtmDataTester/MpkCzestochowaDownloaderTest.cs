@@ -1,4 +1,6 @@
-﻿using MpkCzestochowaDownloader.Data.Lines;
+﻿using MpkCzestochowaDownloader.Data.Line;
+using MpkCzestochowaDownloader.Data.Lines;
+using MpkCzestochowaDownloader.Data.Static;
 using MpkCzestochowaDownloader.Downloaders;
 using System;
 using System.Collections.Generic;
@@ -61,7 +63,55 @@ namespace ZtmDataTester
             Assert.IsTrue(anyAttributeLoaded);
         }
 
+        //  --------------------------------------------------------------------------------
+        /// <summary> Line details download and serialization test. </summary>
+        [Test]
+        public void LineDetailsDonwloadTest()
+        {
+            var line = GetRandomLine(TransportType.Bus);
+
+            Assert.IsNotNull(line);
+
+            if (line != null)
+            {
+                var downloader = new LineDetailsDownloader();
+                var request = new LineDetailsRequestModel(@"https://www.czestochowa.pl/rozklady-jazdy?linia=1");
+
+                var response = downloader.DownloadData(request);
+
+                Assert.IsFalse(response.HasErrors);
+                Assert.IsTrue(response.HasData);
+
+
+            }
+        }
+
         #endregion TEST METHODS
+
+        #region UTILITY METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get random line from specific transpot type. </summary>
+        /// <param name="transportType"> Transport type. </param>
+        /// <returns> Random selected line. </returns>
+        private Line? GetRandomLine(TransportType transportType)
+        {
+            var downloader = new LinesDownloader();
+            var request = new LinesRequestModel();
+
+            var response = downloader.DownloadData(request);
+
+            if (response.HasData && response.Lines.ContainsKey(transportType))
+            {
+                var random = new Random();
+                int randomIndex = random.Next(response.Lines[transportType].Count);
+                return response.Lines[transportType][randomIndex];
+            }
+
+            return null;
+        }
+
+        #endregion UTILITY METHODS
 
     }
 }
