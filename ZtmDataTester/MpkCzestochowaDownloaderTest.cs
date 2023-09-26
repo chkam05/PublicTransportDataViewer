@@ -81,8 +81,6 @@ namespace ZtmDataTester
 
                 Assert.IsFalse(response.HasErrors);
                 Assert.IsTrue(response.HasData);
-
-
             }
         }
 

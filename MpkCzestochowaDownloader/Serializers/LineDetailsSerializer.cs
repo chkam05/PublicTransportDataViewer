@@ -4,9 +4,11 @@ using MpkCzestochowaDownloader.Data.Line;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MpkCzestochowaDownloader.Serializers
 {
@@ -17,6 +19,7 @@ namespace MpkCzestochowaDownloader.Serializers
 
         private static readonly string _startTrimmer = "<section class=\"section\">";
         private static readonly string _endTrimmer = "</section>";
+        private static readonly string _virtualRoot = "<virtualRoot>{0}</virtualRoot>";
 
 
         //  METHODS
@@ -71,6 +74,9 @@ namespace MpkCzestochowaDownloader.Serializers
 
             trimmedData = StringUtils.RemoveExcessSpaces(trimmedData);
 
+            trimmedData = trimmedData
+                .Replace("selected ", "selected=\"\" ");
+
             return trimmedData;
         }
 
@@ -83,12 +89,126 @@ namespace MpkCzestochowaDownloader.Serializers
             List<string> lines = rawData.Split(new string[] { Environment.NewLine, "\n" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            int startIndex = lines.IndexOf(lines.FirstOrDefault(l => l.Contains(_startTrimmer)));
-            int endIndex = lines.IndexOf(lines.LastOrDefault(l=> l.Contains(_endTrimmer)));
+            var startIndexes = FindPhrase(lines, _startTrimmer);
+            var startIndex = startIndexes[1];
 
-            List<string> dataLines = lines.GetRange(startIndex, endIndex - startIndex + 1);
+            if (startIndex.Item2 > 0)
+                lines[startIndex.Item1] = lines[startIndex.Item1].Substring(startIndex.Item2);
 
-            return string.Join(string.Empty, dataLines);
+            var endIndexes = FindPhrase(lines, _endTrimmer);
+            var endIndex = endIndexes[1];
+
+            if (endIndex.Item2 > 0)
+            {
+                lines[endIndex.Item1] = lines[endIndex.Item1].Substring(0, (endIndex.Item2 + _endTrimmer.Length));
+            }
+
+            List<string> dataLines = lines.GetRange(startIndex.Item1, endIndex.Item1 - startIndex.Item1 + 1);
+            CorrectInvalidLines(dataLines);
+
+            return string.Format(_virtualRoot, string.Join(string.Empty, dataLines));
+        }
+
+        //  --------------------------------------------------------------------------------
+        private List<(int, int)> FindPhrase(List<string> textLines, string phrase)
+        {
+            var lineCounter = 0;
+            var indexes = new List<(int, int)>();
+
+            foreach (var line in textLines)
+            {
+                int index = -1;
+
+                while (true)
+                {
+                    index = line.IndexOf(phrase, index + 1);
+
+                    if (index == -1)
+                    {
+                        lineCounter++;
+                        break;
+                    }
+
+                    indexes.Add((lineCounter, index));
+                }
+            }
+
+            return indexes;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Correct lines contains broken data. </summary>
+        /// <param name="dataLines"> Raw data as lines. </param>
+        private void CorrectInvalidLines(List<string> dataLines)
+        {
+            for (int index = 0; index < dataLines.Count; index++)
+            {
+                string dataLine = dataLines[index];
+
+                if (FixImage(dataLine, out string imageCorrected))
+                {
+                    dataLine = imageCorrected;
+                    dataLines[index] = imageCorrected;
+                }
+
+                if (FixInput(dataLine, out string inputCorrected))
+                {
+                    dataLine = inputCorrected;
+                    dataLines[index] = inputCorrected;
+                }
+            }
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Fix image nodes. </summary>
+        /// <param name="dataLine"> Raw single line data. </param>
+        /// <param name="correctedDataLine"> Output corrected line data. </param>
+        /// <returns> True - correction applied; False - otherwise. </returns>
+        private bool FixImage(string dataLine, out string correctedDataLine)
+        {
+            correctedDataLine = dataLine;
+
+            if (dataLine.Contains("<img"))
+            {
+                int startIndex = dataLine.IndexOf("<img");
+                int endIndex = dataLine.IndexOf(">", startIndex) + 1;
+
+                string imgNode = dataLine.Substring(startIndex, endIndex - startIndex);
+
+                if (!imgNode.EndsWith("/>"))
+                {
+                    correctedDataLine = dataLine.Replace(imgNode, imgNode.Replace(">", "/>"));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Fix image nodes. </summary>
+        /// <param name="dataLine"> Raw single line data. </param>
+        /// <param name="correctedDataLine"> Output corrected line data. </param>
+        /// <returns> True - correction applied; False - otherwise. </returns>
+        private bool FixInput(string dataLine, out string correctedDataLine)
+        {
+            correctedDataLine = dataLine;
+
+            if (dataLine.Contains("<input"))
+            {
+                int startIndex = dataLine.IndexOf("<input");
+                int endIndex = dataLine.IndexOf(">", startIndex) + 1;
+
+                string imgNode = dataLine.Substring(startIndex, endIndex - startIndex);
+
+                if (!imgNode.EndsWith("/>"))
+                {
+                    correctedDataLine = dataLine.Replace(imgNode, imgNode.Replace(">", "/>"));
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion PREPROCESSING DATA METHODS
