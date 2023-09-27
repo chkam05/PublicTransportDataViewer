@@ -19,7 +19,6 @@ namespace MpkCzestochowaDownloader.Serializers
 
         private static readonly string _startTrimmer = "<section class=\"section\">";
         private static readonly string _endTrimmer = "</section>";
-        private static readonly string _virtualRoot = "<virtualRoot>{0}</virtualRoot>";
 
 
         //  METHODS
@@ -70,7 +69,8 @@ namespace MpkCzestochowaDownloader.Serializers
         {
             string trimmedData = TrimData(rawData)
                 .Trim()
-                .Replace("\t", "");
+                .Replace("\t", "")
+                .Replace("&", "&amp;");
 
             trimmedData = StringUtils.RemoveExcessSpaces(trimmedData);
 
@@ -95,41 +95,41 @@ namespace MpkCzestochowaDownloader.Serializers
             if (startIndex.Item2 > 0)
                 lines[startIndex.Item1] = lines[startIndex.Item1].Substring(startIndex.Item2);
 
-            var endIndexes = FindPhrase(lines, _endTrimmer);
-            var endIndex = endIndexes[1];
+            var endIndexes = FindPhrase(lines, _endTrimmer, startIndex.Item1);
+            var endIndex = endIndexes[0];
 
             if (endIndex.Item2 > 0)
-            {
                 lines[endIndex.Item1] = lines[endIndex.Item1].Substring(0, (endIndex.Item2 + _endTrimmer.Length));
-            }
 
             List<string> dataLines = lines.GetRange(startIndex.Item1, endIndex.Item1 - startIndex.Item1 + 1);
             CorrectInvalidLines(dataLines);
 
-            return string.Format(_virtualRoot, string.Join(string.Empty, dataLines));
+            return string.Join(string.Empty, dataLines);
         }
 
         //  --------------------------------------------------------------------------------
-        private List<(int, int)> FindPhrase(List<string> textLines, string phrase)
+        /// <summary> Find phrase in lines of texts. </summary>
+        /// <param name="textLines"> List of texts. </param>
+        /// <param name="phrase"> Phrase to find. </param>
+        /// <param name="lineStartIndex"> Line start index. </param>
+        /// <returns> Tuple of line index, phrase position in line. </returns>
+        private List<(int, int)> FindPhrase(List<string> textLines, string phrase, int lineStartIndex = 0)
         {
-            var lineCounter = 0;
             var indexes = new List<(int, int)>();
+            var startIndex = Math.Max(0, Math.Min(lineStartIndex, textLines.Count - 1));
 
-            foreach (var line in textLines)
+            for (int index = startIndex; index < textLines.Count; index++)
             {
-                int index = -1;
+                int foundIndex = -1;
 
                 while (true)
                 {
-                    index = line.IndexOf(phrase, index + 1);
+                    foundIndex = textLines[index].IndexOf(phrase, foundIndex + 1);
 
-                    if (index == -1)
-                    {
-                        lineCounter++;
+                    if (foundIndex == -1)
                         break;
-                    }
 
-                    indexes.Add((lineCounter, index));
+                    indexes.Add((index, foundIndex));
                 }
             }
 
