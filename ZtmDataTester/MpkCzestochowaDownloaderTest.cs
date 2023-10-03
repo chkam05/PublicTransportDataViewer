@@ -75,7 +75,7 @@ namespace ZtmDataTester
             if (line != null)
             {
                 var downloader = new LineDetailsDownloader();
-                var request = new LineDetailsRequestModel(@"https://www.czestochowa.pl/rozklady-jazdy?linia=1");
+                var request = new LineDetailsRequestModel("1");
 
                 var response = downloader.DownloadData(request);
 

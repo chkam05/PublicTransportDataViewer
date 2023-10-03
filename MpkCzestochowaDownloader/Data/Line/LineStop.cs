@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MpkCzestochowaDownloader.Data.Line
 {
-    public class Direction
+    public class LineStop
     {
 
         //  VARIABLES
 
         public string Name { get; set; }
-        public Dictionary<string, string> Stops { get; set; }
+        public string URL { get; set; }
 
 
         //  METHODS
@@ -20,11 +20,10 @@ namespace MpkCzestochowaDownloader.Data.Line
         #region CLASS METHODS
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Direction class constructor. </summary>
-        public Direction()
+        /// <summary> LineStop class constructor. </summary>
+        public LineStop()
         {
-            if (Stops == null)
-                Stops = new Dictionary<string, string>();
+            //
         }
 
         #endregion CLASS METHODS

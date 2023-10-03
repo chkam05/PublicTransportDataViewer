@@ -11,12 +11,14 @@ namespace MpkCzestochowaDownloader.Data.Line
 
         //  VARIABLES
 
-        public Dictionary<string, string> Dates { get; set; }
-        public string DirectionFrom { get; set; }
-        public string DirectionTo { get; set; }
-        public List<Direction> Directions { get; set; }
-        public Dictionary<string, string> Relations { get; set; }
-        public string Value { get; set; }
+        public TimeTableDate? Date { get; set; }
+        public List<TimeTableDate> Dates { get; set; }
+        public string? DirectionFrom { get; set; }
+        public string? DirectionTo { get; set; }
+        public List<LineDirection> Directions { get; set; }
+        public LineRelation? Relation { get; set; }
+        public List<LineRelation> Relations { get; set; }
+        public string? Value { get; set; }
 
 
         //  METHODS
@@ -28,13 +30,13 @@ namespace MpkCzestochowaDownloader.Data.Line
         public LineDetails()
         {
             if (Dates == null)
-                Dates = new Dictionary<string, string>();
+                Dates = new List<TimeTableDate>();
 
             if (Directions == null)
-                Directions = new List<Direction>();
+                Directions = new List<LineDirection>();
 
             if (Relations == null)
-                Relations = new Dictionary<string, string>();
+                Relations = new List<LineRelation>();
         }
 
         #endregion CLASS METHODS

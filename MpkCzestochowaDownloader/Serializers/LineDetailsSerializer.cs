@@ -3,6 +3,7 @@ using DownloaderCore.Utilities;
 using MpkCzestochowaDownloader.Data.Line;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -48,7 +49,10 @@ namespace MpkCzestochowaDownloader.Serializers
 
             if (xmlData != null)
             {
-                //
+                var lineDetails = ReadLineDetailsData(xmlData);
+
+                if (lineDetails != null)
+                    result.LineDetails = lineDetails;
             }
 
             if (_errorMessages.Any())
@@ -212,6 +216,78 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         #endregion PREPROCESSING DATA METHODS
+
+        #region READ LINE DETAILS DATA
+
+        //  --------------------------------------------------------------------------------
+        private LineDetails? ReadLineDetailsData(XElement xmlLineDetailsData)
+        {
+            var routeHeaderNode = xmlLineDetailsData
+                .Elements("div")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false)
+                ?.Element("span");
+
+            if (routeHeaderNode != null)
+            {
+                var line = routeHeaderNode.Elements("span")
+                    .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false)
+                    ?.Value.Trim();
+
+                var directions = routeHeaderNode.Elements("span")
+                    .Where(e => e.Attribute("class")?.Value.Contains("d-block") ?? false)
+                    .Select(e => e.Value.Trim())
+                    .ToList();
+
+                var lineDetails = new LineDetails()
+                {
+                    DirectionFrom = directions.Any() ? directions.First() : null,
+                    DirectionTo = directions.Any() ? directions.Last() : null,
+                    Value = line
+                };
+
+                var timeTableDates = ReadTimeTableDates(xmlLineDetailsData, out TimeTableDate? currentDate);
+
+                if (timeTableDates?.Any() ?? false)
+                {
+                    lineDetails.Date = currentDate;
+                    lineDetails.Dates = timeTableDates;
+                }
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private List<TimeTableDate>? ReadTimeTableDates(XElement xmlLineDetailsData, out TimeTableDate? currentDate)
+        {
+            currentDate = null;
+
+            var options = xmlLineDetailsData.Descendants("option").ToList();
+
+            if (options.Any())
+            {
+                var selectedOption = options.FirstOrDefault(o => o.Attribute("selected") != null);
+
+                if (selectedOption != null && DateTime.TryParseExact(selectedOption.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate))
+                {
+                    currentDate = new TimeTableDate()
+                    {
+                        Date = selectedDate,
+                        Title = selectedOption.Value.Trim()
+                    };
+                }
+
+                return options.Select(o => new TimeTableDate()
+                {
+                    Date = DateTime.TryParseExact(o.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate) ? selectedDate : null,
+                    Title = o.Value.Trim()
+                }).ToList();
+            }
+
+            return null;
+        }
+
+        #endregion READ LINE DETAILS DATA
 
     }
 }
