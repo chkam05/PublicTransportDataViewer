@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MpkCzestochowaDownloader.Data.Line
 {
-    public class LineRelation
+    public class RouteVariant
     {
 
         //  VARIABLES
 
         public string Name { get; set; }
-        public string URL { get; set; }
+        public string? Variant { get; set; }
 
 
         //  METHODS
@@ -21,7 +21,7 @@ namespace MpkCzestochowaDownloader.Data.Line
 
         //  --------------------------------------------------------------------------------
         /// <summary> LineRelation class constructor. </summary>
-        public LineRelation()
+        public RouteVariant()
         {
             //
         }

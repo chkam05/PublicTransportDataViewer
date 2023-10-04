@@ -16,8 +16,8 @@ namespace MpkCzestochowaDownloader.Data.Line
         public string? DirectionFrom { get; set; }
         public string? DirectionTo { get; set; }
         public List<LineDirection> Directions { get; set; }
-        public LineRelation? Relation { get; set; }
-        public List<LineRelation> Relations { get; set; }
+        public RouteVariant? RouteVariant { get; set; }
+        public List<RouteVariant> RouteVariants { get; set; }
         public string? Value { get; set; }
 
 
@@ -35,8 +35,8 @@ namespace MpkCzestochowaDownloader.Data.Line
             if (Directions == null)
                 Directions = new List<LineDirection>();
 
-            if (Relations == null)
-                Relations = new List<LineRelation>();
+            if (RouteVariants == null)
+                RouteVariants = new List<RouteVariant>();
         }
 
         #endregion CLASS METHODS

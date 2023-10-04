@@ -229,6 +229,8 @@ namespace MpkCzestochowaDownloader.Serializers
 
             if (routeHeaderNode != null)
             {
+                var lineDetails = new LineDetails();
+
                 var line = routeHeaderNode.Elements("span")
                     .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false)
                     ?.Value.Trim();
@@ -238,19 +240,27 @@ namespace MpkCzestochowaDownloader.Serializers
                     .Select(e => e.Value.Trim())
                     .ToList();
 
-                var lineDetails = new LineDetails()
-                {
-                    DirectionFrom = directions.Any() ? directions.First() : null,
-                    DirectionTo = directions.Any() ? directions.Last() : null,
-                    Value = line
-                };
+                lineDetails.DirectionFrom = directions.Any() ? directions.First() : null;
+                lineDetails.DirectionTo = directions.Any() ? directions.Last() : null;
+                lineDetails.Value = line;
 
-                var timeTableDates = ReadTimeTableDates(xmlLineDetailsData, out TimeTableDate? currentDate);
+                var dates = ReadTimeTableDates(xmlLineDetailsData);
+                var lineDirections = ReadLineDirections(xmlLineDetailsData);
+                var variants = ReadRouteVariants(routeHeaderNode);
 
-                if (timeTableDates?.Any() ?? false)
+                if (dates != null)
                 {
-                    lineDetails.Date = currentDate;
-                    lineDetails.Dates = timeTableDates;
+                    lineDetails.Date = ReadSelectedTimeTableDate(xmlLineDetailsData);
+                    lineDetails.Dates = dates;
+                }
+
+                if (lineDirections != null)
+                    lineDetails.Directions = lineDirections;
+
+                if (variants != null)
+                {
+                    lineDetails.RouteVariant = ReadSelectedRouteVariant(routeHeaderNode);
+                    lineDetails.RouteVariants = variants;
                 }
             }
 
@@ -258,25 +268,113 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        private List<TimeTableDate>? ReadTimeTableDates(XElement xmlLineDetailsData, out TimeTableDate? currentDate)
+        private List<LineDirection>? ReadLineDirections(XElement xmlLineDetailsData)
         {
-            currentDate = null;
+            var directions = xmlLineDetailsData.Elements()
+                .FirstOrDefault(e => e.Name == "div" && e.Attribute("class")?.Value == "row")
+                ?.Descendants("table");
 
+            if (directions != null)
+            {
+                return directions.Select(d =>
+                {
+                    var lineDirection = new LineDirection()
+                    {
+                        Name = d.Descendants("th").First().Value
+                    };
+
+                    var stops = ReadLineDirectionStops(d.Element("tbody"));
+
+                    if (stops != null)
+                        lineDirection.Stops = stops;
+
+                    return lineDirection;
+                }).ToList();
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private List<LineStop>? ReadLineDirectionStops(XElement? directionNode)
+        {
+            if (directionNode == null)
+                return null;
+
+            var stops = directionNode.Descendants("a");
+
+            if (stops.Any())
+            {
+                return stops.Select(s => new LineStop()
+                {
+                    Name = s.Value,
+                    URL = s.Attribute("href")?.Value
+                }).ToList();
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private RouteVariant? ReadSelectedRouteVariant(XElement routeHeaderNode)
+        {
+            var selectedVariant = routeHeaderNode.Descendants("option")
+                .FirstOrDefault(o => o.Attribute("selected") != null);
+
+            if (selectedVariant != null)
+            {
+                return new RouteVariant()
+                {
+                    Name = selectedVariant.Value.Trim(),
+                    Variant = selectedVariant.Attribute("value")?.Value
+                };
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private List<RouteVariant>? ReadRouteVariants(XElement routeHeaderNode)
+        {
+            var variants = routeHeaderNode.Descendants("option");
+
+            if (variants.Any())
+            {
+                return variants.Select(o => new RouteVariant()
+                {
+                    Name = o.Value.Trim(),
+                    Variant = o.Attribute("value")?.Value
+                }).ToList();
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private TimeTableDate? ReadSelectedTimeTableDate(XElement xmlLineDetailsData)
+        {
+            var selectedOption = xmlLineDetailsData.Descendants("option")
+                .FirstOrDefault(o => o.Attribute("selected") != null);
+
+            if (selectedOption != null && DateTime.TryParseExact(selectedOption.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate))
+            {
+                return new TimeTableDate()
+                {
+                    Date = selectedDate,
+                    Title = selectedOption.Value.Trim()
+                };
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private List<TimeTableDate>? ReadTimeTableDates(XElement xmlLineDetailsData)
+        {
             var options = xmlLineDetailsData.Descendants("option").ToList();
 
             if (options.Any())
             {
-                var selectedOption = options.FirstOrDefault(o => o.Attribute("selected") != null);
-
-                if (selectedOption != null && DateTime.TryParseExact(selectedOption.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate))
-                {
-                    currentDate = new TimeTableDate()
-                    {
-                        Date = selectedDate,
-                        Title = selectedOption.Value.Trim()
-                    };
-                }
-
                 return options.Select(o => new TimeTableDate()
                 {
                     Date = DateTime.TryParseExact(o.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate) ? selectedDate : null,
