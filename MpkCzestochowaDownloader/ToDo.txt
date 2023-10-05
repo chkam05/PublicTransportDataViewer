@@ -1,5 +1,5 @@
 ﻿#	TODO:
 #
-#	1.	LineDetails (info + wariants)
-#	2.	LineWariant
-#	3.	Departures
+#	1.	LineDetails (info + wariants) [v]
+#	2.	Departures [ ]
+#	3.	Arrives (modal) [ ]

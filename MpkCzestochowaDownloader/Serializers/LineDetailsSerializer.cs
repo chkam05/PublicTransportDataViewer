@@ -38,9 +38,9 @@ namespace MpkCzestochowaDownloader.Serializers
         #region SERIALIZATION METHODS
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Deserialize raw lines data recived from web response. </summary>
+        /// <summary> Deserialize raw line details data recived from web response. </summary>
         /// <param name="rawData"> Raw data recived from web response. </param>
-        /// <returns> Deserialized lines data from web response. </returns>
+        /// <returns> Deserialized line details data from web response. </returns>
         public override LineDetailsResponseModel Deserialize(string rawData, params object[] parameters)
         {
             var result = new LineDetailsResponseModel();
@@ -220,6 +220,9 @@ namespace MpkCzestochowaDownloader.Serializers
         #region READ LINE DETAILS DATA
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Read line details data. </summary>
+        /// <param name="grouppedNodes"> XML line details data. </param>
+        /// <returns> Line details data object. </returns>
         private LineDetails? ReadLineDetailsData(XElement xmlLineDetailsData)
         {
             var routeHeaderNode = xmlLineDetailsData
@@ -246,7 +249,7 @@ namespace MpkCzestochowaDownloader.Serializers
 
                 var dates = ReadTimeTableDates(xmlLineDetailsData);
                 var lineDirections = ReadLineDirections(xmlLineDetailsData);
-                var variants = ReadRouteVariants(routeHeaderNode);
+                var variants = ReadRouteVariants(xmlLineDetailsData);
 
                 if (dates != null)
                 {
@@ -262,12 +265,17 @@ namespace MpkCzestochowaDownloader.Serializers
                     lineDetails.RouteVariant = ReadSelectedRouteVariant(routeHeaderNode);
                     lineDetails.RouteVariants = variants;
                 }
+
+                return lineDetails;
             }
 
             return null;
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Read line directions data. </summary>
+        /// <param name="xmlLineDetailsData"> XML line details data. </param>
+        /// <returns> List of line direction data objects. </returns>
         private List<LineDirection>? ReadLineDirections(XElement xmlLineDetailsData)
         {
             var directions = xmlLineDetailsData.Elements()
@@ -296,6 +304,9 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Read line stops data. </summary>
+        /// <param name="directionNode"> XML line direction data node. </param>
+        /// <returns> List of line stop data objects. </returns>
         private List<LineStop>? ReadLineDirectionStops(XElement? directionNode)
         {
             if (directionNode == null)
@@ -316,9 +327,15 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        private RouteVariant? ReadSelectedRouteVariant(XElement routeHeaderNode)
+        /// <summary> Read selected line route variant. </summary>
+        /// <param name="xmlLineDetailsData"> XML line details data. </param>
+        /// <returns> Selected line route varaint data object. </returns>
+        private RouteVariant? ReadSelectedRouteVariant(XElement xmlLineDetailsData)
         {
-            var selectedVariant = routeHeaderNode.Descendants("option")
+            var selectedVariant = xmlLineDetailsData
+                .Elements("div")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false)
+                ?.Descendants("option")
                 .FirstOrDefault(o => o.Attribute("selected") != null);
 
             if (selectedVariant != null)
@@ -334,9 +351,15 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        private List<RouteVariant>? ReadRouteVariants(XElement routeHeaderNode)
+        /// <summary> Read line route variants. </summary>
+        /// <param name="xmlLineDetailsData"> XML line details data. </param>
+        /// <returns> List of line route variant data objects. </returns>
+        private List<RouteVariant>? ReadRouteVariants(XElement xmlLineDetailsData)
         {
-            var variants = routeHeaderNode.Descendants("option");
+            var variants = xmlLineDetailsData
+                .Elements("div")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false)
+                ?.Descendants("option");
 
             if (variants.Any())
             {
@@ -351,6 +374,9 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Read selected line time table. </summary>
+        /// <param name="xmlLineDetailsData"> XML line details data. </param>
+        /// <returns> Selected line time table data object. </returns>
         private TimeTableDate? ReadSelectedTimeTableDate(XElement xmlLineDetailsData)
         {
             var selectedOption = xmlLineDetailsData.Descendants("option")
@@ -369,6 +395,9 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Read line time tables data. </summary>
+        /// <param name="xmlLineDetailsData"> XML line details data. </param>
+        /// <returns> List of line time table data objects. </returns>
         private List<TimeTableDate>? ReadTimeTableDates(XElement xmlLineDetailsData)
         {
             var options = xmlLineDetailsData.Descendants("option").ToList();
