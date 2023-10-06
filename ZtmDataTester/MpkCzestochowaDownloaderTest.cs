@@ -1,4 +1,5 @@
-﻿using MpkCzestochowaDownloader.Data.Line;
+﻿using MpkCzestochowaDownloader.Data.Departures;
+using MpkCzestochowaDownloader.Data.Line;
 using MpkCzestochowaDownloader.Data.Lines;
 using MpkCzestochowaDownloader.Data.Static;
 using MpkCzestochowaDownloader.Downloaders;
@@ -121,7 +122,7 @@ namespace ZtmDataTester
                         anyTimeTable = true;
                     }
 
-                    if (routeVariants != null)
+                    if (routeVariants.Any())
                     {
                         Assert.IsNotNull(response.LineDetails.RouteVariant);
                         Assert.IsTrue(!string.IsNullOrEmpty(response.LineDetails.RouteVariant.Name));
@@ -133,6 +134,32 @@ namespace ZtmDataTester
 
                 Assert.IsTrue(anyTimeTable);
                 Assert.IsTrue(anyVariant);
+            }
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Line stop departures download and serialization test. </summary>
+        [Test]
+        public void LineDeparturesDownloadTest()
+        {
+            var lineDetails = GetRandomLineDetails(TransportType.Tram);
+
+            Assert.IsNotNull(lineDetails);
+
+            if (lineDetails != null)
+            {
+                var random = new Random();
+                int randomIndex = random.Next(lineDetails.Directions[0].Stops.Count);
+                var lineStop = lineDetails.Directions[0].Stops[randomIndex];
+
+                var downloader = new LineDeparturesDownloader();
+                var request = new LineDeparturesRequestModel(lineStop.URL);
+                var response = downloader.DownloadData(request);
+
+                Assert.IsFalse(response.HasErrors);
+                Assert.IsTrue(response.HasData);
+
+                
             }
         }
 
@@ -159,6 +186,24 @@ namespace ZtmDataTester
             }
 
             return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get random line details from specific transport type. </summary>
+        /// <param name="transportType"> Transport type. </param>
+        /// <returns> Random selected line details. </returns>
+        private LineDetails? GetRandomLineDetails(TransportType transportType)
+        {
+            var line = GetRandomLine(transportType);
+
+            if (line == null)
+                return null;
+
+            var downloader = new LineDetailsDownloader();
+            var request = new LineDetailsRequestModel(line.Value);
+            var response = downloader.DownloadData(request);
+
+            return response.HasData ? response.LineDetails : null;
         }
 
         #endregion UTILITY METHODS

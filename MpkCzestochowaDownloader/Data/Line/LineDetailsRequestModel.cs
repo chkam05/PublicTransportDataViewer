@@ -18,6 +18,8 @@ namespace MpkCzestochowaDownloader.Data.Line
         //  --------------------------------------------------------------------------------
         /// <summary> LineDetailsRequestModel class constructor. </summary>
         /// <param name="lineNumber"> Line number. </param>
+        /// <param name="date"> Time table date. </param>
+        /// <param name="route"> Route variant. </param>
         public LineDetailsRequestModel(string lineNumber, DateTime? date = null, string? route = null)
         {
             URL = $"{StaticConfig.LinesURL}?linia={lineNumber}";
