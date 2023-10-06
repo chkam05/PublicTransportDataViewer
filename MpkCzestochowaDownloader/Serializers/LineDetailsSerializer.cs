@@ -79,7 +79,8 @@ namespace MpkCzestochowaDownloader.Serializers
             trimmedData = StringUtils.RemoveExcessSpaces(trimmedData);
 
             trimmedData = trimmedData
-                .Replace("selected ", "selected=\"\" ");
+                .Replace("selected ", "selected=\"\" ")
+                .Replace("<br>", "<br/>");
 
             return trimmedData;
         }
@@ -160,6 +161,12 @@ namespace MpkCzestochowaDownloader.Serializers
                     dataLine = inputCorrected;
                     dataLines[index] = inputCorrected;
                 }
+
+                /*if (FixParagraph(dataLine, out string paragraphCorrected))
+                {
+                    dataLine = paragraphCorrected;
+                    dataLines[index] = paragraphCorrected;
+                }*/
             }
         }
 
@@ -190,7 +197,7 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Fix image nodes. </summary>
+        /// <summary> Fix input nodes. </summary>
         /// <param name="dataLine"> Raw single line data. </param>
         /// <param name="correctedDataLine"> Output corrected line data. </param>
         /// <returns> True - correction applied; False - otherwise. </returns>
@@ -201,6 +208,32 @@ namespace MpkCzestochowaDownloader.Serializers
             if (dataLine.Contains("<input"))
             {
                 int startIndex = dataLine.IndexOf("<input");
+                int endIndex = dataLine.IndexOf(">", startIndex) + 1;
+
+                string imgNode = dataLine.Substring(startIndex, endIndex - startIndex);
+
+                if (!imgNode.EndsWith("/>"))
+                {
+                    correctedDataLine = dataLine.Replace(imgNode, imgNode.Replace(">", "/>"));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Fix paragraph nodes. </summary>
+        /// <param name="dataLine"> Raw single line data. </param>
+        /// <param name="correctedDataLine"> Output corrected line data. </param>
+        /// <returns> True - correction applied; False - otherwise. </returns>
+        private bool FixParagraph(string dataLine, out string correctedDataLine)
+        {
+            correctedDataLine = dataLine;
+
+            if (dataLine.Contains("<p"))
+            {
+                int startIndex = dataLine.IndexOf("<p");
                 int endIndex = dataLine.IndexOf(">", startIndex) + 1;
 
                 string imgNode = dataLine.Substring(startIndex, endIndex - startIndex);
@@ -262,7 +295,7 @@ namespace MpkCzestochowaDownloader.Serializers
 
                 if (variants != null)
                 {
-                    lineDetails.RouteVariant = ReadSelectedRouteVariant(routeHeaderNode);
+                    lineDetails.RouteVariant = ReadSelectedRouteVariant(xmlLineDetailsData);
                     lineDetails.RouteVariants = variants;
                 }
 

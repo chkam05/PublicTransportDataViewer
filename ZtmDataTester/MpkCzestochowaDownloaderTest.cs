@@ -68,19 +68,71 @@ namespace ZtmDataTester
         [Test]
         public void LineDetailsDonwloadTest()
         {
-            var line = GetRandomLine(TransportType.Bus);
-
-            Assert.IsNotNull(line);
-
-            if (line != null)
+            var lines = new List<Line?>()
             {
-                var downloader = new LineDetailsDownloader();
-                var request = new LineDetailsRequestModel("1");
+                GetRandomLine(TransportType.Bus),
+                GetRandomLine(TransportType.BusNight),
+                GetRandomLine(TransportType.BusSuburban),
+                GetRandomLine(TransportType.Tram)
+            };
 
-                var response = downloader.DownloadData(request);
+            bool anyTimeTable = false;
+            bool anyVariant = false;
 
-                Assert.IsFalse(response.HasErrors);
-                Assert.IsTrue(response.HasData);
+            foreach (var line in lines)
+            {
+                Assert.IsNotNull(line);
+
+                if (line != null)
+                {
+                    var downloader = new LineDetailsDownloader();
+                    var request = new LineDetailsRequestModel(line.Value);
+
+                    var response = downloader.DownloadData(request);
+
+                    Assert.IsFalse(response.HasErrors);
+                    Assert.IsTrue(response.HasData);
+
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(response.LineDetails.DirectionFrom));
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(response.LineDetails.DirectionTo));
+                    Assert.IsTrue(response.LineDetails.Directions.Any());
+                    Assert.IsTrue(!string.IsNullOrWhiteSpace(response.LineDetails.Value));
+
+                    foreach (var direction in response.LineDetails.Directions)
+                    {
+                        Assert.IsTrue(direction.Stops.Any());
+
+                        foreach (var stop in direction.Stops)
+                        {
+                            Assert.IsTrue(!string.IsNullOrEmpty(stop.Name));
+                            Assert.IsTrue(!string.IsNullOrEmpty(stop.URL));
+                        }
+                    }
+
+                    var dates = response.LineDetails.Dates;
+                    var routeVariants = response.LineDetails.RouteVariants;
+
+                    if (dates.Any())
+                    {
+                        Assert.IsNotNull(response.LineDetails.Date);
+                        Assert.IsNotNull(response.LineDetails.Date.Date);
+                        Assert.IsTrue(!string.IsNullOrEmpty(response.LineDetails.Date.Title));
+
+                        anyTimeTable = true;
+                    }
+
+                    if (routeVariants != null)
+                    {
+                        Assert.IsNotNull(response.LineDetails.RouteVariant);
+                        Assert.IsTrue(!string.IsNullOrEmpty(response.LineDetails.RouteVariant.Name));
+                        Assert.IsNotNull(response.LineDetails.RouteVariant.Variant);
+
+                        anyVariant = true;
+                    }
+                }
+
+                Assert.IsTrue(anyTimeTable);
+                Assert.IsTrue(anyVariant);
             }
         }
 
