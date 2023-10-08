@@ -12,6 +12,7 @@ namespace MpkCzestochowaDownloader.Data.Line
         //  VARIABLES
 
         public string Name { get; set; }
+        public bool Selected { get; set; }
         public string? Variant { get; set; }
 
 

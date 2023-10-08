@@ -38,7 +38,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Lines download and serialization test. </summary>
-        [Test]
+        [Test, Order(1)]
         public void LinesDownloadTest()
         {
             var lines = SimpleDownloader.DownloadLines();
@@ -79,7 +79,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Time tables download and serialization test. </summary>
-        [Test]
+        [Test, Order(2)]
         public void TimeTablesDownloadTest()
         {
             var lines = SimpleDownloader.DownloadLines();
@@ -119,7 +119,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line details download and serialization test. </summary>
-        [Test]
+        [Test, Order(3)]
         public void LineDetailsDonwloadTest()
         {
             var lines = SimpleDownloader.DownloadLines();
@@ -219,7 +219,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Departures download and serialization test. </summary>
-        [Test]
+        [Test, Order(4)]
         public void DeparturesDownloadTest()
         {
             var lines = SimpleDownloader.DownloadLines();
@@ -263,7 +263,7 @@ namespace ZtmDataTester
         }
 
         //  --------------------------------------------------------------------------------
-        [Test]
+        [Test, Order(5)]
         public void ArrivalsDownloadTest()
         {
             var lines = SimpleDownloader.DownloadLines();

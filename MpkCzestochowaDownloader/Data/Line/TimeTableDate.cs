@@ -12,8 +12,9 @@ namespace MpkCzestochowaDownloader.Data.Line
 
         //  VARIABLES
 
-        public string Title { get; set; }
         public DateTime? Date { get; set; }
+        public bool Selected { get; set; }
+        public string Title { get; set; }
 
 
         //  METHODS

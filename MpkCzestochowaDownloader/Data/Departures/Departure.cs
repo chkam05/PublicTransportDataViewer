@@ -11,9 +11,9 @@ namespace MpkCzestochowaDownloader.Data.Departures
 
         //  VARIABLES
 
-        public string DataRoute { get; set; }
+        public List<string> Attributes { get; set; }
         public string DataTrip { get; set; }
-        public bool Invariant { get; set; }
+        public string DataRoute { get; set; }
         public DateTime? Time { get; set; }
 
 
@@ -25,7 +25,8 @@ namespace MpkCzestochowaDownloader.Data.Departures
         /// <summary> Departure class constructor. </summary>
         public Departure()
         {
-            //
+            if (Attributes == null)
+                Attributes = new List<string>();
         }
 
         #endregion CLASS METHODS

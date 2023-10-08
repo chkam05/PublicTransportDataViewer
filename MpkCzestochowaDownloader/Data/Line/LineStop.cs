@@ -11,6 +11,7 @@ namespace MpkCzestochowaDownloader.Data.Line
 
         //  VARIABLES
 
+        public List<string> Attributes { get; set; }
         public string Name { get; set; }
         public string? URL { get; set; }
 
@@ -23,7 +24,8 @@ namespace MpkCzestochowaDownloader.Data.Line
         /// <summary> LineStop class constructor. </summary>
         public LineStop()
         {
-            //
+            if (Attributes == null)
+                Attributes = new List<string>();
         }
 
         #endregion CLASS METHODS

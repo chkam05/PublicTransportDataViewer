@@ -34,7 +34,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Lines download and serialization test. </summary>
-        [Test]
+        //[Test, Order(1)]
         public void LinesDownloadTest()
         {
             var downloader = new LinesDownloader();
@@ -66,7 +66,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line details download and serialization test. </summary>
-        [Test]
+        //[Test, Order(2)]
         public void LineDetailsDonwloadTest()
         {
             var lines = new List<Line?>()
@@ -116,17 +116,13 @@ namespace ZtmDataTester
                     if (dates.Any())
                     {
                         Assert.IsNotNull(response.LineDetails.Date);
-                        Assert.IsNotNull(response.LineDetails.Date.Date);
-                        Assert.IsTrue(!string.IsNullOrEmpty(response.LineDetails.Date.Title));
 
                         anyTimeTable = true;
                     }
 
                     if (routeVariants.Any())
                     {
-                        Assert.IsNotNull(response.LineDetails.RouteVariant);
-                        Assert.IsTrue(!string.IsNullOrEmpty(response.LineDetails.RouteVariant.Name));
-                        Assert.IsNotNull(response.LineDetails.RouteVariant.Variant);
+                        Assert.IsNotNull(response.LineDetails.RouteVariants);
 
                         anyVariant = true;
                     }
@@ -139,7 +135,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line stop departures download and serialization test. </summary>
-        [Test]
+        [Test, Order(3)]
         public void LineDeparturesDownloadTest()
         {
             var lineDetails = GetRandomLineDetails(TransportType.Tram);

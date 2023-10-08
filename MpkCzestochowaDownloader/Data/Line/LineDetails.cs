@@ -11,12 +11,13 @@ namespace MpkCzestochowaDownloader.Data.Line
 
         //  VARIABLES
 
-        public TimeTableDate? Date { get; set; }
+        public List<string> Attributes { get; set; }
+        public DateTime? Date { get; set; }
         public List<TimeTableDate> Dates { get; set; }
         public string? DirectionFrom { get; set; }
         public string? DirectionTo { get; set; }
         public List<LineDirection> Directions { get; set; }
-        public RouteVariant? RouteVariant { get; set; }
+        public string? LineId { get; set; }
         public List<RouteVariant> RouteVariants { get; set; }
         public string? Value { get; set; }
 
@@ -29,6 +30,9 @@ namespace MpkCzestochowaDownloader.Data.Line
         /// <summary> LineDetails class constructor. </summary>
         public LineDetails()
         {
+            if (Attributes == null)
+                Attributes = new List<string>();
+
             if (Dates == null)
                 Dates = new List<TimeTableDate>();
 

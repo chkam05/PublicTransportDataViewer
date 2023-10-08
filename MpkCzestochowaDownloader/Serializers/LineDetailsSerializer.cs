@@ -260,44 +260,55 @@ namespace MpkCzestochowaDownloader.Serializers
         {
             var routeHeaderNode = xmlLineDetailsData
                 .Elements("div")
-                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false)
-                ?.Element("span");
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false);
 
-            if (routeHeaderNode != null)
+            var spanHeaderNode = routeHeaderNode?.Element("span");
+            var optionsHeaderNode = routeHeaderNode?.Element("div");
+
+            if (spanHeaderNode != null && optionsHeaderNode != null)
             {
+                var routeNode = spanHeaderNode.Elements("span")
+                    .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false);
+
                 var lineDetails = new LineDetails();
 
-                var line = routeHeaderNode.Elements("span")
-                    .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false)
-                    ?.Value.Trim();
-
-                var directions = routeHeaderNode.Elements("span")
+                var directions = spanHeaderNode.Elements("span")
                     .Where(e => e.Attribute("class")?.Value.Contains("d-block") ?? false)
                     .Select(e => e.Value.Trim())
                     .ToList();
 
                 lineDetails.DirectionFrom = directions.Any() ? directions.First() : null;
                 lineDetails.DirectionTo = directions.Any() ? directions.Last() : null;
-                lineDetails.Value = line;
+                lineDetails.Value = routeNode?.Value.Trim();
 
+                lineDetails.Date = DateTime.TryParseExact(
+                    optionsHeaderNode.Descendants("input")
+                        .FirstOrDefault(i => i.Attribute("name")?.Value == "data")
+                        ?.Attribute("value")?.Value,
+                    "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime)
+                    ? dateTime
+                    : null;
+
+                lineDetails.LineId = optionsHeaderNode.Descendants("input")
+                    .FirstOrDefault(i => i.Attribute("name")?.Value == "linia")
+                    ?.Attribute("value")?.Value;
+
+                var attributes = routeNode?.Attribute("class")?.Value.Trim().Split(" ").ToList();
                 var dates = ReadTimeTableDates(xmlLineDetailsData);
                 var lineDirections = ReadLineDirections(xmlLineDetailsData);
-                var variants = ReadRouteVariants(xmlLineDetailsData);
+                var variants = ReadRouteVariants(optionsHeaderNode);
+
+                if (attributes != null)
+                    lineDetails.Attributes = attributes;
 
                 if (dates != null)
-                {
-                    lineDetails.Date = ReadSelectedTimeTableDate(xmlLineDetailsData);
                     lineDetails.Dates = dates;
-                }
 
                 if (lineDirections != null)
                     lineDetails.Directions = lineDirections;
 
                 if (variants != null)
-                {
-                    lineDetails.RouteVariant = ReadSelectedRouteVariant(xmlLineDetailsData);
                     lineDetails.RouteVariants = variants;
-                }
 
                 return lineDetails;
             }
@@ -349,35 +360,21 @@ namespace MpkCzestochowaDownloader.Serializers
 
             if (stops.Any())
             {
-                return stops.Select(s => new LineStop()
+                return stops.Select(s =>
                 {
-                    Name = s.Value,
-                    URL = s.Attribute("href")?.Value
+                    var stop = new LineStop()
+                    {
+                        Name = s.Value,
+                        URL = s.Attribute("href")?.Value
+                    };
+
+                    var attributes = s.Attribute("class")?.Value.Trim().Split(" ").ToList();
+
+                    if (attributes != null)
+                        stop.Attributes = attributes;
+
+                    return stop;
                 }).ToList();
-            }
-
-            return null;
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Read selected line route variant. </summary>
-        /// <param name="xmlLineDetailsData"> XML line details data. </param>
-        /// <returns> Selected line route varaint data object. </returns>
-        private RouteVariant? ReadSelectedRouteVariant(XElement xmlLineDetailsData)
-        {
-            var selectedVariant = xmlLineDetailsData
-                .Elements("div")
-                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false)
-                ?.Descendants("option")
-                .FirstOrDefault(o => o.Attribute("selected") != null);
-
-            if (selectedVariant != null)
-            {
-                return new RouteVariant()
-                {
-                    Name = selectedVariant.Value.Trim(),
-                    Variant = selectedVariant.Attribute("value")?.Value
-                };
             }
 
             return null;
@@ -387,41 +384,18 @@ namespace MpkCzestochowaDownloader.Serializers
         /// <summary> Read line route variants. </summary>
         /// <param name="xmlLineDetailsData"> XML line details data. </param>
         /// <returns> List of line route variant data objects. </returns>
-        private List<RouteVariant>? ReadRouteVariants(XElement xmlLineDetailsData)
+        private List<RouteVariant>? ReadRouteVariants(XElement optionsHeaderNode)
         {
-            var variants = xmlLineDetailsData
-                .Elements("div")
-                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false)
-                ?.Descendants("option");
+            var variants = optionsHeaderNode.Descendants("option");
 
-            if (variants.Any())
+            if (variants?.Any() ?? false)
             {
                 return variants.Select(o => new RouteVariant()
                 {
                     Name = o.Value.Trim(),
+                    Selected = o.Attribute("selected") != null,
                     Variant = o.Attribute("value")?.Value
                 }).ToList();
-            }
-
-            return null;
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Read selected line time table. </summary>
-        /// <param name="xmlLineDetailsData"> XML line details data. </param>
-        /// <returns> Selected line time table data object. </returns>
-        private TimeTableDate? ReadSelectedTimeTableDate(XElement xmlLineDetailsData)
-        {
-            var selectedOption = xmlLineDetailsData.Descendants("option")
-                .FirstOrDefault(o => o.Attribute("selected") != null);
-
-            if (selectedOption != null && DateTime.TryParseExact(selectedOption.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate))
-            {
-                return new TimeTableDate()
-                {
-                    Date = selectedDate,
-                    Title = selectedOption.Value.Trim()
-                };
             }
 
             return null;
@@ -433,13 +407,14 @@ namespace MpkCzestochowaDownloader.Serializers
         /// <returns> List of line time table data objects. </returns>
         private List<TimeTableDate>? ReadTimeTableDates(XElement xmlLineDetailsData)
         {
-            var options = xmlLineDetailsData.Descendants("option").ToList();
+            var options = xmlLineDetailsData.Descendants("option");
 
             if (options.Any())
             {
                 return options.Select(o => new TimeTableDate()
                 {
                     Date = DateTime.TryParseExact(o.Attribute("value")?.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime selectedDate) ? selectedDate : null,
+                    Selected = o.Attribute("selected") != null,
                     Title = o.Value.Trim()
                 }).ToList();
             }
