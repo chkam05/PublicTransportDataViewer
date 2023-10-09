@@ -66,7 +66,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line details download and serialization test. </summary>
-        //[Test, Order(2)]
+        [Test, Order(2)]
         public void LineDetailsDonwloadTest()
         {
             var lines = new List<Line?>()
@@ -135,7 +135,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line stop departures download and serialization test. </summary>
-        [Test, Order(3)]
+        //[Test, Order(3)]
         public void LineDeparturesDownloadTest()
         {
             var lineDetails = GetRandomLineDetails(TransportType.Tram);

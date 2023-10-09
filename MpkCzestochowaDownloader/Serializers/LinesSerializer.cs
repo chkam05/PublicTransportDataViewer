@@ -5,6 +5,7 @@ using MpkCzestochowaDownloader.Data.Static;
 using MpkCzestochowaDownloader.Mappers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -51,11 +52,11 @@ namespace MpkCzestochowaDownloader.Serializers
             {
                 var sections = xmlData.Elements().Where(e => e.Name == "section").ToList();
 
-                var groupedDataNodes = GroupLinesDataByTransportType(sections);
-                var messagesDataNode = GetMessagesDataNode(sections);
+                var grouppedLinesSectionDiv = GetGrouppedLinesSection(xmlData);
+                var messagesSectionTable = GetMessagesSection(xmlData);
 
-                var linesData = ReadLinesData(groupedDataNodes);
-                var messages = ReadMessagesData(messagesDataNode);
+                var linesData = ReadLinesData(grouppedLinesSectionDiv);
+                var messages = ReadMessagesData(messagesSectionTable);
 
                 if (linesData?.Any() ?? false)
                     result.Lines = linesData;
@@ -178,90 +179,17 @@ namespace MpkCzestochowaDownloader.Serializers
 
         #endregion PREPROCESSING DATA METHODS
 
-        #region PROCESS DATA METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Group XML lines data by TransportType. </summary>
-        /// <param name="xmlSections"> XML sections data. </param>
-        /// <returns> Groupped XML lines data by TransportType. </returns>
-        private Dictionary<TransportType, XElement> GroupLinesDataByTransportType(List<XElement> xmlSections)
-        {
-            var result = new Dictionary<TransportType, XElement>();
-
-            var xmlLinesData = xmlSections?
-                .FirstOrDefault(s
-                    => s.Elements().Any(e => e.Name == "h3")
-                    && s.Elements().Any(e => e.Name == "div"))?
-                .Elements()
-                    .Where(e => e.Name == "h3" || e.Name == "div")
-                .ToList();
-
-            XElement? key = null;
-
-            if (xmlLinesData?.Any() ?? false)
-            {
-                foreach (var xmlLineData in xmlLinesData)
-                {
-                    if (xmlLineData.Name == "h3")
-                        key = xmlLineData;
-
-                    if (key != null && xmlLineData.Name == "div")
-                    {
-                        foreach (var i in key.Elements().Where(e => e.Name == "i"))
-                        {
-                            var classNames = i.Attribute("class")?.Value;
-
-                            if (!string.IsNullOrEmpty(classNames))
-                            {
-                                var transportType = TransportTypesMapper.MapFromClass(
-                                    classNames.Split(" ", StringSplitOptions.RemoveEmptyEntries));
-
-                                if (transportType.HasValue)
-                                {
-                                    result.Add(transportType.Value, xmlLineData);
-                                    break;
-                                }
-                            }
-                        }
-
-                        key = null;
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Extract messages node from sections. </summary>
-        /// <param name="xmlSections"> XML sections data. </param>
-        /// <returns> Messages data node. </returns>
-        private XElement? GetMessagesDataNode(List<XElement> xmlSections)
-        {
-            var xmlMessagesData = xmlSections?
-                .FirstOrDefault(s
-                    => s.Elements().Any(e => e.Name == "h3")
-                    && s.Elements().Any(e => e.Name == "div"))?
-                .Elements()
-                    .Where(e => e.Name == "table")
-                .FirstOrDefault();
-
-            return xmlMessagesData;
-        }
-
-        #endregion PROCESS DATA METHODS
-
         #region READ LINES DATA
 
         //  --------------------------------------------------------------------------------
         /// <summary> Read lines data. </summary>
-        /// <param name="grouppedNodes"> Groupped XML lines data by TransportType. </param>
-        /// <returns> Groupped line objects by TransportType. </returns>
-        private Dictionary<TransportType, List<Line>> ReadLinesData(Dictionary<TransportType, XElement> grouppedNodes)
+        /// <param name="grouppedLinesSectionDiv"> Groupped by TransportType XML lines section [div] data. </param>
+        /// <returns> Groupped by TransportType line data objects. </returns>
+        private Dictionary<TransportType, List<Line>> ReadLinesData(Dictionary<TransportType, XElement> grouppedLinesSectionDiv)
         {
             var result = new Dictionary<TransportType, List<Line>>();
 
-            foreach (var kvp in grouppedNodes)
+            foreach (var kvp in grouppedLinesSectionDiv)
             {
                 var lineNodes = kvp.Value.Elements("a").ToList();
 
@@ -288,21 +216,21 @@ namespace MpkCzestochowaDownloader.Serializers
         //  --------------------------------------------------------------------------------
         /// <summary> Read line data. </summary>
         /// <param name="transportType"> Transport type. </param>
-        /// <param name="xmlLineNode"> Line XML data node. </param>
-        /// <returns> Line object. </returns>
-        private Line ReadLineData(TransportType transportType, XElement xmlLineNode)
+        /// <param name="xmlLineData"> XML line [a] data. </param>
+        /// <returns> Line data object. </returns>
+        private Line ReadLineData(TransportType transportType, XElement xmlLineData)
         {
-            var attributes = xmlLineNode.Attribute("class")?.Value;
+            var attributes = xmlLineData.Attribute("class")?.Value.Trim().Split(" ").ToList();
 
             var line = new Line()
             {
                 TransportType = transportType,
-                URL = xmlLineNode.Attribute("href")?.Value,
-                Value = xmlLineNode.Value.Trim()
+                URL = xmlLineData.Attribute("href")?.Value,
+                Value = xmlLineData.Value.Trim()
             };
 
-            if (!string.IsNullOrEmpty(attributes))
-                line.Attributes = attributes.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            if (attributes != null)
+                line.Attributes = attributes;
 
             return line;
         }
@@ -315,59 +243,159 @@ namespace MpkCzestochowaDownloader.Serializers
         /// <summary> Read messages data. </summary>
         /// <param name="xmlMessagesNode"> XML messages data node. </param>
         /// <returns> List of messages objects. </returns>
-        private List<Message> ReadMessagesData(XElement xmlMessagesNode)
+        private List<Message>? ReadMessagesData(XElement xmlMessagesNode)
         {
-            var result = new List<Message>();
-            var rows = xmlMessagesNode.Descendants("tr");
+            var rows = xmlMessagesNode
+                .Descendants("tr")
+                .Where(r => !r.Descendants("th").Any());
 
-            foreach (var row in rows)
+            if (rows == null || !rows.Any())
+                return null;
+
+            return rows.Select(r => ReadMessageData(r))
+                .Where(r => r != null)
+                .ToList();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Read line data. </summary>
+        /// <param name="xmlMessageRow"> XML message row [tr] data. </param>
+        /// <returns> Message object. </returns>
+        private Message ReadMessageData(XElement xmlMessageRow)
+        {
+            var columns = xmlMessageRow.Elements("td").ToList();
+
+            var message = new Message()
             {
-                //  Ignore header.
-                if (row.Descendants("th").Any())
-                    continue;
+                Date = GetMessageDate(columns),
+                URL = GetMessageURL(columns),
+                Value = GetMessageValue(columns)
+            };
 
-                var message = ReadMessageData(row);
+            var lines = GetMessageLines(columns);
 
-                if (message != null)
-                    result.Add(message);
+            if (lines != null)
+                message.Lines = lines;
+
+            return message;
+        }
+
+        #endregion READ MESSAGES DATA
+
+        #region XML DATA GET METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get message date. </summary>
+        /// <param name="xmlMessageColumns"> XML message columns [td] data. </param>
+        /// <returns> Message date. </returns>
+        private DateTime? GetMessageDate(List<XElement> xmlMessageColumns)
+        {
+            return xmlMessageColumns.Count() > 0
+                ? DateTime.TryParseExact(xmlMessageColumns[0].Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime) ? dateTime : null
+                : null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get message lines. </summary>
+        /// <param name="xmlMessageColumns"> XML message columns [td] data. </param>
+        /// <returns> List of message lines. </returns>
+        private List<string>? GetMessageLines(List<XElement> xmlMessageColumns)
+        {
+            var column = xmlMessageColumns.Count() > 1 ? xmlMessageColumns[1].Value : null;
+
+            return column?.Split(",", StringSplitOptions.RemoveEmptyEntries)
+                .Select(l => l.Trim()).ToList();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get message URL. </summary>
+        /// <param name="xmlMessageColumns"> XML message columns [td] data. </param>
+        /// <returns> Message URL. </returns>
+        private string? GetMessageURL(List<XElement> xmlMessageColumns)
+        {
+            var column = xmlMessageColumns.Count() > 2 ? xmlMessageColumns[2].Element("a") : null;
+            return column?.Attribute("href")?.Value;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get message value. </summary>
+        /// <param name="xmlMessageColumns"> XML message columns [td] data. </param>
+        /// <returns> Message value. </returns>
+        private string? GetMessageValue(List<XElement> xmlMessageColumns)
+        {
+            var column = xmlMessageColumns.Count() > 2 ? xmlMessageColumns[2].Element("a") : null;
+            return column?.Value.Trim();
+        }
+
+        #endregion XML DATA GET METHODS
+
+        #region XML SECTIONS GET METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get XML lines data groupped by transport type. </summary>
+        /// <param name="xmlLineDeparturesData"> XML lines data. </param>
+        /// <returns> Groupped by transport type XML lines section data. </returns>
+        private Dictionary<TransportType, XElement>? GetGrouppedLinesSection(XElement xmlLinesData)
+        {
+            var lines = xmlLinesData.Elements("section")
+                .FirstOrDefault(s
+                    => s.Elements().Any(e => e.Name == "h3")
+                    && s.Elements().Any(e => e.Name == "div"))?
+                .Elements()
+                    .Where(e => e.Name == "h3" || e.Name == "div")
+                .ToList();
+
+            if (lines == null || !lines.Any())
+                return null;
+
+            XElement? key = null;
+            var result = new Dictionary<TransportType, XElement>();
+
+            foreach (var lineData in lines)
+            {
+                if (lineData.Name == "h3")
+                    key = lineData;
+
+                if (key != null && lineData.Name == "div")
+                {
+                    foreach (var i in key.Elements().Where(e => e.Name == "i"))
+                    {
+                        var classNames = i.Attribute("class")?.Value;
+
+                        if (!string.IsNullOrEmpty(classNames))
+                        {
+                            var transportType = TransportTypesMapper.MapFromClass(
+                                classNames.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+
+                            if (transportType.HasValue)
+                            {
+                                result.Add(transportType.Value, lineData);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             return result;
         }
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Read line data. </summary>
-        /// <param name="row"> XML message row data node. </param>
-        /// <returns> Message object. </returns>
-        private Message ReadMessageData(XElement row)
+        /// <summary> Get XML messages data. </summary>
+        /// <param name="xmlLinesData"> XML lines data. </param>
+        /// <returns> XML messages section data. </returns>
+        private XElement? GetMessagesSection(XElement xmlLinesData)
         {
-            var columns = row.Elements("td").ToList();
-
-            var message = new Message()
-            {
-                Date = columns.Count() > 0 ? columns[0].Value : null
-            };
-
-            var linesNode = columns.Count() > 1 ? columns[1].Value : null;
-
-            if (!string.IsNullOrEmpty(linesNode))
-            {
-                message.Lines = linesNode.Split(",", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(l => l.Trim()).ToList();
-            }
-
-            var messageNode = columns.Count() > 2 ? columns[2].Element("a") : null;
-
-            if (messageNode != null)
-            {
-                message.URL = messageNode.Attribute("href")?.Value;
-                message.Value = messageNode.Value.Trim();
-            }
-
-            return message;
+            return xmlLinesData.Elements("section")
+                .FirstOrDefault(s
+                    => s.Elements().Any(e => e.Name == "h3")
+                    && s.Elements().Any(e => e.Name == "div"))?
+                .Elements()
+                    .Where(e => e.Name == "table")
+                .FirstOrDefault();
         }
 
-        #endregion READ MESSAGES DATA
+        #endregion XML SECTIONS GET METHODS
 
     }
 }

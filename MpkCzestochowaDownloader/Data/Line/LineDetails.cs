@@ -12,7 +12,6 @@ namespace MpkCzestochowaDownloader.Data.Line
         //  VARIABLES
 
         public List<string> Attributes { get; set; }
-        public DateTime? Date { get; set; }
         public List<TimeTableDate> Dates { get; set; }
         public string? DirectionFrom { get; set; }
         public string? DirectionTo { get; set; }

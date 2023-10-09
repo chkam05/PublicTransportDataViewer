@@ -12,17 +12,18 @@ namespace MpkCzestochowaDownloader.Data.Departures
 
         //  VARIABLES
 
-        public string LineId { get; set; }
-        public string StopId { get; set; }
-        public string DirectionId { get; set; }
-        public string RouteVariantId { get; set; }
+        public string? LineId { get; set; }
+        public string? StopId { get; set; }
+        public string? DirectionId { get; set; }
+        public string? RouteVariantId { get; set; }
         public List<TimeTableDate> Dates { get; set; }
         public List<Departure> Departures { get; set; }
-        public string DirectionName { get; set; }
+        public string? DirectionName { get; set; }
         public string ImageURL { get; set; }
         public List<OtherLine> OtherLines { get; set; }
-        public string StopName { get; set; }
+        public string? StopName { get; set; }
         public List<LineStop> Stops { get; set; }
+        public string? Value { get; set; }
         
 
         //  METHODS

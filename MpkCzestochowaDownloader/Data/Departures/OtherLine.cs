@@ -14,7 +14,7 @@ namespace MpkCzestochowaDownloader.Data.Departures
         //  VARIABLES
 
         public List<string> Attributes { get; set; }
-        public string URL { get; set; }
+        public string? URL { get; set; }
         public string Value { get; set; }
 
 

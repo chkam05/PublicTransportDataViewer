@@ -258,73 +258,56 @@ namespace MpkCzestochowaDownloader.Serializers
         /// <returns> Line details data object. </returns>
         private LineDetails? ReadLineDetailsData(XElement xmlLineDetailsData)
         {
-            var routeHeaderNode = xmlLineDetailsData
-                .Elements("div")
-                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false);
+            var directionsSectionDiv = GetDirectionsSection(xmlLineDetailsData);
+            var routeHeaderSectionDiv = GetRouteHeaderSection(xmlLineDetailsData);
+            var timeTableTitleSectionForm = GetTimeTableTitleSection(xmlLineDetailsData);
 
-            var spanHeaderNode = routeHeaderNode?.Element("span");
-            var optionsHeaderNode = routeHeaderNode?.Element("div");
+            if (directionsSectionDiv == null)
+                return null;
 
-            if (spanHeaderNode != null && optionsHeaderNode != null)
+            if (routeHeaderSectionDiv == null)
+                return null;
+
+            if (timeTableTitleSectionForm == null)
+                return null;
+
+            var lineDetails = new LineDetails()
             {
-                var routeNode = spanHeaderNode.Elements("span")
-                    .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false);
+                LineId = GetLineId(timeTableTitleSectionForm),
+                Value = GetLineValue(routeHeaderSectionDiv)
+            };
 
-                var lineDetails = new LineDetails();
+            var dates = ReadTimeTableDates(xmlLineDetailsData);
+            var directionsNames = GetDirectionsNames(routeHeaderSectionDiv);
+            var lineAttributes = GetLineAttributes(routeHeaderSectionDiv);
+            var lineDirections = ReadLineDirections(xmlLineDetailsData);
+            var variants = ReadRouteVariants(routeHeaderSectionDiv);
 
-                var directions = spanHeaderNode.Elements("span")
-                    .Where(e => e.Attribute("class")?.Value.Contains("d-block") ?? false)
-                    .Select(e => e.Value.Trim())
-                    .ToList();
+            if (dates != null)
+                lineDetails.Dates = dates;
 
-                lineDetails.DirectionFrom = directions.Any() ? directions.First() : null;
-                lineDetails.DirectionTo = directions.Any() ? directions.Last() : null;
-                lineDetails.Value = routeNode?.Value.Trim();
-
-                lineDetails.Date = DateTime.TryParseExact(
-                    optionsHeaderNode.Descendants("input")
-                        .FirstOrDefault(i => i.Attribute("name")?.Value == "data")
-                        ?.Attribute("value")?.Value,
-                    "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime)
-                    ? dateTime
-                    : null;
-
-                lineDetails.LineId = optionsHeaderNode.Descendants("input")
-                    .FirstOrDefault(i => i.Attribute("name")?.Value == "linia")
-                    ?.Attribute("value")?.Value;
-
-                var attributes = routeNode?.Attribute("class")?.Value.Trim().Split(" ").ToList();
-                var dates = ReadTimeTableDates(xmlLineDetailsData);
-                var lineDirections = ReadLineDirections(xmlLineDetailsData);
-                var variants = ReadRouteVariants(optionsHeaderNode);
-
-                if (attributes != null)
-                    lineDetails.Attributes = attributes;
-
-                if (dates != null)
-                    lineDetails.Dates = dates;
-
-                if (lineDirections != null)
-                    lineDetails.Directions = lineDirections;
-
-                if (variants != null)
-                    lineDetails.RouteVariants = variants;
-
-                return lineDetails;
+            if (directionsNames?.Any() ?? false)
+            {
+                lineDetails.DirectionFrom = directionsNames.First();
+                lineDetails.DirectionTo = directionsNames.Last();
             }
 
-            return null;
+            if (lineAttributes != null)
+                lineDetails.Attributes = lineAttributes;
+
+            if (lineDirections != null)
+                lineDetails.Directions = lineDirections;
+
+            if (variants != null)
+                lineDetails.RouteVariants = variants;
+
+            return lineDetails;
         }
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Read line directions data. </summary>
-        /// <param name="xmlLineDetailsData"> XML line details data. </param>
-        /// <returns> List of line direction data objects. </returns>
-        private List<LineDirection>? ReadLineDirections(XElement xmlLineDetailsData)
+        private List<LineDirection>? ReadLineDirections(XElement directionsSectionDiv)
         {
-            var directions = xmlLineDetailsData.Elements()
-                .FirstOrDefault(e => e.Name == "div" && e.Attribute("class")?.Value == "row")
-                ?.Descendants("table");
+            var directions = directionsSectionDiv?.Descendants("table");
 
             if (directions != null)
             {
@@ -348,15 +331,12 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Read line stops data. </summary>
-        /// <param name="directionNode"> XML line direction data node. </param>
-        /// <returns> List of line stop data objects. </returns>
-        private List<LineStop>? ReadLineDirectionStops(XElement? directionNode)
+        private List<LineStop>? ReadLineDirectionStops(XElement? directionTBody)
         {
-            if (directionNode == null)
+            if (directionTBody == null)
                 return null;
 
-            var stops = directionNode.Descendants("a");
+            var stops = directionTBody.Descendants("a");
 
             if (stops.Any())
             {
@@ -381,12 +361,9 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Read line route variants. </summary>
-        /// <param name="xmlLineDetailsData"> XML line details data. </param>
-        /// <returns> List of line route variant data objects. </returns>
         private List<RouteVariant>? ReadRouteVariants(XElement optionsHeaderNode)
         {
-            var variants = optionsHeaderNode.Descendants("option");
+            var variants = optionsHeaderNode.Element("div")?.Descendants("option");
 
             if (variants?.Any() ?? false)
             {
@@ -402,12 +379,9 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         //  --------------------------------------------------------------------------------
-        /// <summary> Read line time tables data. </summary>
-        /// <param name="xmlLineDetailsData"> XML line details data. </param>
-        /// <returns> List of line time table data objects. </returns>
-        private List<TimeTableDate>? ReadTimeTableDates(XElement xmlLineDetailsData)
+        private List<TimeTableDate>? ReadTimeTableDates(XElement timeTableTitleSectionForm)
         {
-            var options = xmlLineDetailsData.Descendants("option");
+            var options = timeTableTitleSectionForm.Descendants("option");
 
             if (options.Any())
             {
@@ -423,6 +397,75 @@ namespace MpkCzestochowaDownloader.Serializers
         }
 
         #endregion READ LINE DETAILS DATA
+
+        #region XML DATA GET METHODS
+
+        //  --------------------------------------------------------------------------------
+        private List<string>? GetDirectionsNames(XElement routeHeaderSectionDiv)
+        {
+            return routeHeaderSectionDiv.Element("span")
+                ?.Elements("span")
+                .Where(e => e.Attribute("class")?.Value.Contains("d-block") ?? false)
+                .Select(e => e.Value.Trim())
+                .ToList();
+        }
+
+        //  --------------------------------------------------------------------------------
+        private List<string>? GetLineAttributes(XElement routeHeaderSectionDiv)
+        {
+            return routeHeaderSectionDiv.Element("span")
+                ?.Elements("span")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false)
+                ?.Attribute("class")?.Value.Trim().Split(" ").ToList();
+        }
+
+        //  --------------------------------------------------------------------------------
+        private string? GetLineId(XElement timeTableTitleSectionForm)
+        {
+            return timeTableTitleSectionForm.Descendants("input")
+                ?.FirstOrDefault(e => e.Attribute("name")?.Value == "linia")
+                ?.Value.Trim();
+        }
+
+        //  --------------------------------------------------------------------------------
+        private string? GetLineValue(XElement routeHeaderSectionDiv)
+        {
+            return routeHeaderSectionDiv.Element("span")
+                ?.Elements("span")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false)
+                ?.Value.Trim();
+        }
+
+        #endregion XML DATA GET METHODS
+
+        #region XML SECTIONS GET METHODS
+
+        //  --------------------------------------------------------------------------------
+        private XElement? GetDirectionsSection(XElement xmlLineDeparturesData)
+        {
+            return xmlLineDeparturesData.Elements("div")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("row") ?? false);
+        }
+
+        //  --------------------------------------------------------------------------------
+        private XElement? GetRouteHeaderSection(XElement xmlLineDeparturesData)
+        {
+            return xmlLineDeparturesData.Elements("div")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route-header") ?? false);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get XML time table title section data. </summary>
+        /// <param name="xmlLineDeparturesData"> XML line depratures data. </param>
+        /// <returns> XML time table title section data. </returns>
+        private XElement? GetTimeTableTitleSection(XElement xmlLineDeparturesData)
+        {
+            return xmlLineDeparturesData.Element("h3")
+                ?.Descendants("form")
+                ?.FirstOrDefault();
+        }
+
+        #endregion XML SECTIONS GET METHODS
 
     }
 }

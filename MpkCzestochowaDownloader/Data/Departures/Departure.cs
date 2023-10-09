@@ -12,8 +12,8 @@ namespace MpkCzestochowaDownloader.Data.Departures
         //  VARIABLES
 
         public List<string> Attributes { get; set; }
-        public string DataTrip { get; set; }
-        public string DataRoute { get; set; }
+        public string? DataTrip { get; set; }
+        public string? DataRoute { get; set; }
         public DateTime? Time { get; set; }
 
 

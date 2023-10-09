@@ -31,14 +31,6 @@ namespace MpkCzestochowaDownloader.Data.Lines
             //
         }
 
-        //  --------------------------------------------------------------------------------
-        /// <summary> Return value as string data. </summary>
-        /// <returns> Value as string. </returns>
-        public override string ToString()
-        {
-            return $"{TransportTypesMapper.MapToName(TransportType)}: {Value}";
-        }
-
         #endregion CLASS METHODS
 
     }
