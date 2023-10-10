@@ -277,10 +277,10 @@ namespace MpkCzestochowaDownloader.Serializers
                 Value = GetLineValue(routeHeaderSectionDiv)
             };
 
-            var dates = ReadTimeTableDates(xmlLineDetailsData);
+            var dates = ReadTimeTableDates(timeTableTitleSectionForm);
             var directionsNames = GetDirectionsNames(routeHeaderSectionDiv);
             var lineAttributes = GetLineAttributes(routeHeaderSectionDiv);
-            var lineDirections = ReadLineDirections(xmlLineDetailsData);
+            var lineDirections = ReadLineDirections(directionsSectionDiv);
             var variants = ReadRouteVariants(routeHeaderSectionDiv);
 
             if (dates != null)
@@ -424,7 +424,7 @@ namespace MpkCzestochowaDownloader.Serializers
         {
             return timeTableTitleSectionForm.Descendants("input")
                 ?.FirstOrDefault(e => e.Attribute("name")?.Value == "linia")
-                ?.Value.Trim();
+                ?.Attribute("value")?.Value;
         }
 
         //  --------------------------------------------------------------------------------

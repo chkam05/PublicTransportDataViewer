@@ -78,7 +78,8 @@ namespace MpkCzestochowaDownloader.Serializers
             trimmedData = StringUtils.RemoveExcessSpaces(trimmedData);
 
             trimmedData = trimmedData
-                .Replace("selected ", "selected=\"\" ");
+                .Replace("selected ", "selected=\"\" ")
+                .Replace("<br>", "<br/>");
 
             return trimmedData;
         }
@@ -250,6 +251,7 @@ namespace MpkCzestochowaDownloader.Serializers
                 DirectionName = GetLineDirection(routeHeaderSectionSpan),
                 StopName = GetLineStop(routeHeaderSectionSpan),
                 Value = GetLineValue(routeHeaderSectionSpan),
+                ImageURL = GetMapImageURL(xmlLineDeparturesData)
             };
 
             var dates = ReadTimeTableDates(timeTableTitleSectionForm);
@@ -307,11 +309,16 @@ namespace MpkCzestochowaDownloader.Serializers
 
             return departures.Select(d =>
             {
+                var time = d.Attribute("data-time")?.Value;
+
+                if (int.TryParse(time?.Substring(0,2), out int hour) ? hour > 23 : false)
+                    time = $"{(hour-24 < 10 ? "0" : "")}{hour-24}{time.Substring(2)}";
+
                 var departure = new Departure()
                 {
                     DataRoute = d.Attribute("data-route")?.Value,
                     DataTrip = d.Attribute("data-trip")?.Value,
-                    Time = DateTime.TryParseExact(d.Attribute("data-time")?.Value, "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime) ? dateTime : null
+                    Time = DateTime.TryParseExact(time, "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime) ? dateTime : null
                 };
 
                 var attributes = d.Attribute("class")?.Value.Trim().Split(" ").ToList();
@@ -396,6 +403,7 @@ namespace MpkCzestochowaDownloader.Serializers
             return timeTableTitleSectionForm
                 .Descendants("input")
                 .FirstOrDefault(e => e.Attribute("name")?.Value == "kierunek")
+                ?.Attribute("value")
                 ?.Value;
         }
 
@@ -408,6 +416,7 @@ namespace MpkCzestochowaDownloader.Serializers
             return timeTableTitleSectionForm
                 .Descendants("input")
                 .FirstOrDefault(e => e.Attribute("name")?.Value == "linia")
+                ?.Attribute("value")
                 ?.Value;
         }
 
@@ -420,6 +429,7 @@ namespace MpkCzestochowaDownloader.Serializers
             return timeTableTitleSectionForm
                 .Descendants("input")
                 .FirstOrDefault(e => e.Attribute("name")?.Value == "trasa")
+                ?.Attribute("value")
                 ?.Value;
         }
 
@@ -432,6 +442,7 @@ namespace MpkCzestochowaDownloader.Serializers
             return timeTableTitleSectionForm
                 .Descendants("input")
                 .FirstOrDefault(e => e.Attribute("name")?.Value == "przystanek")
+                ?.Attribute("value")
                 ?.Value;
         }
 
@@ -470,6 +481,19 @@ namespace MpkCzestochowaDownloader.Serializers
             return routeHeaderSectionSpan.Elements("span")
                 ?.FirstOrDefault(e => e.Attribute("class")?.Value.Contains("route") ?? false)
                 ?.Value;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get map image URL. </summary>
+        /// <param name="xmlLineDeparturesData"> XML line departures data. </param>
+        /// <returns> Map image URL. </returns>
+        private string? GetMapImageURL(XElement xmlLineDeparturesData)
+        {
+            return xmlLineDeparturesData.Elements("div")
+                .FirstOrDefault(e => e.Attribute("class")?.Value.Contains("row") ?? false)
+                ?.Descendants("img")
+                ?.LastOrDefault()
+                ?.Attribute("src")?.Value.Split("?").FirstOrDefault();
         }
 
         #endregion XML DATA GET METHODS
