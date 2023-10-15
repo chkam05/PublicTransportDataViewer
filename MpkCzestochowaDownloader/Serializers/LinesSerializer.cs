@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace MpkCzestochowaDownloader.Serializers
 {
-    public class LinesSerializer : BaseSerializer<LinesResponseModel>
+    public class LinesSerializer : DedicatedSerializer<LinesResponseModel>
     {
 
         //  CONST
@@ -129,52 +129,6 @@ namespace MpkCzestochowaDownloader.Serializers
                     dataLines[index] = breakLineCorrected;
                 }
             }
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Fix image nodes. </summary>
-        /// <param name="dataLine"> Raw single line data. </param>
-        /// <param name="correctedDataLine"> Output corrected line data. </param>
-        /// <returns> True - correction applied; False - otherwise. </returns>
-        private bool FixImage(string dataLine, out string correctedDataLine)
-        {
-            correctedDataLine = dataLine;
-
-            if (dataLine.Contains("<img"))
-            {
-                int startIndex = dataLine.IndexOf("<img");
-                int endIndex = dataLine.IndexOf(">", startIndex) + 1;
-
-                string imgNode = dataLine.Substring(startIndex, endIndex - startIndex);
-
-                if (!imgNode.EndsWith("/>"))
-                {
-                    correctedDataLine = dataLine.Replace(imgNode, imgNode.Replace(">", "/>"));
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Fix break line nodes. </summary>
-        /// <param name="dataLine"> Raw single line data. </param>
-        /// <param name="correctedDataLine"> Output corrected line data. </param>
-        /// <returns> True - correction applied; False - otherwise. </returns>
-        private bool FixBreakLine(string dataLine, out string correctedDataLine)
-        {
-            correctedDataLine = dataLine;
-
-            if (dataLine.Contains("<br>"))
-            {
-                while (correctedDataLine.Contains("<br>"))
-                    correctedDataLine = correctedDataLine.Replace("<br>", "<br />");
-
-                return true;
-            }
-
-            return false;
         }
 
         #endregion PREPROCESSING DATA METHODS

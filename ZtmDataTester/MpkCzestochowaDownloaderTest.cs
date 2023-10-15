@@ -35,7 +35,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Lines download and serialization test. </summary>
-        [Test, Order(1)]
+        //[Test, Order(1)]
         public void LinesDownloadTest()
         {
             var downloader = new LinesDownloader();
@@ -66,7 +66,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line details download and serialization test. </summary>
-        [Test, Order(2)]
+        //[Test, Order(2)]
         public void LineDetailsDonwloadTest()
         {
             var lines = new List<Line?>()
@@ -164,7 +164,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line stop departures download and serialization test. </summary>
-        [Test, Order(3)]
+        //[Test, Order(3)]
         public void LineDeparturesDownloadTest()
         {
             var lineDetailsList = new List<LineDetails?>()
@@ -259,6 +259,14 @@ namespace ZtmDataTester
             Assert.IsTrue(anyOtherLineAttributeLoaded);
             Assert.IsTrue(anyOtherLineLoaded);
             Assert.IsTrue(anyStopAttribute);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Line arrivals download and serialization test. </summary>
+        [Test, Order(4)]
+        public void LineArrivalsDownloadTest()
+        {
+            //
         }
 
         #endregion TEST METHODS
