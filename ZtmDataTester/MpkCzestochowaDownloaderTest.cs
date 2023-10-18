@@ -1,4 +1,5 @@
-﻿using MpkCzestochowaDownloader.Data.Departures;
+﻿using MpkCzestochowaDownloader.Data.Arrives;
+using MpkCzestochowaDownloader.Data.Departures;
 using MpkCzestochowaDownloader.Data.Line;
 using MpkCzestochowaDownloader.Data.Lines;
 using MpkCzestochowaDownloader.Data.Static;
@@ -8,8 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZtmDataDownloader;
-using ZtmDataDownloader.Data.Departures;
 
 namespace ZtmDataTester
 {
@@ -35,7 +34,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Lines download and serialization test. </summary>
-        //[Test, Order(1)]
+        [Test, Order(1)]
         public void LinesDownloadTest()
         {
             var downloader = new LinesDownloader();
@@ -66,7 +65,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line details download and serialization test. </summary>
-        //[Test, Order(2)]
+        [Test, Order(2)]
         public void LineDetailsDonwloadTest()
         {
             var lines = new List<Line?>()
@@ -164,7 +163,7 @@ namespace ZtmDataTester
 
         //  --------------------------------------------------------------------------------
         /// <summary> Line stop departures download and serialization test. </summary>
-        //[Test, Order(3)]
+        [Test, Order(3)]
         public void LineDeparturesDownloadTest()
         {
             var lineDetailsList = new List<LineDetails?>()
@@ -266,7 +265,53 @@ namespace ZtmDataTester
         [Test, Order(4)]
         public void LineArrivalsDownloadTest()
         {
-            //
+            var lineDetailsList = new List<LineDetails?>()
+            {
+                GetRandomLineDetails(TransportType.Bus),
+                GetRandomLineDetails(TransportType.BusSuburban),
+                GetRandomLineDetails(TransportType.BusNight),
+                GetRandomLineDetails(TransportType.Tram)
+            };
+
+            foreach (var lineDetails in lineDetailsList)
+            {
+                var date = (lineDetails?.Dates.FirstOrDefault(d => d.Selected)?.Date ?? DateTime.Now)
+                    .ToString("yyyy-MM-dd");
+
+                var departure = GetLineFirstDeparture(lineDetails);
+
+                Assert.IsTrue(!string.IsNullOrEmpty(date));
+                Assert.IsNotNull(departure);
+                Assert.IsNotNull(departure.DataTrip);
+                Assert.IsNotNull(departure.Time);
+
+                var downloader = new LineArrivalsDownloader();
+                var request = new LineArrivalsRequestModel(
+                    departure.DataTrip,
+                    departure.Time.Value.ToString("HH:mm:ss"),
+                    date);
+
+                var response = downloader.DownloadData(request);
+
+                Assert.IsFalse(response.HasErrors);
+                Assert.IsTrue(response.HasData);
+                Assert.IsNotNull(response.LineArrivals);
+
+                var lineArrivals = response.LineArrivals;
+                int lineCounter = -1;
+
+                Assert.IsNotNull(lineArrivals.TripTime);
+                Assert.IsTrue(lineArrivals.Arrivals.Any());
+
+                foreach (var arrival in lineArrivals.Arrivals)
+                {
+                    Assert.IsTrue(lineCounter < arrival.Id);
+                    Assert.IsTrue(!string.IsNullOrEmpty(arrival.StopName));
+                    Assert.IsNotNull(arrival.Time);
+
+                    arrival.Id = lineCounter;
+                }
+            }
         }
 
         #endregion TEST METHODS
@@ -328,6 +373,33 @@ namespace ZtmDataTester
                 {
                     var randomStopIndex = random.Next(direction.Stops.Count);
                     return direction.Stops[randomStopIndex];
+                }
+            }
+
+            return null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        private Departure? GetLineFirstDeparture(LineDetails? lineDetails)
+        {
+            if (lineDetails?.Directions.Any() ?? false)
+            {
+                var direction = lineDetails.Directions.First();
+
+                if (direction.Stops.Any())
+                {
+                    var lineStop = direction.Stops.First();
+
+                    var downloader = new LineDeparturesDownloader();
+                    var request = new LineDeparturesRequestModel(lineStop.URL);
+                    var response = downloader.DownloadData(request);
+
+                    if (response.HasData && !response.HasErrors)
+                    {
+                        var lineDepartures = response.LineDepartures;
+
+                        return lineDepartures.Departures.FirstOrDefault();
+                    }
                 }
             }
 

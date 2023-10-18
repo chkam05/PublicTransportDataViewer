@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace MpkCzestochowaDownloader.Data.Arrives
 {
-    public class LineArrivals
+    public class Arrival
     {
 
         //  VARIABLES
 
-        public List<Arrival> Arrivals { get; set; }
-        public DateTime? TripTime { get; set; }
+        public int Id { get; set; }
+        public string? StopName { get; set; }
+        public DateTime? Time { get; set; }
 
 
         //  METHODS
@@ -20,11 +21,10 @@ namespace MpkCzestochowaDownloader.Data.Arrives
         #region CLASS METHODS
 
         //  --------------------------------------------------------------------------------
-        /// <summary> LineArrivals class constructor. </summary>
-        public LineArrivals()
+        /// <summary> Arrival class constructor. </summary>
+        public Arrival()
         {
-            if (Arrivals == null)
-                Arrivals = new List<Arrival>();
+            //
         }
 
         #endregion CLASS METHODS
