@@ -101,6 +101,7 @@ namespace ZtmDataViewer.Pages
         {
             InternalMenuItems = new ObservableCollection<MainMenuItem>()
             {
+                new MainMenuItem("MPK Częstochowa", PackIconKind.Transportation, OnMpkCzestochowaMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageZtmMenuItem, PackIconKind.Transportation, OnZtmMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect)
             };
@@ -109,6 +110,15 @@ namespace ZtmDataViewer.Pages
         #endregion INTERNAL MENU ITEMS MANAGEMENT METHODS
 
         #region MENU ITEMS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting mpk czestochowa menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnMpkCzestochowaMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new MpkCzestochowa.LinesViewPage(_pagesController));
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Method invoked after selecting ztm menu item. </summary>

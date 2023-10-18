@@ -1,0 +1,255 @@
+﻿using chkam05.Tools.ControlsEx.InternalMessages;
+using MaterialDesignThemes.Wpf;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using ZtmDataViewer.Components;
+using ZtmDataViewer.Data.Config;
+using ZtmDataViewer.Data.MainMenu;
+using ZtmDataViewer.Data.MpkCzestochowa;
+using ZtmDataViewer.Utilities;
+using ZtmDataViewer.Windows;
+
+namespace ZtmDataViewer.Pages.MpkCzestochowa
+{
+    public partial class LinesViewPage : BasePage
+    {
+
+        //  VARIABLES
+
+        private ObservableCollection<LineGroupViewModel> _lineGroups;
+        private bool _loaded = false;
+
+
+        //  GETTERS & SETTERS
+
+        public override List<MainMenuItem> MainMenuItems
+        {
+            get => new List<MainMenuItem>()
+            {
+                new MainMenuItem("Wybór linii", PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect),
+            };
+        }
+
+        public ObservableCollection<LineGroupViewModel> LineGroups
+        {
+            get => _lineGroups;
+            private set
+            {
+                _lineGroups = value;
+                _lineGroups.CollectionChanged += OnLineGroupsCollectionChanged;
+                OnPropertyChanged(nameof(LineGroups));
+            }
+        }
+
+
+        //  METHODS
+
+        #region CLASS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> LinesViewPage class constructor. </summary>
+        /// <param name="pagesController"> Pages controller. </param>
+        public LinesViewPage(PagesController pagesController) : base(pagesController)
+        {
+            //  Initialize user interface.
+            InitializeComponent();
+        }
+
+        #endregion CLASS METHODS
+
+        #region DATA MANAGEMENT METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Load lines data. </summary>
+        private void LoadLinesData()
+        {
+            //  Get basic data.
+            var langConf = ConfigManager.Instance.LangConfig;
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+            var bgLoader = new BackgroundWorker();
+
+            //  Create await internal message.
+            var imAwait = new AwaitInternalMessageEx(imContainer,
+                langConf.ZtmLineViewLoadingTitle,
+                langConf.ZtmLineViewLoadingDesc,
+                PackIconKind.ChartTimelineVariant)
+            {
+                AllowCancel = false,
+                AllowHide = false
+            };
+
+            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+
+            //  Setup background worker methods.
+            bgLoader.DoWork += (s, we) =>
+            {
+                var downloader = new MpkCzestochowaDownloader.Downloaders.LinesDownloader();
+                var request = new MpkCzestochowaDownloader.Data.Lines.LinesRequestModel();
+                var response = downloader.DownloadData(request);
+
+                if (response.HasData && !response.HasErrors)
+                {
+                    var lineGroups = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
+                    we.Result = lineGroups;
+                }
+                else
+                {
+                    we.Result = null;
+                }
+            };
+
+            bgLoader.RunWorkerCompleted += (s, we) =>
+            {
+                if (we?.Result != null)
+                {
+                    var lineGroups = (List<LineGroupViewModel>)we.Result;
+                    LineGroups = new ObservableCollection<LineGroupViewModel>(lineGroups);
+                    imAwait.Close();
+                }
+                else
+                {
+                    LineGroups = new ObservableCollection<LineGroupViewModel>();
+                    imAwait.Close();
+                    ShowDownloadingErrorMessage(
+                        langConf.ZtmLineViewDownloadErrorTitle,
+                        langConf.ZtmLineViewDownloadErrorDesc);
+                }
+            };
+
+            //  Start downloading.
+            imContainer.ShowMessage(imAwait);
+            bgLoader.RunWorkerAsync();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Show download error internal message method. </summary>
+        /// <param name="title"> Error message title. </param>
+        /// <param name="message"> Error message. </param>
+        private void ShowDownloadingErrorMessage(string title, string message)
+        {
+            //  Get basic data.
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+
+            var imError = InternalMessageEx.CreateErrorMessage(
+                imContainer, title, message);
+
+            InternalMessagesHelper.ApplyVisualStyle(imError);
+
+            imContainer.ShowMessage(imError);
+        }
+
+        #endregion DATA MANAGEMENT METHODS
+
+        #region HEADER INTERACTION METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking refresh button. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void RefreshButtonEx_Click(object sender, RoutedEventArgs e)
+        {
+            LoadLinesData();
+        }
+
+        #endregion HEADER INTERACTION METHODS
+
+        #region LINES DATA INTERACTION METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after double clicking on lines list view ex. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Mouse Button Event Arguments. </param>
+        private void LinesListViewEx_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is FrameworkElement source)
+            {
+                if (source.DataContext is LineViewModel lineViewModel)
+                {
+                    //LoadLineDetails(lineViewModel.Line);
+                }
+            }
+        }
+
+        #endregion LINES DATA INTERACTION METHODS
+
+        #region MENU ITEMS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting lines menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnLinesMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new MpkCzestochowa.LinesViewPage(_pagesController));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting settings menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnSettingsMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new SettingsPage(_pagesController));
+        }
+
+        #endregion MENU ITEMS METHODS
+
+        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after line groups collection changed. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
+        private void OnLineGroupsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(LineGroups));
+        }
+
+        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        #region PAGE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after loading page. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void BasePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!_loaded)
+            {
+                LoadLinesData();
+                _loaded = true;
+            }
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after unloading page. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void BasePage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //
+        }
+
+        #endregion PAGE METHODS
+
+    }
+}

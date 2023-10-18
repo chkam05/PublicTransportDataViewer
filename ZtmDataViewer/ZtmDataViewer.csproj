@@ -7,6 +7,12 @@
     <UseWPF>true</UseWPF>
 	<UseWindowsForms>true</UseWindowsForms>
 	<ApplicationIcon>Icon.ico</ApplicationIcon>
+	<Title>Transport Data Viewer</Title>
+	<Version>1.1.0</Version>
+	<Authors>Kamil Karpiński</Authors>
+	<Description>Application for vewing transportation data across multiple cities in Poland.</Description>
+	<Copyright>Copyright (c) Kamil Karpiński 2023</Copyright>
+	<Product>Transport Data Viewer</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MpkCzestochowaDownloader\MpkCzestochowaDownloader.csproj" />
     <ProjectReference Include="..\ZtmDataDownloader\ZtmDataDownloader.csproj" />
   </ItemGroup>
 
