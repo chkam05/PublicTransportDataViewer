@@ -53,6 +53,7 @@ namespace ZtmDataViewer.Data.Config
         //  VARIABLES
 
         private string _startPageTitle = string.Empty;
+        private string _startPageMpkCzestochowaItem = string.Empty;
         private string _startPageZtmMenuItem = string.Empty;
         private string _startPageSettingsMenuItem = string.Empty;
 
@@ -63,6 +64,12 @@ namespace ZtmDataViewer.Data.Config
         {
             get => _startPageTitle;
             set => SetStringProperty(ref _startPageTitle, nameof(StartPageTitle), value);
+        }
+        
+        public string StartPageMpkCzestochowaItem
+        {
+            get => _startPageMpkCzestochowaItem;
+            set => SetStringProperty(ref _startPageMpkCzestochowaItem, nameof(StartPageMpkCzestochowaItem), value);
         }
 
         public string StartPageZtmMenuItem
@@ -272,6 +279,68 @@ namespace ZtmDataViewer.Data.Config
         }
 
         #endregion InfoSettingsPage
+
+        #region MpkCzestochowaLinesViewPage
+
+        //  VARIABLES
+
+        private string _mpkCzestochowaMessageDateTitle = string.Empty;
+        private string _mpkCzestochowaMessageLinesTitle = string.Empty;
+
+
+        //  GETTERS & SETTERS
+
+        public string MpkCzestochowaMessageDateTitle
+        {
+            get => _mpkCzestochowaMessageDateTitle;
+            set => SetStringProperty(ref _mpkCzestochowaMessageDateTitle, nameof(MpkCzestochowaMessageDateTitle), value);
+        }
+
+        public string MpkCzestochowaMessageLinesTitle
+        {
+            get => _mpkCzestochowaMessageLinesTitle;
+            set => SetStringProperty(ref _mpkCzestochowaMessageLinesTitle, nameof(MpkCzestochowaMessageLinesTitle), value);
+        }
+
+        #endregion MpkCzestochowaLinesViewPage
+
+        #region MpkCzestochowaTransportTypes
+
+        //  VARIABLES
+
+        private string _mpkCzestochowaTransportTypeBus = string.Empty;
+        private string _mpkCzestochowaTransportTypeBusNight = string.Empty;
+        private string _mpkCzestochowaTransportTypeBusSuburban = string.Empty;
+        private string _mpkCzestochowaTransportTypeTram = string.Empty;
+
+
+        //  GETTERS & SETTERS
+
+        public string MpkCzestochowaTransportTypeBus
+        {
+            get => _mpkCzestochowaTransportTypeBus;
+            set => SetStringProperty(ref _mpkCzestochowaTransportTypeBus, nameof(MpkCzestochowaTransportTypeBus), value);
+        }
+
+        public string MpkCzestochowaTransportTypeBusNight
+        {
+            get => _mpkCzestochowaTransportTypeBusNight;
+            set => SetStringProperty(ref _mpkCzestochowaTransportTypeBusNight, nameof(MpkCzestochowaTransportTypeBusNight), value);
+        }
+
+        public string MpkCzestochowaTransportTypeBusSuburban
+        {
+            get => _mpkCzestochowaTransportTypeBusSuburban;
+            set => SetStringProperty(ref _mpkCzestochowaTransportTypeBusSuburban, nameof(MpkCzestochowaTransportTypeBusSuburban), value);
+        }
+
+        public string MpkCzestochowaTransportTypeTram
+        {
+            get => _mpkCzestochowaTransportTypeTram;
+            set => SetStringProperty(ref _mpkCzestochowaTransportTypeTram, nameof(MpkCzestochowaTransportTypeTram), value);
+        }
+
+        #endregion MpkCzestochowaTransportTypes
 
         #region ZtmArrivalsIM
 
@@ -665,6 +734,7 @@ namespace ZtmDataViewer.Data.Config
 
             //  StartPage
             string? startPageTitle = null,
+            string? startPageMpkCzestochowaItem = null,
             string? startPageZtmMenuItem = null,
             string? startPageSettingsMenuItem = null,
 
@@ -697,6 +767,16 @@ namespace ZtmDataViewer.Data.Config
             string? settingsInfoPageAuthor = null,
             string? settingsInfoPageCopyright = null,
             string? settingsInfoPageLocation = null,
+
+            //  MpkCzestochowaLinesView
+            string? mpkCzestochowaMessageDateTitle = null,
+            string? mpkCzestochowaMessageLinesTitle = null,
+
+            //  MpkCzestochowaTransportTypes
+            string? mpkCzestochowaTransportTypeBus = null,
+            string? mpkCzestochowaTransportTypeBusNight = null,
+            string? mpkCzestochowaTransportTypeBusSuburban = null,
+            string? mpkCzestochowaTransportTypeTram = null,
 
             //  ZtmArrivalsIM
             string? ztmArrivalsLoadingTitle = null,
@@ -766,6 +846,7 @@ namespace ZtmDataViewer.Data.Config
             #region StartPage
 
             StartPageTitle = GetLanguageValue(startPageTitle, "Wybór miasta (przedsiębiorstwa komunikacyjnego)");
+            StartPageMpkCzestochowaItem = GetLanguageValue(startPageMpkCzestochowaItem, "MPK Czestochowa");
             StartPageZtmMenuItem = GetLanguageValue(startPageZtmMenuItem, "Zarząd Transportu Metropolitalnego");
             StartPageSettingsMenuItem = GetLanguageValue(startPageSettingsMenuItem, "Ustawienia");
 
@@ -812,6 +893,22 @@ namespace ZtmDataViewer.Data.Config
             SettingsInfoPageLocation = GetLanguageValue(settingsInfoPageLocation, "Lokalizacja:");
 
             #endregion InfoSettingsPage
+
+            #region MpkCzestochowaLinesView
+
+            MpkCzestochowaMessageDateTitle = GetLanguageValue(mpkCzestochowaMessageDateTitle, "Data obowiązywania: ");
+            MpkCzestochowaMessageLinesTitle = GetLanguageValue(mpkCzestochowaMessageLinesTitle, "Dotyczy linii: ");
+
+            #endregion MpkCzestochowaLinesView
+
+            #region MpkCzestochowaTransportTypes
+
+            MpkCzestochowaTransportTypeBus = GetLanguageValue(mpkCzestochowaTransportTypeBus, "Autobus");
+            MpkCzestochowaTransportTypeBusNight = GetLanguageValue(mpkCzestochowaTransportTypeBusNight, "Autobus Nocny");
+            MpkCzestochowaTransportTypeBusSuburban = GetLanguageValue(mpkCzestochowaTransportTypeBusSuburban, "Autobus Podmiejski");
+            MpkCzestochowaTransportTypeTram = GetLanguageValue(mpkCzestochowaTransportTypeTram, "Tramwaj");
+
+            #endregion MpkCzestochowaTransportTypes
 
             #region ZtmArrivalsIM
 

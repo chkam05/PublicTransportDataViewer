@@ -32,6 +32,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         //  VARIABLES
 
         private ObservableCollection<LineGroupViewModel> _lineGroups;
+        private ObservableCollection<MessageViewModel> _messages;
         private bool _loaded = false;
 
 
@@ -41,7 +42,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem("Wybór linii", PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.ZtmLineViewPageTitle, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect),
             };
         }
@@ -54,6 +55,17 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                 _lineGroups = value;
                 _lineGroups.CollectionChanged += OnLineGroupsCollectionChanged;
                 OnPropertyChanged(nameof(LineGroups));
+            }
+        }
+
+        public ObservableCollection<MessageViewModel> Messages
+        {
+            get => _messages;
+            private set
+            {
+                _messages = value;
+                _messages.CollectionChanged += OnMessagesCollectionChanged;
+                OnPropertyChanged(nameof(Messages));
             }
         }
 
@@ -107,7 +119,10 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                 if (response.HasData && !response.HasErrors)
                 {
                     var lineGroups = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
-                    we.Result = lineGroups;
+                    var messages = response.Messages.Select(m => new MessageViewModel(m)).ToList();
+
+                    we.Result = new Tuple<List<LineGroupViewModel>, List<MessageViewModel>>(
+                        lineGroups, messages);
                 }
                 else
                 {
@@ -119,13 +134,15 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 if (we?.Result != null)
                 {
-                    var lineGroups = (List<LineGroupViewModel>)we.Result;
-                    LineGroups = new ObservableCollection<LineGroupViewModel>(lineGroups);
+                    var tupleResult = (Tuple<List<LineGroupViewModel>, List<MessageViewModel>>)we.Result;
+                    LineGroups = new ObservableCollection<LineGroupViewModel>(tupleResult.Item1);
+                    Messages = new ObservableCollection<MessageViewModel>(tupleResult.Item2);
                     imAwait.Close();
                 }
                 else
                 {
                     LineGroups = new ObservableCollection<LineGroupViewModel>();
+                    Messages = new ObservableCollection<MessageViewModel>();
                     imAwait.Close();
                     ShowDownloadingErrorMessage(
                         langConf.ZtmLineViewDownloadErrorTitle,
@@ -221,6 +238,15 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         private void OnLineGroupsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(LineGroups));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after messages collection changed. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
+        private void OnMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(Messages));
         }
 
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS

@@ -101,7 +101,7 @@ namespace ZtmDataViewer.Pages
         {
             InternalMenuItems = new ObservableCollection<MainMenuItem>()
             {
-                new MainMenuItem("MPK Częstochowa", PackIconKind.Transportation, OnMpkCzestochowaMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageMpkCzestochowaItem, PackIconKind.Transportation, OnMpkCzestochowaMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageZtmMenuItem, PackIconKind.Transportation, OnZtmMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect)
             };
