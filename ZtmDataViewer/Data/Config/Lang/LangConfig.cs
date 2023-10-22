@@ -6,31 +6,22 @@ using System.Text;
 using System.Threading.Tasks;
 using ZtmDataViewer.Data.Config.Lang.MpkCzestochowa;
 using ZtmDataViewer.Data.Config.Lang.Ztm;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace ZtmDataViewer.Data.Config.Lang
 {
     public class LangConfig : BaseLangConfig
     {
 
-        //  ATTRIBUTES
+        //  VARIABLES
 
         private string _name = string.Empty;
 
-
-        //  VARIABLES
-
+        //  Components
         private MessagesLangConfig? _messagesLangConfig = null;
-        private SettingsAppearanceLangConfig? _settingsAppearanceLangConfig = null;
-        private SettingsGeneralLangConfig? _settingsGeneralLangConfig = null;
-        private SettingsInfoLangConfig? _settingsInfoLangConfig = null;
+        private MpkCzestochowaLangConfig? _mpkCzestochowaLangConfig = null;
         private SettingsLangConfig? _settingsLangConfig = null;
-        private MpkCzestochowaLinesViewLangConfig? _mpkCzestochowaLinesViewLangConfig = null;
-        private MpkCzestochowaTransportTypesLangConfig? _mpkCzestochowaTransportTypesLangConfig = null;
-        private ZtmArrivalsIMLangConfig? _ztmArrivalsIMLangConfig = null;
-        private ZtmDeparturesLangConfig? _ztmDeparturesLangConfig = null;
-        private ZtmLineDetailsViewLangConfig? _ztmLineDetailsViewLangConfig = null;
-        private ZtmTimeTableSelectorIMLangConfig? _ztmTimeTableSelectorIMLangConfig = null;
-        private ZtmTransportTypesLangConfig? _ztmTransportTypesLangConfig = null;
+        private ZtmLangConfig? _ztmLangConfig = null;
 
         //  Main Menu
         private string _mainMenuItem = string.Empty;
@@ -38,8 +29,24 @@ namespace ZtmDataViewer.Data.Config.Lang
         private string _startPageZtmMenuItem = string.Empty;
         private string _startPageSettingsMenuItem = string.Empty;
 
+        //  Buttons
+        private string _cancelButton = string.Empty;
+        private string _closeButton = string.Empty;
+        private string _selectButton = string.Empty;
+
         //  Start Page
         private string _startPageTitle = string.Empty;
+
+        //  Lines View Page
+        private string _linesViewPageTitle = string.Empty;
+        private string _linesViewPageMenuItem = string.Empty;
+        private string _linesViewPageRefreshButton = string.Empty;
+
+        //  Line Details View Page
+        private string _lineDetailsViewPageDirectionSelection = string.Empty;
+
+        //  Time Tables View Page
+        private string _timeTablesViewPageTitle = string.Empty;
 
 
         //  GETTERS & SETTERS
@@ -53,6 +60,8 @@ namespace ZtmDataViewer.Data.Config.Lang
                 OnPropertyChanged(nameof(Name));
             }
         }
+
+        #region Components
 
         public MessagesLangConfig Messages
         {
@@ -72,57 +81,21 @@ namespace ZtmDataViewer.Data.Config.Lang
             }
         }
 
-        public SettingsAppearanceLangConfig SettingsAppearance
+        public MpkCzestochowaLangConfig MpkCzestochowa
         {
             get
             {
-                if (_settingsAppearanceLangConfig == null)
+                if (_mpkCzestochowaLangConfig == null)
                 {
-                    _settingsAppearanceLangConfig = new SettingsAppearanceLangConfig();
-                    OnPropertyChanged(nameof(SettingsAppearance));
+                    _mpkCzestochowaLangConfig = new MpkCzestochowaLangConfig();
+                    OnPropertyChanged(nameof(MpkCzestochowa));
                 }
-                return _settingsAppearanceLangConfig;
+                return _mpkCzestochowaLangConfig;
             }
             set
             {
-                _settingsAppearanceLangConfig = value;
-                OnPropertyChanged(nameof(SettingsAppearance));
-            }
-        }
-
-        public SettingsGeneralLangConfig SettingsGeneral
-        {
-            get
-            {
-                if (_settingsGeneralLangConfig == null)
-                {
-                    _settingsGeneralLangConfig = new SettingsGeneralLangConfig();
-                    OnPropertyChanged(nameof(SettingsGeneral));
-                }
-                return _settingsGeneralLangConfig;
-            }
-            set
-            {
-                _settingsGeneralLangConfig = value;
-                OnPropertyChanged(nameof(SettingsGeneral));
-            }
-        }
-
-        public SettingsInfoLangConfig SettingsInfo
-        {
-            get
-            {
-                if (_settingsInfoLangConfig == null)
-                {
-                    _settingsInfoLangConfig = new SettingsInfoLangConfig();
-                    OnPropertyChanged(nameof(SettingsInfo));
-                }
-                return _settingsInfoLangConfig;
-            }
-            set
-            {
-                _settingsInfoLangConfig = value;
-                OnPropertyChanged(nameof(SettingsInfo));
+                _mpkCzestochowaLangConfig = value;
+                OnPropertyChanged(nameof(MpkCzestochowa));
             }
         }
 
@@ -144,132 +117,25 @@ namespace ZtmDataViewer.Data.Config.Lang
             }
         }
 
-        public MpkCzestochowaLinesViewLangConfig MpkCzestochowaLinesView
+        public ZtmLangConfig Ztm
         {
             get
             {
-                if (_mpkCzestochowaLinesViewLangConfig == null)
+                if (_ztmLangConfig == null)
                 {
-                    _mpkCzestochowaLinesViewLangConfig = new MpkCzestochowaLinesViewLangConfig();
-                    OnPropertyChanged(nameof(MpkCzestochowaLinesView));
+                    _ztmLangConfig = new ZtmLangConfig();
+                    OnPropertyChanged(nameof(Ztm));
                 }
-                return _mpkCzestochowaLinesViewLangConfig;
+                return _ztmLangConfig;
             }
             set
             {
-                _mpkCzestochowaLinesViewLangConfig = value;
-                OnPropertyChanged(nameof(MpkCzestochowaLinesView));
+                _ztmLangConfig = value;
+                OnPropertyChanged(nameof(Ztm));
             }
         }
 
-        public MpkCzestochowaTransportTypesLangConfig MpkCzestochowaTransportTypes
-        {
-            get
-            {
-                if (_mpkCzestochowaTransportTypesLangConfig == null)
-                {
-                    _mpkCzestochowaTransportTypesLangConfig = new MpkCzestochowaTransportTypesLangConfig();
-                    OnPropertyChanged(nameof(MpkCzestochowaTransportTypes));
-                }
-                return _mpkCzestochowaTransportTypesLangConfig;
-            }
-            set
-            {
-                _mpkCzestochowaTransportTypesLangConfig = value;
-                OnPropertyChanged(nameof(MpkCzestochowaTransportTypes));
-            }
-        }
-
-        public ZtmArrivalsIMLangConfig ZtmArrivalsIM
-        {
-            get
-            {
-                if (_ztmArrivalsIMLangConfig == null)
-                {
-                    _ztmArrivalsIMLangConfig = new ZtmArrivalsIMLangConfig();
-                    OnPropertyChanged(nameof(ZtmArrivalsIM));
-                }
-                return _ztmArrivalsIMLangConfig;
-            }
-            set
-            {
-                _ztmArrivalsIMLangConfig = value;
-                OnPropertyChanged(nameof(ZtmArrivalsIM));
-            }
-        }
-
-        public ZtmDeparturesLangConfig ZtmDepartures
-        {
-            get
-            {
-                if (_ztmDeparturesLangConfig == null)
-                {
-                    _ztmDeparturesLangConfig = new ZtmDeparturesLangConfig();
-                    OnPropertyChanged(nameof(ZtmDepartures));
-                }
-                return _ztmDeparturesLangConfig;
-            }
-            set
-            {
-                _ztmDeparturesLangConfig = value;
-                OnPropertyChanged(nameof(ZtmDepartures));
-            }
-        }
-
-        public ZtmLineDetailsViewLangConfig ZtmLineDetailsView
-        {
-            get
-            {
-                if (_ztmLineDetailsViewLangConfig == null)
-                {
-                    _ztmLineDetailsViewLangConfig = new ZtmLineDetailsViewLangConfig();
-                    OnPropertyChanged(nameof(ZtmLineDetailsView));
-                }
-                return _ztmLineDetailsViewLangConfig;
-            }
-            set
-            {
-                _ztmLineDetailsViewLangConfig = value;
-                OnPropertyChanged(nameof(ZtmLineDetailsView));
-            }
-        }
-
-        public ZtmTimeTableSelectorIMLangConfig ZtmTimeTableSelectorIM
-        {
-            get
-            {
-                if (_ztmTimeTableSelectorIMLangConfig == null)
-                {
-                    _ztmTimeTableSelectorIMLangConfig = new ZtmTimeTableSelectorIMLangConfig();
-                    OnPropertyChanged(nameof(ZtmTimeTableSelectorIM));
-                }
-                return _ztmTimeTableSelectorIMLangConfig;
-            }
-            set
-            {
-                _ztmTimeTableSelectorIMLangConfig = value;
-                OnPropertyChanged(nameof(ZtmTimeTableSelectorIM));
-            }
-        }
-
-        public ZtmTransportTypesLangConfig ZtmTransportTypes
-        {
-            get
-            {
-                if (_ztmTransportTypesLangConfig == null)
-                {
-                    _ztmTransportTypesLangConfig = new ZtmTransportTypesLangConfig();
-                    OnPropertyChanged(nameof(ZtmTransportTypes));
-                }
-                return _ztmTransportTypesLangConfig;
-            }
-            set
-            {
-                _ztmTransportTypesLangConfig = value;
-                OnPropertyChanged(nameof(ZtmTransportTypes));
-            }
-        }
-
+        #endregion Components
 
         #region Main Menu
 
@@ -299,6 +165,28 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         #endregion MainMenu
 
+        #region Buttons
+
+        public string CancelButton
+        {
+            get => _cancelButton;
+            set => SetStringProperty(ref _cancelButton, nameof(CancelButton), value);
+        }
+
+        public string CloseButton
+        {
+            get => _closeButton;
+            set => SetStringProperty(ref _closeButton, nameof(CloseButton), value);
+        }
+
+        public string SelectButton
+        {
+            get => _selectButton;
+            set => SetStringProperty(ref _selectButton, nameof(SelectButton), value);
+        }
+
+        #endregion Buttons
+
         #region Start Page
 
         public string StartPageTitle
@@ -308,6 +196,48 @@ namespace ZtmDataViewer.Data.Config.Lang
         }
 
         #endregion Start Page
+
+        #region Lines View Page
+
+        public string LinesViewPageTitle
+        {
+            get => _linesViewPageTitle;
+            set => SetStringProperty(ref _linesViewPageTitle, nameof(LinesViewPageTitle), value);
+        }
+
+        public string LinesViewPageMenuItem
+        {
+            get => _linesViewPageMenuItem;
+            set => SetStringProperty(ref _linesViewPageMenuItem, nameof(LinesViewPageMenuItem), value);
+        }
+
+        public string LinesViewPageRefreshButton
+        {
+            get => _linesViewPageRefreshButton;
+            set => SetStringProperty(ref _linesViewPageRefreshButton, nameof(LinesViewPageRefreshButton), value);
+        }
+
+        #endregion Lines View Page
+
+        #region Line Details View Page
+
+        public string LineDetailsViewPageDirectionSelection
+        {
+            get => _lineDetailsViewPageDirectionSelection;
+            set => SetStringProperty(ref _lineDetailsViewPageDirectionSelection, nameof(LineDetailsViewPageDirectionSelection), value);
+        }
+
+        #endregion Line Details View Page
+
+        #region Time Tables View Page
+
+        public string TimeTablesViewPageTitle
+        {
+            get => _timeTablesViewPageTitle;
+            set => SetStringProperty(ref _timeTablesViewPageTitle, nameof(TimeTablesViewPageTitle), value);
+        }
+
+        #endregion Time Tables View Page
 
 
         //  METHODS
@@ -320,23 +250,69 @@ namespace ZtmDataViewer.Data.Config.Lang
         public LangConfig(
             string? name = null,
 
+            //  Components
+            MessagesLangConfig? messages = null,
+            MpkCzestochowaLangConfig? mpkCzestochowa = null,
+            SettingsLangConfig? settings = null,
+            ZtmLangConfig? ztm = null,
+
             //  Main Menu
             string? mainMenuItem = null,
             string? startPageMpkCzestochowaItem = null,
             string? startPageZtmMenuItem = null,
-
-            //  Start Page
             string? startPageSettingsMenuItem = null,
 
+            //  Buttons
+            string? cancelButton = null,
+            string? closeButton = null,
+            string? selectButton = null,
+
             //  Start Page
-            string? startPageTitle = null)
+            string? startPageTitle = null,
+            
+            //  Lines View Page
+            string? linesViewPageTitle = null,
+            string? linesViewPageMenuItem = null,
+            string? linesViewPageRefreshButton = null,
+
+            //  Line Details View Page
+            string? lineDetailsViewPageDirectionSelection = null,
+
+            //  Time Tables View Page
+            string? timeTablesViewPageTitle = null)
         {
             Name = SetLanguageValue(name, "Polski");
+
+            //  Components
+            Messages = messages ?? new MessagesLangConfig();
+            MpkCzestochowa = mpkCzestochowa ?? new MpkCzestochowaLangConfig();
+            Settings = settings ?? new SettingsLangConfig();
+            Ztm = ztm ?? new ZtmLangConfig();
+
+            //  Main Menu
             MainMenuItem = SetLanguageValue(mainMenuItem, "Menu główne");
             StartPageMpkCzestochowaItem = SetLanguageValue(startPageMpkCzestochowaItem, "MPK Czestochowa");
             StartPageZtmMenuItem = SetLanguageValue(startPageZtmMenuItem, "Zarząd Transportu Metropolitalnego");
             StartPageSettingsMenuItem = SetLanguageValue(startPageSettingsMenuItem, "Ustawienia");
+
+            //  Buttons
+            CancelButton = SetLanguageValue(cancelButton, "Anuluj");
+            CloseButton = SetLanguageValue(closeButton, "Zamknij");
+            SelectButton = SetLanguageValue(selectButton, "Wybierz");
+
+            //  Start Page
             StartPageTitle = SetLanguageValue(startPageTitle, "Wybór miasta (przedsiębiorstwa komunikacyjnego)");
+
+            //  Lines View Page
+            LinesViewPageTitle = SetLanguageValue(linesViewPageTitle, "Wybór linii");
+            LinesViewPageMenuItem = SetLanguageValue(linesViewPageMenuItem, "Wybór linii");
+            LinesViewPageRefreshButton = SetLanguageValue(linesViewPageRefreshButton, "Odśwież");
+
+            //  Line Details View Page
+            LineDetailsViewPageDirectionSelection = SetLanguageValue(lineDetailsViewPageDirectionSelection, "Wybór kierunku: ");
+
+            //  Time Tables View Page
+            TimeTablesViewPageTitle = SetLanguageValue(timeTablesViewPageTitle, "Wybór rozkładu jazdy");
         }
 
         #endregion CLASS METHODS

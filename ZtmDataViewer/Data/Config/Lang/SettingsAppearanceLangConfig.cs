@@ -91,5 +91,7 @@ namespace ZtmDataViewer.Data.Config.Lang
             SettingsAppearanceAccentColorsHistory = SetLanguageValue(settingsAppearanceAccentColorsHistory, "Ostatnio wybierane kolory:");
         }
 
+        #endregion CLASS METHODS
+
     }
 }

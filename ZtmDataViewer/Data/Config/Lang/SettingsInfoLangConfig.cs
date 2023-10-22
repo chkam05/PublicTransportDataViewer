@@ -56,8 +56,6 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         #region CLASS METHODS
 
-        #region CLASS METHODS
-
         //  --------------------------------------------------------------------------------
         /// <summary> SettingsInfoLangConfig class constructor. </summary>
         [JsonConstructor]

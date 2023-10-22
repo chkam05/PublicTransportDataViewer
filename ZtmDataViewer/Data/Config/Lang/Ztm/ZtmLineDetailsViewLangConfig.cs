@@ -12,40 +12,11 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
 
         //  VARIABLES
 
-        private string _ztmLineDetailsViewLoadingTitle = string.Empty;
-        private string _ztmLineDetailsViewLoadingDesc = string.Empty;
-        private string _ztmLineDetailsViewPageDirection = string.Empty;
-        private string _ztmLineDetailsViewPageMessages = string.Empty;
         private string _ztmLineDetailsViewPageDepartures = string.Empty;
-        private string _ztmLineDetailsViewDownloadErrorTitle = string.Empty;
-        private string _ztmLineDetailsViewDownloadErrorDesc = string.Empty;
+        private string _ztmLineDetailsViewPageMessages = string.Empty;
 
 
         //  GETTERS & SETTERS
-
-        public string ZtmLineDetailsViewLoadingTitle
-        {
-            get => _ztmLineDetailsViewLoadingTitle;
-            set => SetStringProperty(ref _ztmLineDetailsViewLoadingTitle, nameof(ZtmLineDetailsViewLoadingTitle), value);
-        }
-
-        public string ZtmLineDetailsViewLoadingDesc
-        {
-            get => _ztmLineDetailsViewLoadingDesc;
-            set => SetStringProperty(ref _ztmLineDetailsViewLoadingDesc, nameof(ZtmLineDetailsViewLoadingDesc), value);
-        }
-
-        public string ZtmLineDetailsViewPageDirection
-        {
-            get => _ztmLineDetailsViewPageDirection;
-            set => SetStringProperty(ref _ztmLineDetailsViewPageDirection, nameof(ZtmLineDetailsViewPageDirection), value);
-        }
-
-        public string ZtmLineDetailsViewPageMessages
-        {
-            get => _ztmLineDetailsViewPageMessages;
-            set => SetStringProperty(ref _ztmLineDetailsViewPageMessages, nameof(ZtmLineDetailsViewPageMessages), value);
-        }
 
         public string ZtmLineDetailsViewPageDepartures
         {
@@ -53,16 +24,10 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
             set => SetStringProperty(ref _ztmLineDetailsViewPageDepartures, nameof(ZtmLineDetailsViewPageDepartures), value);
         }
 
-        public string ZtmLineDetailsViewDownloadErrorTitle
+        public string ZtmLineDetailsViewPageMessages
         {
-            get => _ztmLineDetailsViewDownloadErrorTitle;
-            set => SetStringProperty(ref _ztmLineDetailsViewDownloadErrorTitle, nameof(ZtmLineDetailsViewDownloadErrorTitle), value);
-        }
-
-        public string ZtmLineDetailsViewDownloadErrorDesc
-        {
-            get => _ztmLineDetailsViewDownloadErrorDesc;
-            set => SetStringProperty(ref _ztmLineDetailsViewDownloadErrorDesc, nameof(ZtmLineDetailsViewDownloadErrorDesc), value);
+            get => _ztmLineDetailsViewPageMessages;
+            set => SetStringProperty(ref _ztmLineDetailsViewPageMessages, nameof(ZtmLineDetailsViewPageMessages), value);
         }
 
 
@@ -74,21 +39,11 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         /// <summary> ZtmLineDetailsViewLangConfig class constructor. </summary>
         [JsonConstructor]
         public ZtmLineDetailsViewLangConfig(
-            string? ztmLineDetailsViewLoadingTitle = null,
-            string? ztmLineDetailsViewLoadingDesc = null,
-            string? ztmLineDetailsViewPageDirection = null,
-            string? ztmLineDetailsViewPageMessages = null,
             string? ztmLineDetailsViewPageDepartures = null,
-            string? ztmLineDetailsViewDownloadErrorTitle = null,
-            string? ztmLineDetailsViewDownloadErrorDesc = null)
+            string? ztmLineDetailsViewPageMessages = null)
         {
-            ZtmLineDetailsViewLoadingTitle = SetLanguageValue(ztmLineDetailsViewLoadingTitle, "Pobieranie danych");
-            ZtmLineDetailsViewLoadingDesc = SetLanguageValue(ztmLineDetailsViewLoadingDesc, "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...");
-            ZtmLineDetailsViewPageDirection = SetLanguageValue(ztmLineDetailsViewPageDirection, "Wybór kierunku:");
-            ZtmLineDetailsViewPageMessages = SetLanguageValue(ztmLineDetailsViewPageMessages, "Komunikaty:");
-            ZtmLineDetailsViewPageDepartures = SetLanguageValue(ztmLineDetailsViewPageDepartures, "Godziny odjazdów:");
-            ZtmLineDetailsViewDownloadErrorTitle = SetLanguageValue(ztmLineDetailsViewDownloadErrorTitle, "Błąd pobierania danych");
-            ZtmLineDetailsViewDownloadErrorDesc = SetLanguageValue(ztmLineDetailsViewDownloadErrorDesc, "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.");
+            ZtmLineDetailsViewPageDepartures = SetLanguageValue(ztmLineDetailsViewPageDepartures, "Godziny odjazdów: ");
+            ZtmLineDetailsViewPageMessages = SetLanguageValue(ztmLineDetailsViewPageMessages, "Komunikaty: ");
         }
 
         #endregion CLASS METHODS

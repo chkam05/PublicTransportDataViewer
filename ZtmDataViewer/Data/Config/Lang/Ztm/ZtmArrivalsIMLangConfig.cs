@@ -12,10 +12,6 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
 
         //  VARIABLES
 
-        private string _ztmArrivalsLoadingTitle = string.Empty;
-        private string _ztmArrivalsLoadingDesc = string.Empty;
-        private string _ztmArrivalsDownloadErrorTitle = string.Empty;
-        private string _ztmArrivalsDownloadErrorDesc = string.Empty;
         private string _ztmArrivalsTitle = string.Empty;
         private string _ztmArrivalsCancelButton = string.Empty;
         private string _ztmArrivalStopHeader = string.Empty;
@@ -25,30 +21,6 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
 
 
         //  METHODS
-
-        public string ZtmArrivalsLoadingTitle
-        {
-            get => _ztmArrivalsLoadingTitle;
-            set => SetStringProperty(ref _ztmArrivalsLoadingTitle, nameof(ZtmArrivalsLoadingTitle), value);
-        }
-
-        public string ZtmArrivalsLoadingDesc
-        {
-            get => _ztmArrivalsLoadingDesc;
-            set => SetStringProperty(ref _ztmArrivalsLoadingDesc, nameof(ZtmArrivalsLoadingDesc), value);
-        }
-
-        public string ZtmArrivalsDownloadErrorTitle
-        {
-            get => _ztmArrivalsDownloadErrorTitle;
-            set => SetStringProperty(ref _ztmArrivalsDownloadErrorTitle, nameof(ZtmArrivalsDownloadErrorTitle), value);
-        }
-
-        public string ZtmArrivalsDownloadErrorDesc
-        {
-            get => _ztmArrivalsDownloadErrorDesc;
-            set => SetStringProperty(ref _ztmArrivalsDownloadErrorDesc, nameof(ZtmArrivalsDownloadErrorDesc), value);
-        }
 
         public string ZtmArrivalsTitle
         {
@@ -95,9 +67,7 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         /// <summary> ZtmArrivalsIMLangConfig class constructor. </summary>
         [JsonConstructor]
         public ZtmArrivalsIMLangConfig(
-            string? ztmArrivalsLoadingTitle = null,
             string? ztmArrivalsLoadingDesc = null,
-            string? ztmArrivalsDownloadErrorTitle = null,
             string? ztmArrivalsDownloadErrorDesc = null,
             string? ztmArrivalsTitle = null,
             string? ztmArrivalsCancelButton = null,
@@ -106,12 +76,7 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
             string? ztmArrivalTripTimeHeader = null,
             string? ztmArrivalTripDistanceHeader = null)
         {
-            ZtmArrivalsLoadingTitle = SetLanguageValue(ztmArrivalsLoadingTitle, "Pobieranie danych");
-            ZtmArrivalsLoadingDesc = SetLanguageValue(ztmArrivalsLoadingDesc, "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...");
-            ZtmArrivalsDownloadErrorTitle = SetLanguageValue(ztmArrivalsDownloadErrorTitle, "Błąd pobierania danych");
-            ZtmArrivalsDownloadErrorDesc = SetLanguageValue(ztmArrivalsDownloadErrorDesc, "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.");
             ZtmArrivalsTitle = SetLanguageValue(ztmArrivalsTitle, "Godziny przyjazdów");
-            ZtmArrivalsCancelButton = SetLanguageValue(ztmArrivalsCancelButton, "Zamknij");
             ZtmArrivalStopHeader = SetLanguageValue(ztmArrivalStopHeader, "Nazwa przystanku");
             ZtmArrivalDepartureHeader = SetLanguageValue(ztmArrivalDepartureHeader, "Godz.");
             ZtmArrivalTripTimeHeader = SetLanguageValue(ztmArrivalTripTimeHeader, "Czas podróży");

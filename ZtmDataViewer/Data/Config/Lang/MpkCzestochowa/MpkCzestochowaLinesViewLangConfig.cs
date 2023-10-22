@@ -12,22 +12,22 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
 
         //  VARIABLES
 
-        private string _mpkCzestochowaMessageDateTitle = string.Empty;
-        private string _mpkCzestochowaMessageLinesTitle = string.Empty;
+        private string _mpkCzestochowaLinesViewPageMsgDateTitle = string.Empty;
+        private string _mpkCzestochowaLinesViewPageMsgLinesTitle = string.Empty;
 
 
         //  GETTERS & SETTERS
 
-        public string MpkCzestochowaMessageDateTitle
+        public string MpkCzestochowaLinesViewPageMsgDateTitle
         {
-            get => _mpkCzestochowaMessageDateTitle;
-            set => SetStringProperty(ref _mpkCzestochowaMessageDateTitle, nameof(MpkCzestochowaMessageDateTitle), value);
+            get => _mpkCzestochowaLinesViewPageMsgDateTitle;
+            set => SetStringProperty(ref _mpkCzestochowaLinesViewPageMsgDateTitle, nameof(MpkCzestochowaLinesViewPageMsgDateTitle), value);
         }
 
-        public string MpkCzestochowaMessageLinesTitle
+        public string MpkCzestochowaLinesViewPageMsgLinesTitle
         {
-            get => _mpkCzestochowaMessageLinesTitle;
-            set => SetStringProperty(ref _mpkCzestochowaMessageLinesTitle, nameof(MpkCzestochowaMessageLinesTitle), value);
+            get => _mpkCzestochowaLinesViewPageMsgLinesTitle;
+            set => SetStringProperty(ref _mpkCzestochowaLinesViewPageMsgLinesTitle, nameof(MpkCzestochowaLinesViewPageMsgLinesTitle), value);
         }
 
 
@@ -39,11 +39,11 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
         /// <summary> MpkCzestochowaLinesViewLangConfig class constructor. </summary>
         [JsonConstructor]
         public MpkCzestochowaLinesViewLangConfig(
-            string? mpkCzestochowaMessageDateTitle = null,
-            string? mpkCzestochowaMessageLinesTitle = null)
+            string? mpkCzestochowaLinesViewPageMsgDateTitle = null,
+            string? mpkCzestochowaLinesViewPageMsgLinesTitle = null)
         {
-            MpkCzestochowaMessageDateTitle = SetLanguageValue(mpkCzestochowaMessageDateTitle, "Data obowiązywania: ");
-            MpkCzestochowaMessageLinesTitle = SetLanguageValue(mpkCzestochowaMessageLinesTitle, "Dotyczy linii: ");
+            MpkCzestochowaLinesViewPageMsgDateTitle = SetLanguageValue(mpkCzestochowaLinesViewPageMsgDateTitle, "Data obowiązywania: ");
+            MpkCzestochowaLinesViewPageMsgLinesTitle = SetLanguageValue(mpkCzestochowaLinesViewPageMsgLinesTitle, "Dotyczy linii: ");
         }
 
         #endregion CLASS METHODS
