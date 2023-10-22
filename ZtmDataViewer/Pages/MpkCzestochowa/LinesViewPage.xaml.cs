@@ -42,7 +42,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem(ConfigManager.Instance.LangConfig.ZtmLineViewPageTitle, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.LinesViewPageMenuItem, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect),
             };
         }
@@ -99,8 +99,8 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmLineViewLoadingTitle,
-                langConf.ZtmLineViewLoadingDesc,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.LinesViewPageDownloadDesc,
                 PackIconKind.ChartTimelineVariant)
             {
                 AllowCancel = false,
@@ -145,8 +145,8 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                     Messages = new ObservableCollection<MessageViewModel>();
                     imAwait.Close();
                     ShowDownloadingErrorMessage(
-                        langConf.ZtmLineViewDownloadErrorTitle,
-                        langConf.ZtmLineViewDownloadErrorDesc);
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.LinesViewPageDownloadErrorDesc);
                 }
             };
 

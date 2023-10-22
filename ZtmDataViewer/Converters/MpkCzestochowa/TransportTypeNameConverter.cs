@@ -24,13 +24,13 @@ namespace ZtmDataViewer.Converters.MpkCzestochowa
             switch (transportType)
             {
                 case TransportType.Bus:
-                    return langConfig.MpkCzestochowaTransportTypeBus;
+                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeBus;
                 case TransportType.BusSuburban:
-                    return langConfig.MpkCzestochowaTransportTypeBusSuburban;
+                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeBusSuburban;
                 case TransportType.BusNight:
-                    return langConfig.MpkCzestochowaTransportTypeBusNight;
+                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeBusNight;
                 case TransportType.Tram:
-                    return langConfig.MpkCzestochowaTransportTypeTram;
+                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeTram;
             }
 
             return string.Empty;

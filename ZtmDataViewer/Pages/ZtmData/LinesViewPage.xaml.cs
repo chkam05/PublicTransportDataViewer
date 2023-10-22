@@ -48,7 +48,7 @@ namespace ZtmDataViewer.Pages.ZtmData
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem(ConfigManager.Instance.LangConfig.ZtmLineViewLinesMenuItem, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.LinesViewPageMenuItem, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
                 new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect),
             };
         }
@@ -94,8 +94,8 @@ namespace ZtmDataViewer.Pages.ZtmData
 
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmLineViewLoadingTitle,
-                langConf.ZtmLineViewLoadingDesc,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.LinesViewPageDownloadDesc,
                 PackIconKind.ChartTimelineVariant)
             {
                 AllowCancel = false,
@@ -133,8 +133,8 @@ namespace ZtmDataViewer.Pages.ZtmData
                     LineGroups = new ObservableCollection<LineGroupViewModel>();
                     imAwait.Close();
                     ShowDownloadingErrorMessage(
-                        langConf.ZtmLineViewDownloadErrorTitle,
-                        langConf.ZtmLineViewDownloadErrorDesc);
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.LinesViewPageDownloadErrorDesc);
                 }
             };
 
@@ -157,8 +157,8 @@ namespace ZtmDataViewer.Pages.ZtmData
 
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmLineDetailsViewLoadingTitle,
-                langConf.ZtmLineDetailsViewLoadingDesc,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.LineDetailsViewPageDownloadDesc,
                 PackIconKind.DepartureBoard)
             {
                 AllowCancel = false,
@@ -197,8 +197,8 @@ namespace ZtmDataViewer.Pages.ZtmData
                 else
                 {
                     ShowDownloadingErrorMessage(
-                        langConf.ZtmLineDetailsViewDownloadErrorTitle,
-                        langConf.ZtmLineDetailsViewDownloadErrorDesc);
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
                 }
             };
 
@@ -220,8 +220,8 @@ namespace ZtmDataViewer.Pages.ZtmData
 
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmTimeTableSelectionLoadingTitle,
-                langConf.ZtmTimeTableSelectionLoadingDesc,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.TimeTablesViewPageDownloadDesc,
                 PackIconKind.DepartureBoard)
             {
                 AllowCancel = false,
@@ -257,8 +257,8 @@ namespace ZtmDataViewer.Pages.ZtmData
                 else
                 {
                     ShowDownloadingErrorMessage(
-                        langConf.ZtmTimeTableSelectionDownloadErrorTitle,
-                        langConf.ZtmTimeTableSelectionDownloadErrorDesc);
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.TimeTablesViewPageDownloadErrorDesc);
                 }
             };
 

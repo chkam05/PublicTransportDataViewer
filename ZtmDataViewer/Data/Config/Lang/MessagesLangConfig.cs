@@ -13,8 +13,8 @@ namespace ZtmDataViewer.Data.Config.Lang
         //  VARIABLES
 
         //  Global
-        private string _donwloadingTitle = string.Empty;
-        private string _downloadingErrorTitle = string.Empty;
+        private string _downloadTitle = string.Empty;
+        private string _downloadErrorTitle = string.Empty;
 
         //  Arrivals View Page
         private string _arrivalsViewPageDownloadDesc = string.Empty;
@@ -41,16 +41,16 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         #region Global
 
-        public string DonwloadingTitle
+        public string DownloadTitle
         {
-            get => _donwloadingTitle;
-            set => SetStringProperty(ref _donwloadingTitle, nameof(DonwloadingTitle), value);
+            get => _downloadTitle;
+            set => SetStringProperty(ref _downloadTitle, nameof(DownloadTitle), value);
         }
 
-        public string DownloadingErrorTitle
+        public string DownloadErrorTitle
         {
-            get => _downloadingErrorTitle;
-            set => SetStringProperty(ref _downloadingErrorTitle, nameof(DownloadingErrorTitle), value);
+            get => _downloadErrorTitle;
+            set => SetStringProperty(ref _downloadErrorTitle, nameof(DownloadErrorTitle), value);
         }
 
         #endregion Global
@@ -145,8 +145,8 @@ namespace ZtmDataViewer.Data.Config.Lang
         [JsonConstructor]
         public MessagesLangConfig(
             //  Global
-            string? donwloadingTitle = null,
-            string? downloadingErrorTitle = null,
+            string? downloadTitle = null,
+            string? downloadErrorTitle = null,
 
             //  Arrivals View Page
             string? arrivalsViewPageDownloadDesc = null,
@@ -169,8 +169,8 @@ namespace ZtmDataViewer.Data.Config.Lang
             string? timeTablesViewPageDownloadErrorDesc = null)
         {
             //  Global
-            DonwloadingTitle = SetLanguageValue(donwloadingTitle, "Pobieranie danych");
-            DownloadingErrorTitle = SetLanguageValue(downloadingErrorTitle, "Błąd pobierania danych");
+            DownloadTitle = SetLanguageValue(downloadTitle, "Pobieranie danych");
+            DownloadErrorTitle = SetLanguageValue(downloadErrorTitle, "Błąd pobierania danych");
 
             //  Arrivals View Page
             ArrivalsViewPageDownloadDesc = SetLanguageValue(arrivalsViewPageDownloadDesc, "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...");

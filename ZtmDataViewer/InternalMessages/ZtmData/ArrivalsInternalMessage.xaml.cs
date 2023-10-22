@@ -82,7 +82,7 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
             ButtonEx cancelButton = GetButtonEx("cancelButton");
 
             if (cancelButton != null)
-                cancelButton.Content = langConfig.ZtmArrivalsCancelButton;
+                cancelButton.Content = langConfig.CancelButton;
         }
 
         #endregion TEMPLATE METHODS

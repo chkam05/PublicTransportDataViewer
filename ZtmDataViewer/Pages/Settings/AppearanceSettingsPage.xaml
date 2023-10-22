@@ -17,7 +17,7 @@
     d:DesignWidth="800"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     IconKind="Palette"
-    Title="{Binding LangConfig.SettingsAppearancePageTitle, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
+    Title="{Binding LangConfig.Settings.SettingsPageAppearanceMenuItem, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
     Unloaded="BasePage_Unloaded">
 
     <pages:BasePage.Resources>
@@ -54,8 +54,8 @@
 
                 <comp:SettingsItem
                     IconKind="Theme"
-                    Title="{Binding LangConfig.SettingsAppearanceTheme, Mode=OneWay, Source={StaticResource ConfigManager}}"
-                    Description="{Binding LangConfig.SettingsAppearanceThemeDesc, Mode=OneWay, Source={StaticResource ConfigManager}}">
+                    Title="{Binding LangConfig.Settings.SettingsAppearance.SettingsAppearanceTheme, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Description="{Binding LangConfig.Settings.SettingsAppearance.SettingsAppearanceThemeDesc, Mode=OneWay, Source={StaticResource ConfigManager}}">
                     <comp:SettingsItem.Content>
                         <cex:ComboBoxEx
                             ItemsSource="{Binding AppearanceThemeTypesCollection}"
@@ -67,8 +67,8 @@
                 <cex:ColorsPaletteEx
                     ColorSelectionChanged="AccentColorPaletteEx_ColorSelectionChanged"
                     ColorsHistory="{Binding PalleteColorsCollection}"
-                    ColorsHistoryTitle="{Binding LangConfig.SettingsAppearanceAccentColorsHistory, Mode=OneWay, Source={StaticResource ConfigManager}}"
-                    Title="{Binding LangConfig.SettingsAppearnaceAccentColors, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                    ColorsHistoryTitle="{Binding LangConfig.Settings.SettingsAppearance.SettingsAppearnaceAccentColors, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Title="{Binding LangConfig.Settings.SettingsAppearance.SettingsAppearanceAccentColorsHistory, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
             </StackPanel>
 

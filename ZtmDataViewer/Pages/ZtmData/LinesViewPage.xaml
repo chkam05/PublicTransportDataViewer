@@ -16,7 +16,7 @@
     d:DesignWidth="800"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     IconKind="ChartTimelineVariant"
-    Title="{Binding LangConfig.ZtmLineViewPageTitle, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
+    Title="{Binding LangConfig.LinesViewPageTitle, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
     Loaded="BasePage_Loaded"
     Unloaded="BasePage_Unloaded">
 
@@ -129,7 +129,7 @@
             Orientation="Horizontal">
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.ZtmLineViewRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
                 Click="RefreshButtonEx_Click"/>
 

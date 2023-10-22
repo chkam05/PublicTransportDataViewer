@@ -291,7 +291,7 @@ namespace ZtmDataViewer.Data.Config.Lang
 
             //  Main Menu
             MainMenuItem = SetLanguageValue(mainMenuItem, "Menu główne");
-            StartPageMpkCzestochowaItem = SetLanguageValue(startPageMpkCzestochowaItem, "MPK Czestochowa");
+            StartPageMpkCzestochowaItem = SetLanguageValue(startPageMpkCzestochowaItem, "MPK Częstochowa");
             StartPageZtmMenuItem = SetLanguageValue(startPageZtmMenuItem, "Zarząd Transportu Metropolitalnego");
             StartPageSettingsMenuItem = SetLanguageValue(startPageSettingsMenuItem, "Ustawienia");
 

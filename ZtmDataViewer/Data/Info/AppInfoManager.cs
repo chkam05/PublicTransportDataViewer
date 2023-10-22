@@ -26,6 +26,8 @@ namespace ZtmDataViewer.Data.Info
         private string? _appTitle;
         private string? _appVersion;
 
+        private Dictionary<string, string> _dataSources;
+
 
         //  GETTERS
 
@@ -111,6 +113,16 @@ namespace ZtmDataViewer.Data.Info
                 if (string.IsNullOrEmpty(_appVersion))
                     _appVersion = GetAppVersion();
                 return _appVersion;
+            }
+        }
+
+        public Dictionary<string, string> DataSources
+        {
+            get
+            {
+                if (_dataSources == null)
+                    _dataSources = GetDataSources();
+                return _dataSources;
             }
         }
 
@@ -240,6 +252,18 @@ namespace ZtmDataViewer.Data.Info
             var assemblyName = assembly.GetName();
 
             return assemblyName?.Version?.ToString() ?? string.Empty;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get data sources. </summary>
+        /// <returns> Data sources dictionary. </returns>
+        private static Dictionary<string, string> GetDataSources()
+        {
+            return new Dictionary<string, string>()
+            {
+                { "Mpk Częstochowa: ", MpkCzestochowaDownloader.Data.Static.StaticConfig.LinesURL },
+                { "Zarząd Transportu Metropolitalnego: ", ZtmDataDownloader.Data.Static.StaticConfig.ZtmLinesURL },
+            };
         }
 
         #endregion INFORMATION GETTERS

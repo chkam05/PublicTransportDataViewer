@@ -25,19 +25,19 @@ namespace ZtmDataViewer.Converters.ZtmData
             switch (transportType)
             {
                 case TransportType.Bus:
-                    return langConfig.ZtmTransportTypeBus;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeBus;
                 case TransportType.BusAirport:
-                    return langConfig.ZtmTransportTypeBusAirport;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeBusAirport;
                 case TransportType.BusMetropolitan:
-                    return langConfig.ZtmTransportTypeBusMetropolitan;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeBusMetropolitan;
                 case TransportType.BusNight:
-                    return langConfig.ZtmTransportTypeBusNight;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeBusNight;
                 case TransportType.BusReplacement:
-                    return langConfig.ZtmTransportTypeBusReplacement;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeBusReplacement;
                 case TransportType.Tram:
-                    return langConfig.ZtmTransportTypeTram;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeTram;
                 case TransportType.Trolley:
-                    return langConfig.ZtmTransportTypeTrolley;
+                    return langConfig.Ztm.ZtmTransportTypes.ZtmTransportTypeTrolley;
             }
 
             return string.Empty;

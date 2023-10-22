@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using ZtmDataViewer.Data.Config.Lang;
 using ZtmDataViewer.Data.Info;
 
 namespace ZtmDataViewer.Data.Config

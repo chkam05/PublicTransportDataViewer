@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZtmDataViewer.Components;
 using ZtmDataViewer.Data.Config;
+using ZtmDataViewer.Data.Config.Lang;
 using ZtmDataViewer.Data.MainMenu;
 using ZtmDataViewer.Pages.Settings;
 
@@ -35,9 +36,9 @@ namespace ZtmDataViewer.Pages
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem(_langConfig.SettingsPageAppearanceMenuItem, PackIconKind.Palette, OnAppearanceMenuItemSelect, _langConfig.SettingsPageAppearanceMenuItemDesc),
-                new MainMenuItem(_langConfig.SettingsPageGeneralMenuItem, PackIconKind.Gear, OnGeneralMenuItemSelect, _langConfig.SettingsPageGeneralMenuItemDesc),
-                new MainMenuItem(_langConfig.SettingsPageInfoMenuItem, PackIconKind.InfoCircleOutline, OnInfoMenuItemSelect, _langConfig.SettingsPageInfoMenuItemDesc),
+                new MainMenuItem(_langConfig.Settings.SettingsPageAppearanceMenuItem, PackIconKind.Palette, OnAppearanceMenuItemSelect, _langConfig.Settings.SettingsPageAppearanceMenuItemDesc),
+                new MainMenuItem(_langConfig.Settings.SettingsPageGeneralMenuItem, PackIconKind.Gear, OnGeneralMenuItemSelect, _langConfig.Settings.SettingsPageGeneralMenuItemDesc),
+                new MainMenuItem(_langConfig.Settings.SettingsPageInfoMenuItem, PackIconKind.InfoCircleOutline, OnInfoMenuItemSelect, _langConfig.Settings.SettingsPageInfoMenuItemDesc),
             };
         }
 

@@ -12,6 +12,7 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         //  VARIABLES
 
+        private string _settingsInfoPageDataSources = string.Empty;
         private string _settingsInfoPageDescription = string.Empty;
         private string _settingsInfoPageAuthor = string.Empty;
         private string _settingsInfoPageCopyright = string.Empty;
@@ -19,6 +20,12 @@ namespace ZtmDataViewer.Data.Config.Lang
 
 
         //  GETTERS & SETTERS
+
+        public string SettingsInfoPageDataSources
+        {
+            get => _settingsInfoPageDataSources;
+            set => SetStringProperty(ref _settingsInfoPageDataSources, nameof(SettingsInfoPageDataSources), value);
+        }
 
         public string SettingsInfoPageDescription
         {
@@ -53,11 +60,13 @@ namespace ZtmDataViewer.Data.Config.Lang
         /// <summary> SettingsInfoLangConfig class constructor. </summary>
         [JsonConstructor]
         public SettingsInfoLangConfig(
+            string? settingsInfoPageDataSources = null,
             string? settingsInfoPageDescription = null,
             string? settingsInfoPageAuthor = null,
             string? settingsInfoPageCopyright = null,
             string? settingsInfoPageLocation = null)
         {
+            SettingsInfoPageDataSources = SetLanguageValue(settingsInfoPageDataSources, "Źródła danych: ");
             SettingsInfoPageDescription = SetLanguageValue(settingsInfoPageDescription, "Opis: ");
             SettingsInfoPageAuthor = SetLanguageValue(settingsInfoPageAuthor, "Autor: ");
             SettingsInfoPageCopyright = SetLanguageValue(settingsInfoPageCopyright, "Prawa autorskie: ");

@@ -1,74 +1,114 @@
 {
-  "Name": "English",
-  "MainMenuItem": "Main menu",
-  "StartPageTitle": "City selection (communication company)",
-  "StartPageZtmMenuItem": "Metropolitan Transport Authority",
-  "StartPageSettingsMenuItem": "Settings",
-  "SettingsPageTitle": "Settings",
-  "SettingsPageAppearanceMenuItem": "Personalization",
-  "SettingsPageAppearanceMenuItemDesc": "Theme and appearance personlaization.",
-  "SettingsPageGeneralMenuItem": "General",
-  "SettingsPageGeneralMenuItemDesc": "General configuration options.",
-  "SettingsPageInfoMenuItem": "Information",
-  "SettingsPageInfoMenuItemDesc": "About application.",
-  "SettingsAppearancePageTitle": "Personalization",
-  "SettingsAppearanceTheme": "Theme",
-  "SettingsAppearanceThemeDesc": "Set application theme.",
-  "SettingsAppearanceThemeDark": "Dark",
-  "SettingsAppearanceThemeLight": "Light",
-  "SettingsAppearnaceAccentColors": "Select accent color:",
-  "SettingsAppearanceAccentColorsHistory": "Recently selected colors:",
-  "SettingsGeneralPageTitle": "General",
-  "SettingsGeneralPageLanguage": "Language",
-  "SettingsGeneralPageLanguageDesc": "Select application language.",
-  "SettingsInfoPageTitle": "Information",
-  "SettingsInfoPageDescription": "Description:",
-  "SettingsInfoPageAuthor": "Author:",
-  "SettingsInfoPageCopyright": "Copyrights:",
-  "SettingsInfoPageLocation": "Localization:",
-  "ZtmArrivalsLoadingTitle": "Downloading",
-  "ZtmArrivalsLoadingDesc": "Downloading arrival times data in progress. \r\nPlease wait...",
-  "ZtmArrivalsDownloadErrorTitle": "Downloading error",
-  "ZtmArrivalsDownloadErrorDesc": "There was a problem retrieving arrival times. \r\nPlease try again later.",
-  "ZtmArrivalsTitle": "Arrival times",
-  "ZtmArrivalsCancelButton": "Close",
-  "ZtmArrivalStopHeader": "Stop name",
-  "ZtmArrivalDepartureHeader": "Arrival.",
-  "ZtmArrivalTripTimeHeader": "Travel time",
-  "ZtmArrivalTripDistanceHeader": "Distance",
-  "ZtmDeparturesViewLoadingTitle": "Downloading",
-  "ZtmDeparturesViewLoadingDesc": "Downloading departure times data in progress. \r\nPlease wait...",
-  "ZtmDeparturesViewDownloadErrorTitle": "Downloading error",
-  "ZtmDeparturesViewDownloadErrorDesc": "There was a problem retrieving departure times. \r\nPlease try again later.",
-  "ZtmLineDetailsViewLoadingTitle": "Downloading",
-  "ZtmLineDetailsViewLoadingDesc": "Downloading detailed line data in progress. \r\nPlease wait...",
-  "ZtmLineDetailsViewPageDirection": "Direction:",
-  "ZtmLineDetailsViewPageMessages": "Messages:",
-  "ZtmLineDetailsViewPageDepartures": "Departure times:",
-  "ZtmLineDetailsViewDownloadErrorTitle": "Downloading error",
-  "ZtmLineDetailsViewDownloadErrorDesc": "There was a problem retrieving detailed line data. \r\nPlease try again later.",
-  "ZtmLineViewPageTitle": "Line selection",
-  "ZtmLineViewLinesMenuItem": "Line selection",
-  "ZtmLineViewLoadingTitle": "Downloading",
-  "ZtmLineViewLoadingDesc": "Downloading lines data in progress. \r\nPlease wait...",
-  "ZtmLineViewRefreshButton": "Refresh",
-  "ZtmLineViewDownloadErrorTitle": "Downloading error",
-  "ZtmLineViewDownloadErrorDesc": "There was a problem retrieving lines data. \r\nPlease try again later.",
-  "ZtmTimeTableSelectionLoadingTitle": "Downloading",
-  "ZtmTimeTableSelectionLoadingDesc": "Downloading timetables data in progress. \r\nPlease wait...",
-  "ZtmTimeTableSelectionTitle": "Timetable selection",
-  "ZtmTimeTableSelectionOkButton": "Select",
-  "ZtmTimeTableSelectionCancelButton": "Cancel",
-  "ZtmTimeTableSelectionFromToTitle": "Timetable valid",
-  "ZtmTimeTableSelectionFrom": "from",
-  "ZtmTimeTableSelectionTo": "to",
-  "ZtmTimeTableSelectionDownloadErrorTitle": "Downloading error",
-  "ZtmTimeTableSelectionDownloadErrorDesc": "There was a problem retrieving timetables data. \r\nPlease try again later.",
-  "ZtmTransportTypeBus": "Bus",
-  "ZtmTransportTypeBusAirport": "Bus to the airport",
-  "ZtmTransportTypeBusMetropolitan": "Metropolitan Bus",
-  "ZtmTransportTypeBusNight": "Night Bus",
-  "ZtmTransportTypeBusReplacement": "Replacement Bus",
-  "ZtmTransportTypeTram": "Tram",
-  "ZtmTransportTypeTrolley": "Trolleybus"
+  "Name": "Polski",
+
+  "Messages": {
+    "DownloadTitle": "Pobieranie danych",
+    "DownloadErrorTitle": "Błąd pobierania danych",
+    "ArrivalsViewPageDownloadDesc": "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...",
+    "ArrivalsViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
+    "DeparturesViewPageDownloadDesc": "Trwa pobieranie danych godzin odjazdów. \r\nProszę czekać ...",
+    "DeparturesViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin odjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
+    "LinesViewPageDownloadDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
+    "LinesViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
+    "LineDetailsViewPageDownloadDesc": "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...",
+    "LineDetailsViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
+    "TimeTablesViewPageDownloadDesc": "Błąd pobierania danych",
+    "TimeTablesViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas."
+  },
+
+  "MpkCzestochowa": {
+    "MpkCzestochowaLinesView": {
+      "MpkCzestochowaLinesViewPageMessages": "Komunikaty: ",
+      "MpkCzestochowaLinesViewPageMsgDateTitle": "Data obowiązywania: ",
+      "MpkCzestochowaLinesViewPageMsgLinesTitle": "Dotyczy linii: "
+    },
+
+    "MpkCzestochowaTransportTypes": {
+      "MpkCzestochowaTransportTypeBus": "Autobus",
+      "MpkCzestochowaTransportTypeBusNight": "Autobus nocny",
+      "MpkCzestochowaTransportTypeBusSuburban": "Autobus podmiejski",
+      "MpkCzestochowaTransportTypeTram": "Tramwaj"
+    }
+  },
+
+  "Settings": {
+    "SettingsAppearance": {
+      "SettingsAppearanceTheme": "Motyw",
+      "SettingsAppearanceThemeDesc": "Ustaw motyw aplikacji.",
+      "SettingsAppearanceThemeDark": "Ciemny",
+      "SettingsAppearanceThemeLight": "Jasny",
+      "SettingsAppearnaceAccentColors": "Wybór koloru akcentu: ",
+      "SettingsAppearanceAccentColorsHistory": "Ostatnio wybierane kolory: "
+    },
+
+    "SettingsGeneral": {
+      "SettingsGeneralPageLanguage": "Język",
+      "SettingsGeneralPageLanguageDesc": "Wybór języka aplikacji."
+    },
+
+    "SettingsInfo": {
+      "SettingsInfoPageDataSources": "Źródła danych: ",
+      "SettingsInfoPageDescription": "Opis: ",
+      "SettingsInfoPageAuthor": "Autor: ",
+      "SettingsInfoPageCopyright": "Prawa autorskie: ",
+      "SettingsInfoPageLocation": "Lokalizacja: "
+    },
+
+    "SettingsPageTitle": "Ustawienia",
+    "SettingsPageAppearanceMenuItem": "Personalizacja",
+    "SettingsPageAppearanceMenuItemDesc": "Konfiguracja motywu i wyglądu aplikacji.",
+    "SettingsPageGeneralMenuItem": "Ogólne",
+    "SettingsPageGeneralMenuItemDesc": "Ogólne opcje konfiguracji.",
+    "SettingsPageInfoMenuItem": "Informacje",
+    "SettingsPageInfoMenuItemDesc": "Informacje o aplikacji."
+  },
+
+  "Ztm": {
+    "ZtmArrivalsIM": {
+      "ZtmArrivalsTitle": "Godziny przyjazdów",
+      "ZtmArrivalStopHeader": "Nazwa przystanku",
+      "ZtmArrivalDepartureHeader": "Godz.",
+      "ZtmArrivalTripTimeHeader": "Czas podróży",
+      "ZtmArrivalTripDistanceHeader": "Odległość"
+    },
+
+    "ZtmLinesView": {
+
+    },
+
+    "ZtmLineDetailsView": {
+      "ZtmLineDetailsViewPageDepartures": "Godziny odjazdów: ",
+      "ZtmLineDetailsViewPageMessages": "Komunikaty: "
+    },
+
+    "ZtmTimeTableSelectorIM": {
+      "ZtmTimeTablesSelectorFromToTitle": "Rozkład ważny",
+      "ZtmTimeTablesSelectorFrom": "od",
+      "ZtmTimeTablesSelectorTo": "do"
+    },
+
+    "ZtmTransportTypes": {
+      "ZtmTransportTypeBus": "Autobus",
+      "ZtmTransportTypeBusAirport": "Autobus na lotnisko",
+      "ZtmTransportTypeBusMetropolitan": "Autobus metropolitalny",
+      "ZtmTransportTypeBusNight": "Autobus nocny",
+      "ZtmTransportTypeBusReplacement": "Autobus zastępczy",
+      "ZtmTransportTypeTram": "Tramwaj",
+      "ZtmTransportTypeTrolley": "Trolejbus"
+    }
+  },
+
+  "MainMenuItem": "Menu główne",
+  "StartPageMpkCzestochowaItem": "MPK Częstochowa",
+  "StartPageZtmMenuItem": "Zarząd Transportu Metropolitalnego",
+  "StartPageSettingsMenuItem": "Ustawienia",
+  "CancelButton": "Anuluj",
+  "CloseButton": "Zamknij",
+  "SelectButton": "Wybierz",
+  "StartPageTitle": "Wybór miasta (przedsiębiorstwa komunikacyjnego)",
+  "LinesViewPageTitle": "Wybór linii",
+  "LinesViewPageMenuItem": "Wybór linii",
+  "LinesViewPageRefreshButton": "Odśwież",
+  "LineDetailsViewPageDirectionSelection": "Wybór kierunku: ",
+  "TimeTablesViewPageTitle": "Wybór rozkładu jazdy"
 }

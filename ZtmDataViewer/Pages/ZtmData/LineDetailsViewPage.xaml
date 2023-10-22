@@ -236,7 +236,7 @@
                                         </StackPanel.Style>
 
                                         <TextBlock
-                                            Text="{Binding LangConfig.ZtmTimeTableSelectionFrom, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                                            Text="{Binding LangConfig.Ztm.ZtmTimeTableSelectorIM.ZtmTimeTablesSelectorFrom, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                                         <TextBlock
                                             Margin="4,0,0,0"
@@ -259,7 +259,7 @@
                                         </StackPanel.Style>
 
                                         <TextBlock
-                                            Text="{Binding LangConfig.ZtmTimeTableSelectionTo, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                                            Text="{Binding LangConfig.Ztm.ZtmTimeTableSelectorIM.ZtmTimeTablesSelectorTo, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                                         <TextBlock
                                             Margin="4,0,0,0"
@@ -335,7 +335,7 @@
             Orientation="Horizontal">
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.ZtmLineViewRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
                 Click="RefresButtonEx_Click"/>
 
@@ -385,7 +385,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.ZtmLineDetailsViewPageDirection, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.LineDetailsViewPageDirectionSelection, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                         <cex:ComboBoxEx
                             ItemsSource="{Binding LineDetailsViewModel.Directions}"
@@ -443,7 +443,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.ZtmLineDetailsViewPageDepartures, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.Ztm.ZtmLineDetailsView.ZtmLineDetailsViewPageDepartures, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                     </StackPanel>
 
@@ -494,7 +494,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.ZtmLineDetailsViewPageMessages, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.Ztm.ZtmLineDetailsView.ZtmLineDetailsViewPageMessages, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                     </StackPanel>
 
