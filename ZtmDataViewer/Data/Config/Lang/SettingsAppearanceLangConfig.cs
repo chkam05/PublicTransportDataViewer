@@ -12,7 +12,6 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         //  VARIABLES
 
-        private string _settingsAppearancePageTitle = string.Empty;
         private string _settingsAppearanceTheme = string.Empty;
         private string _settingsAppearanceThemeDesc = string.Empty;
         private string _settingsAppearanceThemeDark = string.Empty;
@@ -22,12 +21,6 @@ namespace ZtmDataViewer.Data.Config.Lang
 
 
         //  GETTERS & SETTERS
-
-        public string SettingsAppearancePageTitle
-        {
-            get => _settingsAppearancePageTitle;
-            set => SetStringProperty(ref _settingsAppearancePageTitle, nameof(SettingsAppearancePageTitle), value);
-        }
 
         public string SettingsAppearanceTheme
         {
@@ -74,7 +67,6 @@ namespace ZtmDataViewer.Data.Config.Lang
         /// <summary> SettingsAppearanceLangConfig class constructor. </summary>
         [JsonConstructor]
         public SettingsAppearanceLangConfig(
-            string? settingsAppearancePageTitle = null,
             string? settingsAppearanceTheme = null,
             string? settingsAppearanceThemeDesc = null,
             string? settingsAppearanceThemeDark = null,
@@ -82,13 +74,12 @@ namespace ZtmDataViewer.Data.Config.Lang
             string? settingsAppearnaceAccentColors = null,
             string? settingsAppearanceAccentColorsHistory = null)
         {
-            SettingsAppearancePageTitle = SetLanguageValue(settingsAppearancePageTitle, "Personalizacja");
             SettingsAppearanceTheme = SetLanguageValue(settingsAppearanceTheme, "Motyw");
             SettingsAppearanceThemeDesc = SetLanguageValue(settingsAppearanceThemeDesc, "Ustaw motyw aplikacji.");
             SettingsAppearanceThemeDark = SetLanguageValue(settingsAppearanceThemeDark, "Ciemny");
             SettingsAppearanceThemeLight = SetLanguageValue(settingsAppearanceThemeLight, "Jasny");
-            SettingsAppearnaceAccentColors = SetLanguageValue(settingsAppearnaceAccentColors, "Wybór koloru akcentu:");
-            SettingsAppearanceAccentColorsHistory = SetLanguageValue(settingsAppearanceAccentColorsHistory, "Ostatnio wybierane kolory:");
+            SettingsAppearnaceAccentColors = SetLanguageValue(settingsAppearnaceAccentColors, "Wybór koloru akcentu: ");
+            SettingsAppearanceAccentColorsHistory = SetLanguageValue(settingsAppearanceAccentColorsHistory, "Ostatnio wybierane kolory: ");
         }
 
         #endregion CLASS METHODS

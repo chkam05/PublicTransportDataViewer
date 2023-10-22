@@ -13,7 +13,6 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         //  VARIABLES
 
         private string _ztmArrivalsTitle = string.Empty;
-        private string _ztmArrivalsCancelButton = string.Empty;
         private string _ztmArrivalStopHeader = string.Empty;
         private string _ztmArrivalDepartureHeader = string.Empty;
         private string _ztmArrivalTripTimeHeader = string.Empty;
@@ -26,12 +25,6 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         {
             get => _ztmArrivalsTitle;
             set => SetStringProperty(ref _ztmArrivalsTitle, nameof(ZtmArrivalsTitle), value);
-        }
-
-        public string ZtmArrivalsCancelButton
-        {
-            get => _ztmArrivalsCancelButton;
-            set => SetStringProperty(ref _ztmArrivalsCancelButton, nameof(ZtmArrivalsCancelButton), value);
         }
 
         public string ZtmArrivalStopHeader
@@ -67,10 +60,7 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         /// <summary> ZtmArrivalsIMLangConfig class constructor. </summary>
         [JsonConstructor]
         public ZtmArrivalsIMLangConfig(
-            string? ztmArrivalsLoadingDesc = null,
-            string? ztmArrivalsDownloadErrorDesc = null,
             string? ztmArrivalsTitle = null,
-            string? ztmArrivalsCancelButton = null,
             string? ztmArrivalStopHeader = null,
             string? ztmArrivalDepartureHeader = null,
             string? ztmArrivalTripTimeHeader = null,

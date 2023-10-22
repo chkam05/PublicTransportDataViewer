@@ -13,6 +13,7 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         //  VARIABLES
 
         private ZtmArrivalsIMLangConfig? _ztmArrivalsIMLangConfig = null;
+        private ZtmLinesViewLangConfig? _ztmLinesViewLangConfig = null;
         private ZtmLineDetailsViewLangConfig? _ztmLineDetailsViewLangConfig = null;
         private ZtmTimeTableSelectorIMLangConfig? _ztmTimeTableSelectorIMLangConfig = null;
         private ZtmTransportTypesLangConfig? _ztmTransportTypesLangConfig = null;
@@ -35,6 +36,24 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
             {
                 _ztmArrivalsIMLangConfig = value;
                 OnPropertyChanged(nameof(ZtmArrivalsIM));
+            }
+        }
+
+        public ZtmLinesViewLangConfig ZtmLinesView
+        {
+            get
+            {
+                if (_ztmLinesViewLangConfig == null)
+                {
+                    _ztmLinesViewLangConfig = new ZtmLinesViewLangConfig();
+                    OnPropertyChanged(nameof(ZtmLinesView));
+                }
+                return _ztmLinesViewLangConfig;
+            }
+            set
+            {
+                _ztmLinesViewLangConfig = value;
+                OnPropertyChanged(nameof(ZtmLinesView));
             }
         }
 
@@ -102,11 +121,13 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         [JsonConstructor]
         public ZtmLangConfig(
             ZtmArrivalsIMLangConfig? ztmArrivalsIM = null,
+            ZtmLinesViewLangConfig? ztmLinesView = null,
             ZtmLineDetailsViewLangConfig? ztmLineDetailsView = null,
             ZtmTimeTableSelectorIMLangConfig? ztmTimeTableSelectorIM = null,
             ZtmTransportTypesLangConfig? ztmTransportTypes = null)
         {
             ZtmArrivalsIM = ztmArrivalsIM ?? new ZtmArrivalsIMLangConfig();
+            ZtmLinesView = ztmLinesView ?? new ZtmLinesViewLangConfig();
             ZtmLineDetailsView = ztmLineDetailsView ?? new ZtmLineDetailsViewLangConfig();
             ZtmTimeTableSelectorIM = ztmTimeTableSelectorIM ?? new ZtmTimeTableSelectorIMLangConfig();
             ZtmTransportTypes = ztmTransportTypes ?? new ZtmTransportTypesLangConfig();

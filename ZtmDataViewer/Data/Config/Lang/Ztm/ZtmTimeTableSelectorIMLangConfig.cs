@@ -46,7 +46,6 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         /// <summary> ZtmTimeTableSelectorIMLangConfig class constructor. </summary>
         [JsonConstructor]
         public ZtmTimeTableSelectorIMLangConfig(
-            string? ztmTimeTablesSelectorTitle = null,
             string? ztmTimeTablesSelectorFromToTitle = null,
             string? ztmTimeTablesSelectorFrom = null,
             string? ztmTimeTablesSelectorTo = null)

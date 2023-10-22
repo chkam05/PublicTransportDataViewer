@@ -12,7 +12,6 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         //  VARIABLES
 
-        private string _settingsInfoPageTitle = string.Empty;
         private string _settingsInfoPageDescription = string.Empty;
         private string _settingsInfoPageAuthor = string.Empty;
         private string _settingsInfoPageCopyright = string.Empty;
@@ -20,12 +19,6 @@ namespace ZtmDataViewer.Data.Config.Lang
 
 
         //  GETTERS & SETTERS
-
-        public string SettingsInfoPageTitle
-        {
-            get => _settingsInfoPageTitle;
-            set => SetStringProperty(ref _settingsInfoPageTitle, nameof(SettingsInfoPageTitle), value);
-        }
 
         public string SettingsInfoPageDescription
         {
@@ -60,17 +53,15 @@ namespace ZtmDataViewer.Data.Config.Lang
         /// <summary> SettingsInfoLangConfig class constructor. </summary>
         [JsonConstructor]
         public SettingsInfoLangConfig(
-            string? settingsInfoPageTitle = null,
             string? settingsInfoPageDescription = null,
             string? settingsInfoPageAuthor = null,
             string? settingsInfoPageCopyright = null,
             string? settingsInfoPageLocation = null)
         {
-            SettingsInfoPageTitle = SetLanguageValue(settingsInfoPageTitle, "Informacje");
-            SettingsInfoPageDescription = SetLanguageValue(settingsInfoPageDescription, "Opis:");
-            SettingsInfoPageAuthor = SetLanguageValue(settingsInfoPageAuthor, "Autor:");
-            SettingsInfoPageCopyright = SetLanguageValue(settingsInfoPageCopyright, "Prawa autorskie:");
-            SettingsInfoPageLocation = SetLanguageValue(settingsInfoPageLocation, "Lokalizacja:");
+            SettingsInfoPageDescription = SetLanguageValue(settingsInfoPageDescription, "Opis: ");
+            SettingsInfoPageAuthor = SetLanguageValue(settingsInfoPageAuthor, "Autor: ");
+            SettingsInfoPageCopyright = SetLanguageValue(settingsInfoPageCopyright, "Prawa autorskie: ");
+            SettingsInfoPageLocation = SetLanguageValue(settingsInfoPageLocation, "Lokalizacja: ");
         }
 
         #endregion CLASS METHODS

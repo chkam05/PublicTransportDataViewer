@@ -59,8 +59,8 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
             string? mpkCzestochowaTransportTypeTram = null)
         {
             MpkCzestochowaTransportTypeBus = SetLanguageValue(mpkCzestochowaTransportTypeBus, "Autobus");
-            MpkCzestochowaTransportTypeBusNight = SetLanguageValue(mpkCzestochowaTransportTypeBusNight, "Autobus Nocny");
-            MpkCzestochowaTransportTypeBusSuburban = SetLanguageValue(mpkCzestochowaTransportTypeBusSuburban, "Autobus Podmiejski");
+            MpkCzestochowaTransportTypeBusNight = SetLanguageValue(mpkCzestochowaTransportTypeBusNight, "Autobus nocny");
+            MpkCzestochowaTransportTypeBusSuburban = SetLanguageValue(mpkCzestochowaTransportTypeBusSuburban, "Autobus podmiejski");
             MpkCzestochowaTransportTypeTram = SetLanguageValue(mpkCzestochowaTransportTypeTram, "Tramwaj");
         }
 
