@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MpkCzestochowaDownloader.Data.Line;
 using MpkCzestochowaDownloader.Serializers;
+using MpkCzestochowaDownloader.Data.Static;
 
 namespace MpkCzestochowaDownloader.Downloaders
 {
@@ -30,17 +31,23 @@ namespace MpkCzestochowaDownloader.Downloaders
             if (rawData == null)
                 throw new DataSerializationException(typeof(LineDetailsResponseModel));
 
-            return DeserializeData(rawData);
+            return DeserializeData(rawData, request.TransportType);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Deserialize raw line details data from http response. </summary>
         /// <param name="rawData"> Raw line details data from http response. </param>
+        /// <param name="transportType"> Transport type. </param>
         /// <returns> Line details response data model. </returns>
-        private LineDetailsResponseModel DeserializeData(string rawData)
+        private LineDetailsResponseModel DeserializeData(string rawData, TransportType transportType)
         {
             var serializer = new LineDetailsSerializer();
             var result = serializer.Deserialize(rawData);
+
+            if (result.HasData && !result.HasErrors)
+            {
+                result.LineDetails.TransportType = transportType;
+            }
 
             return result;
         }

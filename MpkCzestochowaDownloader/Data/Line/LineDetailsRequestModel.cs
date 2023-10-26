@@ -11,17 +11,24 @@ namespace MpkCzestochowaDownloader.Data.Line
     public class LineDetailsRequestModel : BaseRequestModel
     {
 
+        //  VARIABLES
+
+        public TransportType TransportType { get; set; }
+
+
         //  METHODS
 
         #region CLASS METHODS
 
         //  --------------------------------------------------------------------------------
         /// <summary> LineDetailsRequestModel class constructor. </summary>
+        /// <param name="transportType"> Transport type. </param>
         /// <param name="lineNumber"> Line number. </param>
         /// <param name="date"> Time table date. </param>
         /// <param name="route"> Route variant. </param>
-        public LineDetailsRequestModel(string lineNumber, DateTime? date = null, string? route = null)
+        public LineDetailsRequestModel(TransportType transportType, string lineNumber, DateTime? date = null, string? route = null)
         {
+            TransportType = transportType;
             URL = $"{StaticConfig.LinesURL}?linia={lineNumber}";
 
             if (date.HasValue)

@@ -1,22 +1,16 @@
 ﻿using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
+using MpkCzestochowaDownloader.Data.Line;
+using MpkCzestochowaDownloader.Data.Lines;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ZtmDataDownloader.Data.TimeTables;
 using ZtmDataViewer.Components;
 using ZtmDataViewer.Data.Config;
 using ZtmDataViewer.Data.MainMenu;
@@ -156,6 +150,80 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Load line details data and open line details page. </summary>
+        /// <param name="line"> Line data. </param>
+        private void LoadLineDetails(Line line)
+        {
+            //  Get basic data.
+            var langConf = ConfigManager.Instance.LangConfig;
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+            var bgLoader = new BackgroundWorker();
+
+            //  Create await internal message.
+            var imAwait = new AwaitInternalMessageEx(imContainer,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.LineDetailsViewPageDownloadDesc,
+                PackIconKind.DepartureBoard)
+            {
+                AllowCancel = false,
+                AllowHide = false
+            };
+
+            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+
+            //  Setup background worker methods.
+            bgLoader.DoWork += (s, we) =>
+            {
+                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDetailsDownloader();
+                var request = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
+                    line.TransportType, line.Value);
+                var response = downloader.DownloadData(request);
+
+                if (response.HasData && !response.HasErrors)
+                {
+                    var lineDetails = response.LineDetails;
+
+                    we.Result = lineDetails;
+                }
+                else
+                {
+                    we.Result = null;
+                }
+            };
+
+            bgLoader.RunWorkerCompleted += (s, we) =>
+            {
+                if (we?.Result != null && we.Result is LineDetails lineDetails)
+                {
+                    LoadLineDetailsPage(line, lineDetails);
+                    imAwait.Close();
+                }
+                else
+                {
+                    ShowDownloadingErrorMessage(
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
+                }
+            };
+
+            //  Start downloading.
+            imContainer.ShowMessage(imAwait);
+            bgLoader.RunWorkerAsync();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Open line details page. </summary>
+        /// <param name="lineDetails"> Line details data. </param>
+        private void LoadLineDetailsPage(Line line, LineDetails lineDetails)
+        {
+            var lineDetailsViewModel = new LineDetailsViewModel(lineDetails);
+
+            _pagesController?.LoadPage(
+                new LineDetailsViewPage(_pagesController, line, lineDetailsViewModel));
+        }
+
+        //  --------------------------------------------------------------------------------
         /// <summary> Show download error internal message method. </summary>
         /// <param name="title"> Error message title. </param>
         /// <param name="message"> Error message. </param>
@@ -200,7 +268,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 if (source.DataContext is LineViewModel lineViewModel)
                 {
-                    //LoadLineDetails(lineViewModel.Line);
+                    LoadLineDetails(lineViewModel.Line);
                 }
             }
         }

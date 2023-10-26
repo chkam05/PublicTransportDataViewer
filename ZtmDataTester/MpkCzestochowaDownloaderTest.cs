@@ -84,7 +84,7 @@ namespace ZtmDataTester
                 Assert.IsNotNull(line);
 
                 var downloader = new LineDetailsDownloader();
-                var request = new LineDetailsRequestModel(line.Value);
+                var request = new LineDetailsRequestModel(line.TransportType, line.Value);
                 var response = downloader.DownloadData(request);
 
                 Assert.IsFalse(response.HasErrors);
@@ -351,7 +351,7 @@ namespace ZtmDataTester
                 return null;
 
             var downloader = new LineDetailsDownloader();
-            var request = new LineDetailsRequestModel(line.Value);
+            var request = new LineDetailsRequestModel(line.TransportType, line.Value);
             var response = downloader.DownloadData(request);
 
             return response.HasData ? response.LineDetails : null;
@@ -380,6 +380,9 @@ namespace ZtmDataTester
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Get line first departure. </summary>
+        /// <param name="lineDetails"> Line details data object. </param>
+        /// <returns> Departure data object. </returns>
         private Departure? GetLineFirstDeparture(LineDetails? lineDetails)
         {
             if (lineDetails?.Directions.Any() ?? false)

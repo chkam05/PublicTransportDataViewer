@@ -12,17 +12,10 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
 
         //  VARIABLES
 
-        private string _ztmLineDetailsViewPageDepartures = string.Empty;
         private string _ztmLineDetailsViewPageMessages = string.Empty;
 
 
         //  GETTERS & SETTERS
-
-        public string ZtmLineDetailsViewPageDepartures
-        {
-            get => _ztmLineDetailsViewPageDepartures;
-            set => SetStringProperty(ref _ztmLineDetailsViewPageDepartures, nameof(ZtmLineDetailsViewPageDepartures), value);
-        }
 
         public string ZtmLineDetailsViewPageMessages
         {
@@ -39,10 +32,8 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         /// <summary> ZtmLineDetailsViewLangConfig class constructor. </summary>
         [JsonConstructor]
         public ZtmLineDetailsViewLangConfig(
-            string? ztmLineDetailsViewPageDepartures = null,
             string? ztmLineDetailsViewPageMessages = null)
         {
-            ZtmLineDetailsViewPageDepartures = SetLanguageValue(ztmLineDetailsViewPageDepartures, "Godziny odjazdów: ");
             ZtmLineDetailsViewPageMessages = SetLanguageValue(ztmLineDetailsViewPageMessages, "Komunikaty: ");
         }
 

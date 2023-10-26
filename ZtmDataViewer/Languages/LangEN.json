@@ -1,5 +1,5 @@
 {
-  "Name": "Polski",
+  "Name": "English",
 
   "Messages": {
     "DownloadTitle": "Pobieranie danych",
@@ -77,7 +77,6 @@
     },
 
     "ZtmLineDetailsView": {
-      "ZtmLineDetailsViewPageDepartures": "Godziny odjazdów: ",
       "ZtmLineDetailsViewPageMessages": "Komunikaty: "
     },
 
@@ -109,6 +108,7 @@
   "LinesViewPageTitle": "Wybór linii",
   "LinesViewPageMenuItem": "Wybór linii",
   "LinesViewPageRefreshButton": "Odśwież",
+  "LineDetailsViewPageDepartures": "Godziny odjazdów: ",
   "LineDetailsViewPageDirectionSelection": "Wybór kierunku: ",
   "TimeTablesViewPageTitle": "Wybór rozkładu jazdy"
 }

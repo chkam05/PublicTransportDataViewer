@@ -43,6 +43,7 @@ namespace ZtmDataViewer.Data.Config.Lang
         private string _linesViewPageRefreshButton = string.Empty;
 
         //  Line Details View Page
+        private string _lineDetailsViewPageDepartures = string.Empty;
         private string _lineDetailsViewPageDirectionSelection = string.Empty;
 
         //  Time Tables View Page
@@ -221,6 +222,12 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         #region Line Details View Page
 
+        public string LineDetailsViewPageDepartures
+        {
+            get => _lineDetailsViewPageDepartures;
+            set => SetStringProperty(ref _lineDetailsViewPageDepartures, nameof(LineDetailsViewPageDepartures), value);
+        }
+
         public string LineDetailsViewPageDirectionSelection
         {
             get => _lineDetailsViewPageDirectionSelection;
@@ -276,6 +283,7 @@ namespace ZtmDataViewer.Data.Config.Lang
             string? linesViewPageRefreshButton = null,
 
             //  Line Details View Page
+            string? lineDetailsViewPageDepartures = null,
             string? lineDetailsViewPageDirectionSelection = null,
 
             //  Time Tables View Page
@@ -309,6 +317,7 @@ namespace ZtmDataViewer.Data.Config.Lang
             LinesViewPageRefreshButton = SetLanguageValue(linesViewPageRefreshButton, "Odśwież");
 
             //  Line Details View Page
+            LineDetailsViewPageDepartures = SetLanguageValue(lineDetailsViewPageDepartures, "Godziny odjazdów: ");
             LineDetailsViewPageDirectionSelection = SetLanguageValue(lineDetailsViewPageDirectionSelection, "Wybór kierunku: ");
 
             //  Time Tables View Page

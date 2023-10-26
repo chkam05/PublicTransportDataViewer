@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MpkCzestochowaDownloader.Data.Static;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace MpkCzestochowaDownloader.Data.Line
         public List<LineDirection> Directions { get; set; }
         public string? LineId { get; set; }
         public List<RouteVariant> RouteVariants { get; set; }
+        public TransportType TransportType { get; set; }
         public string? Value { get; set; }
 
 
