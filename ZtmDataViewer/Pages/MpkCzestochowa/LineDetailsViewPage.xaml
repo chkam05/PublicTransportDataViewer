@@ -104,15 +104,15 @@
             Orientation="Horizontal">
 
             <cex:ComboBoxEx
-                ItemsSource="{Binding LineDetailsViewModel.Dates}"
+                x:Name="timeTableDatesComboBox"
                 ItemTemplate="{StaticResource TimeTableDateDataTemplate}"
-                SelectedItem="{Binding LineDetailsViewModel.SelectedDate}"/>
+                Width="128"/>
 
             <cex:ComboBoxEx
-                ItemsSource="{Binding LineDetailsViewModel.RouteVariants}"
+                x:Name="routeVariantsComboBox"
                 ItemTemplate="{StaticResource RouteVariantDataTemplate}"
                 Margin="8,0,0,0"
-                SelectedItem="{Binding LineDetailsViewModel.SelectedRouteVariant}"/>
+                Width="128"/>
 
             <cex:ButtonEx
                 Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"

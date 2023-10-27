@@ -189,7 +189,7 @@
             Orientation="Horizontal">
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.ZtmLineViewRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
                 Click="RefreshButtonEx_Click"/>
 

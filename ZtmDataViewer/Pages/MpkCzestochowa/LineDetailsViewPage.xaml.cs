@@ -1,9 +1,12 @@
-﻿using chkam05.Tools.ControlsEx.InternalMessages;
+﻿using chkam05.Tools.ControlsEx;
+using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
 using MpkCzestochowaDownloader.Data.Line;
 using MpkCzestochowaDownloader.Data.Lines;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -21,6 +24,7 @@ using ZtmDataViewer.Components;
 using ZtmDataViewer.Converters.MpkCzestochowa;
 using ZtmDataViewer.Data.Config;
 using ZtmDataViewer.Data.MpkCzestochowa;
+using ZtmDataViewer.Data.Static;
 using ZtmDataViewer.Utilities;
 using ZtmDataViewer.Windows;
 
@@ -44,11 +48,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         public LineDetailsViewModel LineDetailsViewModel
         {
             get => _lineDetailsViewModel;
-            set
-            {
-                _lineDetailsViewModel = value;
-                OnPropertyChanged(nameof(LineDetailsViewModel));
-            }
+            set => SetLineDetailsViewModel(value);
         }
 
         public LineStopViewModel LineStopViewModel
@@ -74,12 +74,12 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         public LineDetailsViewPage(PagesController pagesController, Line line, LineDetailsViewModel lineDetailsViewModel)
             : base(pagesController)
         {
+            //  Initialize user interface.
+            InitializeComponent();
+
             //  Initialize data.
             _line = line;
             LineDetailsViewModel = lineDetailsViewModel;
-
-            //  Initialize user interface.
-            InitializeComponent();
 
             //  Set additional values.
             UpdateIconKind();
@@ -91,7 +91,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load line details data. </summary>
-        private void LoadLineDetails()
+        private void LoadLineDetails(DateTime? dateTime = null, string? route = null)
         {
             //  Get basic data.
             var langConf = ConfigManager.Instance.LangConfig;
@@ -116,7 +116,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 var downloader = new MpkCzestochowaDownloader.Downloaders.LineDetailsDownloader();
                 var request = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
-                    _line.TransportType, _line.Value);
+                    _line.TransportType, _line.Value, dateTime, route);
                 var response = downloader.DownloadData(request);
 
                 if (response.HasData && !response.HasErrors)
@@ -161,6 +161,30 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Set line details view model. </summary>
+        /// <param name="lineDetailsViewModel"> Line details view model. </param>
+        private void SetLineDetailsViewModel(LineDetailsViewModel lineDetailsViewModel)
+        {
+            if (_lineDetailsViewModel != null)
+            {
+                _lineDetailsViewModel.PropertyChanged -= OnLineDetailsViewModelPropertyChanged;
+                SetupComboBox<RouteVariantViewModel>(routeVariantsComboBox, UpdateMode.Clear, RouteVariantsComboBoxSelectionChanged);
+                SetupComboBox<TimeTableDateViewModel>(timeTableDatesComboBox, UpdateMode.Clear, TimeTableDatesComboBoxSelectionChanged);
+            }
+
+            _lineDetailsViewModel = lineDetailsViewModel;
+            _lineDetailsViewModel.PropertyChanged += OnLineDetailsViewModelPropertyChanged;
+
+            OnPropertyChanged(nameof(LineDetailsViewModel));
+
+            SetupComboBox(routeVariantsComboBox, UpdateMode.Set, RouteVariantsComboBoxSelectionChanged,
+                _lineDetailsViewModel.RouteVariants, _lineDetailsViewModel.SelectedRouteVariant);
+
+            SetupComboBox(timeTableDatesComboBox, UpdateMode.Set, TimeTableDatesComboBoxSelectionChanged,
+                _lineDetailsViewModel.Dates, _lineDetailsViewModel.SelectedDate);
+        }
+
+        //  --------------------------------------------------------------------------------
         /// <summary> Show download error internal message method. </summary>
         /// <param name="title"> Error message title. </param>
         /// <param name="message"> Error message. </param>
@@ -181,6 +205,24 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         #endregion DATA MANAGEMENT METHODS
 
         #region DATA INTERACTION METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after changing selection in timeTableDatesComboBox. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Selection Changed Event Arguments. </param>
+        private void TimeTableDatesComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after changing selection in routeVariantsComboBox. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Selection Changed Event Arguments. </param>
+        private void RouteVariantsComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Method invoked after double clicing on line stops list view ex item. </summary>
@@ -223,10 +265,33 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="e"> Routed Event Arguments. </param>
         private void RefresButtonEx_Click(object sender, RoutedEventArgs e)
         {
-            LoadLineDetails();
+            var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
+            var routeVariant = _lineDetailsViewModel?.SelectedRouteVariant?.RouteVariant.Variant;
+
+            LoadLineDetails(dateTime, routeVariant);
         }
 
         #endregion HEADER INTERACTION METHODS
+
+        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method for invoking PropertyChangedEventHandler external method. </summary>
+        /// <param name="propertyName"> Changed property name. </param>
+        protected void OnLineDetailsViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(LineDetailsViewModel.SelectedDate))
+            {
+                //
+            }
+            
+            if (e.PropertyName == nameof(LineDetailsViewModel.SelectedRouteVariant))
+            {
+                //
+            }
+        }
+
+        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
         #region PAGE METHODS
 
@@ -251,6 +316,45 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         #endregion PAGE METHODS
 
         #region UTILITY METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Setup combobox component. </summary>
+        /// <typeparam name="T"> Type of items that will be added or removed. </typeparam>
+        /// <param name="comboBox"> ComboBox component. </param>
+        /// <param name="mode"> Update mode: Clear/Set. </param>
+        /// <param name="selectionChangedMethod"> Selection changed method. </param>
+        /// <param name="items"> Items to add. </param>
+        /// <param name="selectedItem"> Item that will be set as selected. </param>
+        private void SetupComboBox<T>(ComboBox comboBox, UpdateMode mode,
+            SelectionChangedEventHandler selectionChangedMethod,
+            ObservableCollection<T>? items = null, T? selectedItem = null) where T : class, INotifyPropertyChanged
+        {
+            if (comboBox != null)
+            {
+                switch (mode)
+                {
+                    case UpdateMode.Clear:
+                        comboBox.SelectionChanged -= selectionChangedMethod;
+                        comboBox.SelectedItem = null;
+                        comboBox.Items.Clear();
+                        break;
+
+                    case UpdateMode.Set:
+                        if (items != null)
+                            foreach (var item in items)
+                                comboBox.Items.Add(item);
+
+                        if (selectedItem != null)
+                            comboBox.SelectedItem = selectedItem;
+
+                        comboBox.SelectionChanged += selectionChangedMethod;
+                        break;
+
+                    case UpdateMode.None:
+                        break;
+                }
+            }
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Update page icon. </summary>

@@ -33,6 +33,7 @@
         <Setter Property="SelectedBackground" Value="{Binding ConfigData.AppearanceConfig.AccentSelectedColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
         <Setter Property="SelectedBorderBrush" Value="{Binding ConfigData.AppearanceConfig.AccentSelectedColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
         <Setter Property="SelectedForeground" Value="{Binding ConfigData.AppearanceConfig.AccentForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
 </ResourceDictionary>
