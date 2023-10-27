@@ -223,5 +223,18 @@ namespace ZtmDataViewer.Components
 
         #endregion PAGES MANAGEMENT METHODS
 
+        #region UPDATE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Force update current page state. </summary>
+        public void ForceUpdate()
+        {
+            var args = new OnPageLoadedEventArgs(LoadedPage, LoadedPage);
+            OnPageNavigated?.Invoke(this, args);
+            OnPropertyChanged(nameof(LoadedPage));
+        }
+
+        #endregion UPDATE METHODS
+
     }
 }

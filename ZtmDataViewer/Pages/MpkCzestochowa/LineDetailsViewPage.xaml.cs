@@ -118,19 +118,6 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load line details data. </summary>
-        /// <param name="transportType"> Transport type. </param>
-        /// <param name="line"> Line number. </param>
-        /// <param name="dateTime"> Time table date. </param>
-        private void LoadLineDetails(TransportType transportType, string line, DateTime? dateTime = null)
-        {
-            var requestModel = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
-                    transportType, line, dateTime);
-
-            LoadLineDetails(requestModel, false);
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Load line details data. </summary>
         /// <param name="requestModel"> Request model for load line details data. </param>
         /// <param name="reloadDepartures"> Request for reload departures. </param>
         private void LoadLineDetails(LineDetailsRequestModel requestModel, bool reloadDepartures = false)
@@ -180,6 +167,8 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                     if (lineDetails != null)
                     {
                         LineDetailsViewModel = new LineDetailsViewModel(lineDetails);
+                        UpdateIconKind();
+                        _pagesController?.ForceUpdate();
 
                         if (reloadDepartures && _lineStopViewModel != null)
                             LoadLineDepartures(_lineStopViewModel.LineStop);
@@ -377,14 +366,22 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                 if (source.DataContext is OtherLineViewModel otherLineViewModel)
                 {
                     var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
-                    var line = otherLineViewModel.OtherLine.Value;
+                    var lineValue = otherLineViewModel.OtherLine.Value;
                     var transportType = TransportTypesMapper.MapFromAttributes(otherLineViewModel.OtherLine.Attributes);
 
                     if (transportType.HasValue)
                     {
+                        var requestModel = new LineDetailsRequestModel(transportType.Value, lineValue, dateTime);
+
                         LineDeparturesViewModel = null;
                         LineStopViewModel = null;
-                        LoadLineDetails(transportType.Value, line, dateTime);
+                        LoadLineDetails(requestModel, false);
+
+                        _line = new Line()
+                        {
+                            TransportType = transportType.Value,
+                            Value = lineValue
+                        };
                     }
                 }
             }
