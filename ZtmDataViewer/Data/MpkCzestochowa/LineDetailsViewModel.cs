@@ -39,11 +39,31 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             {
                 _lineDetails = value;
                 OnPropertyChanged(nameof(LineDetails));
+                OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(DirectionFrom));
                 OnPropertyChanged(nameof(DirectionTo));
                 OnPropertyChanged(nameof(LineId));
                 OnPropertyChanged(nameof(TransportType));
                 OnPropertyChanged(nameof(Value));
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                var result = !string.IsNullOrEmpty(_lineDetails.Value) ? $"{_lineDetails.Value} " : string.Empty;
+
+                if (!string.IsNullOrEmpty(_lineDetails.DirectionFrom) && !string.IsNullOrEmpty(_lineDetails.DirectionTo))
+                    result += $"({_lineDetails.DirectionFrom} - {_lineDetails.DirectionTo})";
+
+                else if (!string.IsNullOrEmpty(_lineDetails.DirectionTo))
+                    result += $"({_lineDetails.DirectionTo})";
+
+                else if (!string.IsNullOrEmpty(_lineDetails.DirectionFrom))
+                    result += $"({_lineDetails.DirectionFrom})";
+
+                return result;
             }
         }
 

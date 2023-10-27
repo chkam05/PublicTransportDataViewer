@@ -28,6 +28,14 @@ namespace MpkCzestochowaDownloader.Mappers
             { TransportType.BusNight, new string[] { "fa-moon-o", "mr-1" } },
         };
 
+        private static readonly Dictionary<TransportType, string[]> _detailsWebClassDict = new Dictionary<TransportType, string[]>()
+        {
+            { TransportType.Tram, new string[] { "route_type_0", "route_subtype_0" } },
+            { TransportType.Bus, new string[] { "route_type_3", "route_subtype_0" } },
+            { TransportType.BusSuburban, new string[] { "route_type_3", "route_subtype_1" } },
+            { TransportType.BusNight, new string[] { "route_type_3", "route_subtype_2" } },
+        };
+
 
         //  METHODS
 
@@ -55,6 +63,18 @@ namespace MpkCzestochowaDownloader.Mappers
         {
             var keyValuePairs = _webClassDict.Where(c => c.Value.All(
                 v => classNames.Contains(v)));
+
+            return keyValuePairs.Any() ? keyValuePairs.First().Key : null;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get transport type by class names. </summary>
+        /// <param name="attributes"> List of class attributes. </param>
+        /// <returns> Transport type or null. </returns>
+        public static TransportType? MapFromAttributes(List<string> attributes)
+        {
+            var keyValuePairs = _detailsWebClassDict.Where(c => c.Value.All(
+                v => attributes.Contains(v)));
 
             return keyValuePairs.Any() ? keyValuePairs.First().Key : null;
         }

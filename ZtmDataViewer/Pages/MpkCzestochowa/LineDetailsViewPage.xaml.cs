@@ -1,8 +1,11 @@
 ﻿using chkam05.Tools.ControlsEx;
 using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
+using MpkCzestochowaDownloader.Data.Departures;
 using MpkCzestochowaDownloader.Data.Line;
 using MpkCzestochowaDownloader.Data.Lines;
+using MpkCzestochowaDownloader.Data.Static;
+using MpkCzestochowaDownloader.Mappers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -41,6 +44,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         private Line _line;
         private LineDetailsViewModel _lineDetailsViewModel;
         private LineStopViewModel _lineStopViewModel;
+        private LineDeparturesViewModel _lineDeparturesViewModel;
 
 
         //  GETTERS & SETTERS
@@ -58,6 +62,16 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 _lineStopViewModel = value;
                 OnPropertyChanged(nameof(LineStopViewModel));
+            }
+        }
+
+        public LineDeparturesViewModel LineDeparturesViewModel
+        {
+            get => _lineDeparturesViewModel;
+            set
+            {
+                _lineDeparturesViewModel = value;
+                OnPropertyChanged(nameof(LineDeparturesViewModel));
             }
         }
 
@@ -91,7 +105,35 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load line details data. </summary>
-        private void LoadLineDetails(DateTime? dateTime = null, string? route = null)
+        /// <param name="dateTime"> Time table date. </param>
+        /// <param name="route"> Route id. </param>
+        /// <param name="reloadDepartures"> Request for reload departures. </param>
+        private void LoadLineDetails(DateTime? dateTime = null, string? route = null, bool reloadDepartures = false)
+        {
+            var requestModel = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
+                    _line.TransportType, _line.Value, dateTime, route);
+
+            LoadLineDetails(requestModel, reloadDepartures);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Load line details data. </summary>
+        /// <param name="transportType"> Transport type. </param>
+        /// <param name="line"> Line number. </param>
+        /// <param name="dateTime"> Time table date. </param>
+        private void LoadLineDetails(TransportType transportType, string line, DateTime? dateTime = null)
+        {
+            var requestModel = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
+                    transportType, line, dateTime);
+
+            LoadLineDetails(requestModel, false);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Load line details data. </summary>
+        /// <param name="requestModel"> Request model for load line details data. </param>
+        /// <param name="reloadDepartures"> Request for reload departures. </param>
+        private void LoadLineDetails(LineDetailsRequestModel requestModel, bool reloadDepartures = false)
         {
             //  Get basic data.
             var langConf = ConfigManager.Instance.LangConfig;
@@ -115,9 +157,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             bgLoader.DoWork += (s, we) =>
             {
                 var downloader = new MpkCzestochowaDownloader.Downloaders.LineDetailsDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
-                    _line.TransportType, _line.Value, dateTime, route);
-                var response = downloader.DownloadData(request);
+                var response = downloader.DownloadData(requestModel);
 
                 if (response.HasData && !response.HasErrors)
                 {
@@ -133,13 +173,16 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is LineDetails lineDetails)
+                if (we.Error == null && we?.Result != null && we.Result is LineDetails lineDetails)
                 {
                     imAwait.Close();
 
                     if (lineDetails != null)
                     {
                         LineDetailsViewModel = new LineDetailsViewModel(lineDetails);
+
+                        if (reloadDepartures && _lineStopViewModel != null)
+                            LoadLineDepartures(_lineStopViewModel.LineStop);
                     }
                     else
                         ShowDownloadingErrorMessage(
@@ -152,6 +195,77 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
                         langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
+                }
+            };
+
+            //  Start downloading.
+            imContainer.ShowMessage(imAwait);
+            bgLoader.RunWorkerAsync();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Load line stop departures data. </summary>
+        /// <param name="lineStop"> Line stop data. </param>
+        private void LoadLineDepartures(LineStop lineStop)
+        {
+            //  Get basic data.
+            var langConf = ConfigManager.Instance.LangConfig;
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+            var bgLoader = new BackgroundWorker();
+
+            //  Create await internal message.
+            var imAwait = new AwaitInternalMessageEx(imContainer,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.DeparturesViewPageDownloadDesc,
+                PackIconKind.DepartureBoard)
+            {
+                AllowCancel = false,
+                AllowHide = false
+            };
+
+            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+
+            //  Setup background worker methods.
+            bgLoader.DoWork += (s, we) =>
+            {
+                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDeparturesDownloader();
+                var request = new MpkCzestochowaDownloader.Data.Departures.LineDeparturesRequestModel(lineStop.URL);
+                var response = downloader.DownloadData(request);
+
+                if (response.HasData && !response.HasErrors)
+                {
+                    var lineDepartures = response.LineDepartures;
+
+                    we.Result = lineDepartures;
+                }
+                else
+                {
+                    we.Result = null;
+                }
+            };
+
+            bgLoader.RunWorkerCompleted += (s, we) =>
+            {
+                if (we.Error == null && we?.Result != null && we.Result is LineDepartures lineDeaprtures)
+                {
+                    imAwait.Close();
+
+                    if (lineDeaprtures != null)
+                    {
+                        LineDeparturesViewModel = new LineDeparturesViewModel(lineDeaprtures);
+                    }
+                    else
+                        ShowDownloadingErrorMessage(
+                            langConf.Messages.DownloadErrorTitle,
+                            langConf.Messages.DeparturesViewPageDownloadErrorDesc);
+                }
+                else
+                {
+                    imAwait.Close();
+                    ShowDownloadingErrorMessage(
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.DeparturesViewPageDownloadErrorDesc);
                 }
             };
 
@@ -212,7 +326,13 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="e"> Selection Changed Event Arguments. </param>
         private void TimeTableDatesComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //
+            if (e.OriginalSource is ComboBox comboBox)
+            {
+                if (comboBox.SelectedItem is TimeTableDateViewModel timeTableDateViewModel)
+                {
+                    LineDetailsViewModel.SelectedDate = timeTableDateViewModel;
+                }
+            }
         }
 
         //  --------------------------------------------------------------------------------
@@ -221,7 +341,13 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="e"> Selection Changed Event Arguments. </param>
         private void RouteVariantsComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //
+            if (e.OriginalSource is ComboBox comboBox)
+            {
+                if (comboBox.SelectedItem is RouteVariantViewModel routeVariantViewModel)
+                {
+                    LineDetailsViewModel.SelectedRouteVariant = routeVariantViewModel;
+                }
+            }
         }
 
         //  --------------------------------------------------------------------------------
@@ -234,8 +360,28 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 if (source.DataContext is LineStopViewModel lineStopViewModel)
                 {
-                    //SelectedLineStopViewModel = lineStopViewModel;
-                    //LoadDepartures();
+                    LineStopViewModel = lineStopViewModel;
+                    LoadLineDepartures(LineStopViewModel.LineStop);
+                }
+            }
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after double clicing on other lines list view ex item. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Mouse Button Event Arguments. </param>
+        private void OtherLinesListViewEx_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is FrameworkElement source)
+            {
+                if (source.DataContext is OtherLineViewModel otherLineViewModel)
+                {
+                    var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
+                    var line = otherLineViewModel.OtherLine.Value;
+                    var transportType = TransportTypesMapper.MapFromAttributes(otherLineViewModel.OtherLine.Attributes);
+
+                    if (transportType.HasValue)
+                        LoadLineDetails(transportType.Value, line, dateTime);
                 }
             }
         }
@@ -246,13 +392,13 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="e"> Mouse Button Event Arguments. </param>
         private void DeparturesListViewEx_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            /*if (e.OriginalSource is FrameworkElement source)
+            if (e.OriginalSource is FrameworkElement source)
             {
-                if (source.DataContext is LineDepartureViewModel lineDepartureViewModel)
+                if (source.DataContext is DepartureViewModel departureViewModel)
                 {
-                    LoadArrivals(lineDepartureViewModel);
+                    //
                 }
-            }*/
+            }
         }
 
         #endregion DATA INTERACTION METHODS
@@ -268,7 +414,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
             var routeVariant = _lineDetailsViewModel?.SelectedRouteVariant?.RouteVariant.Variant;
 
-            LoadLineDetails(dateTime, routeVariant);
+            LoadLineDetails(dateTime, routeVariant, _lineDeparturesViewModel != null);
         }
 
         #endregion HEADER INTERACTION METHODS
@@ -280,14 +426,15 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="propertyName"> Changed property name. </param>
         protected void OnLineDetailsViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(LineDetailsViewModel.SelectedDate))
+            if (e.PropertyName == nameof(LineDetailsViewModel.SelectedDate)
+                || e.PropertyName == nameof(LineDetailsViewModel.SelectedRouteVariant))
             {
-                //
-            }
-            
-            if (e.PropertyName == nameof(LineDetailsViewModel.SelectedRouteVariant))
-            {
-                //
+                var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
+                var routeVariant = _lineDetailsViewModel?.SelectedRouteVariant?.RouteVariant.Variant;
+
+                LineDeparturesViewModel = null;
+                LineStopViewModel = null;
+                LoadLineDetails(dateTime, routeVariant, false);
             }
         }
 

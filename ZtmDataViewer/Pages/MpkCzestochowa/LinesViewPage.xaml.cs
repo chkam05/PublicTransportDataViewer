@@ -126,7 +126,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null)
+                if (we.Error == null && we?.Result != null)
                 {
                     var tupleResult = (Tuple<List<LineGroupViewModel>, List<MessageViewModel>>)we.Result;
                     LineGroups = new ObservableCollection<LineGroupViewModel>(tupleResult.Item1);
@@ -194,7 +194,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is LineDetails lineDetails)
+                if (we.Error == null && we?.Result != null && we.Result is LineDetails lineDetails)
                 {
                     LoadLineDetailsPage(line, lineDetails);
                     imAwait.Close();

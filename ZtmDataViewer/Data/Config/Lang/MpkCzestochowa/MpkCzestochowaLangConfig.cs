@@ -12,11 +12,30 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
 
         //  VARIABLES
 
+        private MpkCzestochowaLineDetailsViewLangConfig? _mpkCzestochowaLineDetailsViewLangConfig = null;
         private MpkCzestochowaLinesViewLangConfig? _mpkCzestochowaLinesViewLangConfig = null;
         private MpkCzestochowaTransportTypesLangConfig? _mpkCzestochowaTransportTypesLangConfig = null;
 
 
         //  GETTERS & SETTERS
+
+        public MpkCzestochowaLineDetailsViewLangConfig MpkCzestochowaLineDetailsViewLangConfig
+        {
+            get
+            {
+                if (_mpkCzestochowaLineDetailsViewLangConfig == null)
+                {
+                    _mpkCzestochowaLineDetailsViewLangConfig = new MpkCzestochowaLineDetailsViewLangConfig();
+                    OnPropertyChanged(nameof(MpkCzestochowaLineDetailsViewLangConfig));
+                }
+                return _mpkCzestochowaLineDetailsViewLangConfig;
+            }
+            set
+            {
+                _mpkCzestochowaLineDetailsViewLangConfig = value;
+                OnPropertyChanged(nameof(MpkCzestochowaLineDetailsViewLangConfig));
+            }
+        }
 
         public MpkCzestochowaLinesViewLangConfig MpkCzestochowaLinesView
         {
@@ -63,9 +82,11 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
         /// <summary> MpkCzestochowaLangConfig class constructor. </summary>
         [JsonConstructor]
         public MpkCzestochowaLangConfig(
+            MpkCzestochowaLineDetailsViewLangConfig? mpkCzestochowaLineDetailsViewLangConfig = null,
             MpkCzestochowaLinesViewLangConfig? mpkCzestochowaLinesView = null,
             MpkCzestochowaTransportTypesLangConfig? mpkCzestochowaTransportTypes = null)
         {
+            MpkCzestochowaLineDetailsViewLangConfig = mpkCzestochowaLineDetailsViewLangConfig ?? new MpkCzestochowaLineDetailsViewLangConfig();
             MpkCzestochowaLinesView = mpkCzestochowaLinesView ?? new MpkCzestochowaLinesViewLangConfig();
             MpkCzestochowaTransportTypes = mpkCzestochowaTransportTypes ?? new MpkCzestochowaTransportTypesLangConfig();
         }

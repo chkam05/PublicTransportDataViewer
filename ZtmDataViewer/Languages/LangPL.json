@@ -17,6 +17,10 @@
   },
 
   "MpkCzestochowa": {
+    "MpkCzestochowaLineDetailsViewLangConfig": {
+      "MpkCzestochowaLineDetailsViewPageOtherLines": "Inne linie odjeżdżające z tego przystanku: "
+    },
+
     "MpkCzestochowaLinesView": {
       "MpkCzestochowaLinesViewPageMessages": "Komunikaty: ",
       "MpkCzestochowaLinesViewPageMsgDateTitle": "Data obowiązywania: ",
