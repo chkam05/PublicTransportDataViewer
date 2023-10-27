@@ -381,7 +381,11 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                     var transportType = TransportTypesMapper.MapFromAttributes(otherLineViewModel.OtherLine.Attributes);
 
                     if (transportType.HasValue)
+                    {
+                        LineDeparturesViewModel = null;
+                        LineStopViewModel = null;
                         LoadLineDetails(transportType.Value, line, dateTime);
+                    }
                 }
             }
         }
