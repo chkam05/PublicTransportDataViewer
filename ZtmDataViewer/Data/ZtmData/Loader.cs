@@ -1,25 +1,40 @@
-﻿using chkam05.Tools.ControlsEx.InternalMessages;
+﻿using chkam05.Tools.ControlsEx.Data;
+using chkam05.Tools.ControlsEx.Events;
+using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
-using MpkCzestochowaDownloader.Data.Arrives;
-using MpkCzestochowaDownloader.Data.Departures;
-using MpkCzestochowaDownloader.Data.Line;
-using MpkCzestochowaDownloader.Data.Lines;
-using MpkCzestochowaDownloader.Downloaders;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Xml;
+using ZtmDataDownloader.Data.Departures;
+using ZtmDataDownloader.Data.Global;
+using ZtmDataDownloader.Data.Line;
+using ZtmDataDownloader.Data.Lines;
+using ZtmDataDownloader.Data.TimeTables;
 using ZtmDataViewer.Components;
 using ZtmDataViewer.Data.Config;
+using ZtmDataViewer.Data.MainMenu;
+using ZtmDataViewer.Data.MpkCzestochowa;
 using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.Events;
-using ZtmDataViewer.InternalMessages.MpkCzestochowa;
+using ZtmDataViewer.InternalMessages.ZtmData;
+using ZtmDataViewer.Pages.ZtmData;
 using ZtmDataViewer.Utilities;
 using ZtmDataViewer.Windows;
 
-namespace ZtmDataViewer.Data.MpkCzestochowa
+namespace ZtmDataViewer.Data.ZtmData
 {
     public static class Loader
     {
@@ -27,16 +42,13 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         //  DELEGATES
 
         public delegate void LinesDataLoadedEventHandler(
-            ObservableCollection<LineGroupViewModel> lineGroupViewModelCollection,
-            ObservableCollection<MessageViewModel> messageViewModelCollection);
+            ObservableCollection<LineGroupViewModel> lineGroupCollection);
 
         public delegate void LineDetailsDataLoadedEventHandler(
-            LineDetailsViewModel lineDetailsViewModel,
-            Line line,
-            bool isDataReload);
+            LineDetailsViewModel lineDetailsViewModel);
 
-        public delegate void LineDeparturesDataLoadedEventHandler(
-            LineDeparturesViewModel lineDeparturesViewModel);
+        public delegate void LineDearpturesDataLoadedEventHandler(
+            ObservableCollection<LineDepartureGroupViewModel> departureGroupViewModelCollection);
 
 
         //  METHODS
@@ -69,17 +81,12 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LinesDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Lines.LinesRequestModel();
-                var response = downloader.DownloadData(request);
+                var linesDict = ZtmDataDownloader.SimpleDownloader.DownloadLines();
 
-                if (response.HasData && !response.HasErrors)
+                if (linesDict?.Any() ?? false)
                 {
-                    var lineGroups = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
-                    var messages = response.Messages.Select(m => new MessageViewModel(m)).ToList();
-
-                    we.Result = new Tuple<List<LineGroupViewModel>, List<MessageViewModel>>(
-                        lineGroups, messages);
+                    var lineGroups = linesDict.Select(kvp => new LineGroupViewModel(kvp)).ToList();
+                    we.Result = lineGroups;
                 }
                 else
                 {
@@ -89,21 +96,19 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we.Error == null && we?.Result != null)
+                if (we?.Result != null)
                 {
-                    var tupleResult = (Tuple<List<LineGroupViewModel>, List<MessageViewModel>>)we.Result;
-                    var lineGroups = new ObservableCollection<LineGroupViewModel>(tupleResult.Item1);
-                    var messages = new ObservableCollection<MessageViewModel>(tupleResult.Item2);
+                    var lineGroups = (List<LineGroupViewModel>)we.Result;
+                    var lineGroupsCollection = new ObservableCollection<LineGroupViewModel>(lineGroups);
 
-                    onDataLoadedEventHandler?.Invoke(lineGroups, messages);
+                    onDataLoadedEventHandler?.Invoke(lineGroupsCollection);
                     imAwait.Close();
                 }
                 else
                 {
-                    var lineGroups = new ObservableCollection<LineGroupViewModel>();
-                    var messages = new ObservableCollection<MessageViewModel>();
+                    var lineGroupsCollection = new ObservableCollection<LineGroupViewModel>();
 
-                    onDataLoadedEventHandler?.Invoke(lineGroups, messages);
+                    onDataLoadedEventHandler?.Invoke(lineGroupsCollection);
                     imAwait.Close();
 
                     ShowDownloadingErrorMessage(
@@ -120,12 +125,13 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         //  --------------------------------------------------------------------------------
         /// <summary> Load line details data. </summary>
         /// <param name="line"> Line data object. </param>
+        /// <param name="pagesController"> Pages controller. </param>
         /// <param name="onDataLoadedEventHandler"> On data loaded event handler. </param>
-        /// <param name="dateTime"> Time table date. </param>
-        /// <param name="route"> Route varaint identifiers. </param>
+        /// <param name="timeTable"> Optional time table data object. </param>
         /// <param name="isDataReload"> Reload data. </param>
-        public static void LoadLineDetails(Line line, LineDetailsDataLoadedEventHandler onDataLoadedEventHandler,
-            DateTime? dateTime = null, string? route = null, bool isDataReload = false)
+        public static void LoadLineDetailsData(Line line, PagesController pagesController,
+            LineDetailsDataLoadedEventHandler? onDataLoadedEventHandler = null,
+            string? timeTableId = null, bool isDataReload = false)
         {
             //  Get basic data.
             var langConf = ConfigManager.Instance.LangConfig;
@@ -148,15 +154,10 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDetailsDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
-                    line.TransportType, line.Value, dateTime, route);
-                var response = downloader.DownloadData(request);
+                var lineDetails = ZtmDataDownloader.SimpleDownloader.DownloadLineDetails(line, timeTableId);
 
-                if (response.HasData && !response.HasErrors)
+                if (lineDetails != null)
                 {
-                    var lineDetails = response.LineDetails;
-
                     we.Result = lineDetails;
                 }
                 else
@@ -167,24 +168,29 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we.Error == null && we?.Result != null && we.Result is LineDetails lineDetails)
+                if (we?.Result != null && we.Result is LineDetails lineDetails)
                 {
-                    imAwait.Close();
+                    var lineDetailsViewModel = new LineDetailsViewModel(line, lineDetails, timeTableId);
 
-                    if (lineDetails != null)
+                    if (isDataReload)
                     {
-                        var lineDetailsViewModel = new LineDetailsViewModel(lineDetails);
-
-                        onDataLoadedEventHandler?.Invoke(lineDetailsViewModel, line, isDataReload);
+                        onDataLoadedEventHandler?.Invoke(lineDetailsViewModel);
                     }
                     else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
+                    {
+                        var lineDetailsViewPage = new LineDetailsViewPage(pagesController, lineDetailsViewModel);
+                        pagesController?.LoadPage(lineDetailsViewPage);
+                    }
+
+                    imAwait.Close();
+                }
+                else if (!string.IsNullOrEmpty(timeTableId))
+                {
+                    imAwait.Close();
+                    LoadTimeTablesData(line, pagesController);
                 }
                 else
                 {
-                    imAwait.Close();
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
                         langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
@@ -197,10 +203,90 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         }
 
         //  --------------------------------------------------------------------------------
+        /// <summary> Load time tables data. </summary>
+        /// <param name="line"> Line data object. </param>
+        /// <param name="pagesController"> Pages controller. </param>
+        public static void LoadTimeTablesData(Line line, PagesController pagesController)
+        {
+            //  Get basic data.
+            var langConf = ConfigManager.Instance.LangConfig;
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+            var bgLoader = new BackgroundWorker();
+
+            //  Create await internal message.
+            var imAwait = new AwaitInternalMessageEx(imContainer,
+                langConf.Messages.DownloadTitle,
+                langConf.Messages.TimeTablesViewPageDownloadDesc,
+                PackIconKind.DepartureBoard)
+            {
+                AllowCancel = false,
+                AllowHide = false
+            };
+
+            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+
+            //  Setup background worker methods.
+            bgLoader.DoWork += (s, we) =>
+            {
+                var timeTables = ZtmDataDownloader.SimpleDownloader.DownloadTimeTables(line);
+
+                if (timeTables != null)
+                {
+                    we.Result = timeTables;
+                }
+                else
+                {
+                    we.Result = null;
+                }
+            };
+
+            bgLoader.RunWorkerCompleted += (s, we) =>
+            {
+                imAwait.Close();
+
+                if (we?.Result != null && we.Result is List<TimeTable> timeTables)
+                {
+                    var timeTableViewModels = timeTables.Select(t => new TimeTableViewModel(t)).ToList();
+
+                    var imTimeTableSelector = new TimeTableSelectorInternalMessage(
+                        imContainer, line, timeTableViewModels);
+
+                    imTimeTableSelector.OnClose += (sender, e) =>
+                    {
+                        if (e.Result == InternalMessageResult.Ok)
+                        {
+                            var internalMessage = sender as TimeTableSelectorInternalMessage;
+                            var line = internalMessage?.Line;
+                            var timeTable = internalMessage?.SelectedTimeTable?.TimeTable;
+
+                            if (line != null && timeTable != null)
+                                LoadLineDetailsData(line, pagesController, timeTableId: timeTable.ID);
+                        }
+                    };
+
+                    imContainer.ShowMessage(imTimeTableSelector);
+                }
+                else
+                {
+                    ShowDownloadingErrorMessage(
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.TimeTablesViewPageDownloadErrorDesc);
+                }
+            };
+
+            //  Start downloading.
+            imContainer.ShowMessage(imAwait);
+            bgLoader.RunWorkerAsync();
+        }
+
+        //  --------------------------------------------------------------------------------
         /// <summary> Load line departures data. </summary>
-        /// <param name="lineStop"> Line stop data object. </param>
+        /// <param name="line"> Line data object. </param>
+        /// <param name="lineStop"> Line stop object. </param>
         /// <param name="onDataLoadedEventHandler"> On data loaded event handler. </param>
-        public static void LoadLineDepartures(LineStop lineStop, LineDeparturesDataLoadedEventHandler onDataLoadedEventHandler)
+        public static void LoadLineDepartures(Line line, LineStop lineStop,
+            LineDearpturesDataLoadedEventHandler onDataLoadedEventHandler)
         {
             //  Get basic data.
             var langConf = ConfigManager.Instance.LangConfig;
@@ -223,21 +309,12 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                if (string.IsNullOrEmpty(lineStop?.URL))
+                var departures = ZtmDataDownloader.SimpleDownloader.DownloadDepartures(
+                    line, lineStop);
+
+                if (departures?.Any() ?? false)
                 {
-                    we.Result = null;
-                    return;
-                }
-
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDeparturesDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Departures.LineDeparturesRequestModel(lineStop.URL);
-                var response = downloader.DownloadData(request);
-
-                if (response.HasData && !response.HasErrors)
-                {
-                    var lineDepartures = response.LineDepartures;
-
-                    we.Result = lineDepartures;
+                    we.Result = departures;
                 }
                 else
                 {
@@ -247,24 +324,23 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we.Error == null && we?.Result != null && we.Result is LineDepartures lineDeaprtures)
+                if (we?.Result != null && we.Result is Dictionary<DepartureGroup, List<Departure>> departures)
                 {
+                    var departureGroupViewModels = new ObservableCollection<LineDepartureGroupViewModel>(
+                        departures.Select(kvp => new LineDepartureGroupViewModel(kvp.Key, kvp.Value)));
+
+                    onDataLoadedEventHandler?.Invoke(departureGroupViewModels);
+
                     imAwait.Close();
-
-                    if (lineDeaprtures != null)
-                    {
-                        var lineDeparturesViewModel = new LineDeparturesViewModel(lineDeaprtures);
-
-                        onDataLoadedEventHandler.Invoke(lineDeparturesViewModel);
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.DeparturesViewPageDownloadErrorDesc);
                 }
                 else
                 {
+                    var departureGroupViewModels = new ObservableCollection<LineDepartureGroupViewModel>();
+
+                    onDataLoadedEventHandler?.Invoke(departureGroupViewModels);
+
                     imAwait.Close();
+
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
                         langConf.Messages.DeparturesViewPageDownloadErrorDesc);
@@ -278,10 +354,9 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load line arrivals data. </summary>
-        /// <param name="tripId"> Trip identifier. </param>
-        /// <param name="departureTime"> Departure time. </param>
-        /// <param name="departureDate"> Departure date. </param>
-        public static void LoadLineArrivals(string tripId, string departureTime, string departureDate)
+        /// <param name="line"> Line data object. </param>
+        /// <param name="departure"> Line departure data object. </param>
+        public static void LoadLineArrivals(Line line, Departure departure)
         {
             //  Get basic data.
             var langConf = ConfigManager.Instance.LangConfig;
@@ -304,15 +379,12 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var downloader = new LineArrivalsDownloader();
-                var request = new LineArrivalsRequestModel(tripId, departureTime, departureDate);
-                var response = downloader.DownloadData(request);
+                var departureDetails = ZtmDataDownloader.SimpleDownloader.DownloadArrivalsData(
+                    line, departure);
 
-                if (!response.HasErrors && response.HasData)
+                if (departureDetails != null)
                 {
-                    var lineArrivalsViewModel = new LineArrivalsViewModel(response.LineArrivals);
-
-                    we.Result = lineArrivalsViewModel;
+                    we.Result = new DepartureDetailsViewModel(departureDetails);
                 }
                 else
                 {
@@ -322,11 +394,11 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is LineArrivalsViewModel lineArrivalsViewModel)
+                if (we?.Result != null && we.Result is DepartureDetailsViewModel departureDetailsViewModel)
                 {
                     imAwait.Close();
 
-                    var imArrivals = new ArrivalsInternalMessage(imContainer, lineArrivalsViewModel);
+                    var imArrivals = new ArrivalsInternalMessage(imContainer, departureDetailsViewModel);
 
                     imContainer.ShowMessage(imArrivals);
                 }

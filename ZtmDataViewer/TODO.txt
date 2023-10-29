@@ -1,1 +1,1 @@
-﻿#1.	Loader for Ztm
+﻿#1.	Move messages to separate IM

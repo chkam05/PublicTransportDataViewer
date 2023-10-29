@@ -1,5 +1,7 @@
 ﻿using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
+using MpkCzestochowaDownloader.Data.Line;
+using MpkCzestochowaDownloader.Data.Lines;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -116,136 +118,32 @@ namespace ZtmDataViewer.Pages.ZtmData
         /// <summary> Load line details data. </summary>
         private void LoadLineDetails()
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.LineDetailsViewPageDownloadDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                LineDetailsViewModel = lineDetailsViewModel;
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+                if (lineDetailsViewModel.Directions.Any())
+                    SelectedLineDirectionViewModel = LineDetailsViewModel.Directions.First();
+            });
 
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var lineDetails = ZtmDataDownloader.SimpleDownloader.DownloadLineDetails(
-                    LineDetailsViewModel.Line, LineDetailsViewModel.TimeTableId);
-
-                if (lineDetails != null)
-                {
-                    we.Result = lineDetails;
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we?.Result != null && we.Result is LineDetails lineDetails)
-                {
-                    var line = LineDetailsViewModel.Line;
-                    var timeTableId = LineDetailsViewModel.TimeTableId;
-
-                    imAwait.Close();
-
-                    if (lineDetails != null)
-                    {
-                        LineDetailsViewModel = new LineDetailsViewModel(line, lineDetails, timeTableId);
-                        SelectedLineDirectionViewModel = LineDetailsViewModel.Directions.FirstOrDefault();
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
-                }
-                else
-                {
-                    imAwait.Close();
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLineDetailsData(LineDetailsViewModel.Line, _pagesController,
+                onDataLoadedEventHandler, LineDetailsViewModel.TimeTableId, true);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load departures data. </summary>
         private void LoadDepartures()
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.DeparturesViewPageDownloadDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDearpturesDataLoadedEventHandler(
+                (lineDepartureGroupViewModelCollection) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                Departures = lineDepartureGroupViewModelCollection;
+            });
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var departures = ZtmDataDownloader.SimpleDownloader.DownloadDepartures(
-                    LineDetailsViewModel.Line,
-                    SelectedLineStopViewModel.LineStop);
-
-                if (departures?.Any() ?? false)
-                {
-                    we.Result = departures;
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we?.Result != null && we.Result is Dictionary<DepartureGroup, List<Departure>> departures)
-                {
-                    Departures = new ObservableCollection<LineDepartureGroupViewModel>(
-                        departures.Select(kvp => new LineDepartureGroupViewModel(kvp.Key, kvp.Value)));
-
-                    imAwait.Close();
-                }
-                else
-                {
-                    Departures = new ObservableCollection<LineDepartureGroupViewModel>();
-
-                    imAwait.Close();
-
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.DeparturesViewPageDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLineDepartures(
+                LineDetailsViewModel.Line,
+                SelectedLineStopViewModel.LineStop,
+                onDataLoadedEventHandler);
         }
 
         //  --------------------------------------------------------------------------------
@@ -253,85 +151,7 @@ namespace ZtmDataViewer.Pages.ZtmData
         /// <param name="lineDepartureViewModel"> Line departure view model. </param>
         private void LoadArrivals(LineDepartureViewModel lineDepartureViewModel)
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.ArrivalsViewPageDownloadDesc,
-                PackIconKind.DepartureBoard)
-            {
-                AllowCancel = false,
-                AllowHide = false
-            };
-
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var departureDetails = ZtmDataDownloader.SimpleDownloader.DownloadArrivalsData(
-                    LineDetailsViewModel.Line,
-                    lineDepartureViewModel.Departure);
-
-                if (departureDetails != null)
-                {
-                    we.Result = new DepartureDetailsViewModel(departureDetails);
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we?.Result != null && we.Result is DepartureDetailsViewModel departureDetalsViewModel)
-                {
-                    imAwait.Close();
-                    LoadArrivalsInternalMessage(departureDetalsViewModel);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Load and show arrivals internal message. </summary>
-        /// <param name="departureDetailsViewModel"> Departure details view model. </param>
-        private void LoadArrivalsInternalMessage(DepartureDetailsViewModel departureDetailsViewModel)
-        {
-            //  Get basic data.
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-
-            var imArrivals = new ArrivalsInternalMessage(imContainer, departureDetailsViewModel);
-
-            imContainer.ShowMessage(imArrivals);
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Show download error internal message method. </summary>
-        /// <param name="title"> Error message title. </param>
-        /// <param name="message"> Error message. </param>
-        private void ShowDownloadingErrorMessage(string title, string message)
-        {
-            //  Get basic data.
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-
-            var imError = InternalMessageEx.CreateErrorMessage(
-                imContainer, title, message);
-
-            InternalMessagesHelper.ApplyVisualStyle(imError);
-
-            imContainer.ShowMessage(imError);
+            Loader.LoadLineArrivals(LineDetailsViewModel.Line, lineDepartureViewModel.Departure);
         }
 
         #endregion DATA MANAGEMENT METHODS

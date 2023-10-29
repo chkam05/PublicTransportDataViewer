@@ -32,7 +32,7 @@ namespace ZtmDataViewer.Pages
         //  VARIABLES
 
         private PackIconKind _iconKind = PackIconKind.None;
-        protected PagesController? _pagesController = null;
+        protected PagesController _pagesController;
 
         public virtual List<MainMenuItem> MainMenuItems { get; }
 
