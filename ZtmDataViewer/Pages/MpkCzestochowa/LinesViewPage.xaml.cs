@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.TimeTables;
 using ZtmDataViewer.Components;
 using ZtmDataViewer.Data.Config;
@@ -85,160 +86,28 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <summary> Load lines data. </summary>
         private void LoadLinesData()
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.LinesViewPageDownloadDesc,
-                PackIconKind.ChartTimelineVariant)
+            var onDataLoadedEventHandler = new Loader.LinesDataLoadedEventHandler((lineGroupCollection, messagesCollection) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                LineGroups = lineGroupCollection;
+                Messages = messagesCollection;
+            });
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LinesDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Lines.LinesRequestModel();
-                var response = downloader.DownloadData(request);
-
-                if (response.HasData && !response.HasErrors)
-                {
-                    var lineGroups = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
-                    var messages = response.Messages.Select(m => new MessageViewModel(m)).ToList();
-
-                    we.Result = new Tuple<List<LineGroupViewModel>, List<MessageViewModel>>(
-                        lineGroups, messages);
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we.Error == null && we?.Result != null)
-                {
-                    var tupleResult = (Tuple<List<LineGroupViewModel>, List<MessageViewModel>>)we.Result;
-                    LineGroups = new ObservableCollection<LineGroupViewModel>(tupleResult.Item1);
-                    Messages = new ObservableCollection<MessageViewModel>(tupleResult.Item2);
-                    imAwait.Close();
-                }
-                else
-                {
-                    LineGroups = new ObservableCollection<LineGroupViewModel>();
-                    Messages = new ObservableCollection<MessageViewModel>();
-                    imAwait.Close();
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LinesViewPageDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLinesData(onDataLoadedEventHandler);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load line details data and open line details page. </summary>
         /// <param name="line"> Line data. </param>
-        private void LoadLineDetails(Line line)
+        /// <param name="pagesController"> Pages controller. </param>
+        private void LoadLineDetails(Line line, PagesController pagesController)
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.LineDetailsViewPageDownloadDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, line, isDataReload) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                pagesController?.LoadPage(
+                    new LineDetailsViewPage(pagesController, line, lineDetailsViewModel));
+            });
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDetailsDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
-                    line.TransportType, line.Value);
-                var response = downloader.DownloadData(request);
-
-                if (response.HasData && !response.HasErrors)
-                {
-                    var lineDetails = response.LineDetails;
-
-                    we.Result = lineDetails;
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we.Error == null && we?.Result != null && we.Result is LineDetails lineDetails)
-                {
-                    LoadLineDetailsPage(line, lineDetails);
-                    imAwait.Close();
-                }
-                else
-                {
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Open line details page. </summary>
-        /// <param name="lineDetails"> Line details data. </param>
-        private void LoadLineDetailsPage(Line line, LineDetails lineDetails)
-        {
-            var lineDetailsViewModel = new LineDetailsViewModel(lineDetails);
-
-            _pagesController?.LoadPage(
-                new LineDetailsViewPage(_pagesController, line, lineDetailsViewModel));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Show download error internal message method. </summary>
-        /// <param name="title"> Error message title. </param>
-        /// <param name="message"> Error message. </param>
-        private void ShowDownloadingErrorMessage(string title, string message)
-        {
-            //  Get basic data.
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-
-            var imError = InternalMessageEx.CreateErrorMessage(
-                imContainer, title, message);
-
-            InternalMessagesHelper.ApplyVisualStyle(imError);
-
-            imContainer.ShowMessage(imError);
+            Loader.LoadLineDetails(line, onDataLoadedEventHandler);
         }
 
         #endregion DATA MANAGEMENT METHODS
@@ -268,7 +137,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 if (source.DataContext is LineViewModel lineViewModel)
                 {
-                    LoadLineDetails(lineViewModel.Line);
+                    LoadLineDetails(lineViewModel.Line, _pagesController);
                 }
             }
         }

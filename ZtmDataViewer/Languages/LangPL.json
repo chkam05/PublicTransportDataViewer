@@ -69,9 +69,6 @@
 
   "Ztm": {
     "ZtmArrivalsIM": {
-      "ZtmArrivalsTitle": "Godziny przyjazdów",
-      "ZtmArrivalStopHeader": "Nazwa przystanku",
-      "ZtmArrivalDepartureHeader": "Godz.",
       "ZtmArrivalTripTimeHeader": "Czas podróży",
       "ZtmArrivalTripDistanceHeader": "Odległość"
     },
@@ -109,6 +106,9 @@
   "CloseButton": "Zamknij",
   "SelectButton": "Wybierz",
   "StartPageTitle": "Wybór miasta (przedsiębiorstwa komunikacyjnego)",
+  "LineArrivalsTitle": "Godziny przyjazdów",
+  "LineArrivalStopHeader": "Nazwa przystanku",
+  "LineArrivalDepartureHeader": "Godz.",
   "LinesViewPageTitle": "Wybór linii",
   "LinesViewPageMenuItem": "Wybór linii",
   "LinesViewPageRefreshButton": "Odśwież",

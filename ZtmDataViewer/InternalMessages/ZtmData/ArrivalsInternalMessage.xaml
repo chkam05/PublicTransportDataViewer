@@ -184,7 +184,7 @@
                 <TextBlock
                     Grid.Column="0"
                     MinWidth="{StaticResource TimeHeaderWidth}"
-                    Text="{Binding LangConfig.ZtmArrivalDepartureHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Text="{Binding LangConfig.LineArrivalDepartureHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
                     TextAlignment="Center"
                     VerticalAlignment="Center"/>
 
@@ -192,14 +192,14 @@
                     Grid.Column="1"
                     Margin="8,0,0,0"
                     MinWidth="{StaticResource StopNameHeaderWidth}"
-                    Text="{Binding LangConfig.ZtmArrivalStopHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Text="{Binding LangConfig.LineArrivalStopHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
                     VerticalAlignment="Center"/>
 
                 <TextBlock
                     Grid.Column="2"
                     Margin="8,0,0,0"
                     MinWidth="{StaticResource TimeSpanHeaderWidth}"
-                    Text="{Binding LangConfig.ZtmArrivalTripTimeHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Text="{Binding LangConfig.Ztm.ZtmArrivalsIM.ZtmArrivalTripTimeHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
                     TextAlignment="Center"
                     VerticalAlignment="Center"/>
 
@@ -207,7 +207,7 @@
                     Grid.Column="3"
                     Margin="8,0,0,0"
                     MinWidth="{StaticResource DistanceHeaderWidth}"
-                    Text="{Binding LangConfig.ZtmArrivalTripDistanceHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Text="{Binding LangConfig.Ztm.ZtmArrivalsIM.ZtmArrivalTripDistanceHeader, Mode=OneWay, Source={StaticResource ConfigManager}}"
                     TextAlignment="Center"
                     VerticalAlignment="Center"/>
 

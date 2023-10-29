@@ -301,7 +301,8 @@
                     <cex:ListViewEx
                         ItemsSource="{Binding LineDeparturesViewModel.Departures}"
                         ItemTemplate="{StaticResource DeparturesDataTemplate}"
-                        Style="{StaticResource DepartureListViewExStyle}">
+                        Style="{StaticResource DepartureListViewExStyle}"
+                        PreviewMouseDoubleClick="DeparturesListViewEx_PreviewMouseDoubleClick">
                         <cex:ListViewEx.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel

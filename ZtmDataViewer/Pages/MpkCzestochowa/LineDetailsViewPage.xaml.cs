@@ -23,6 +23,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using ZtmDataDownloader.Data.Line;
 using ZtmDataViewer.Components;
 using ZtmDataViewer.Converters.MpkCzestochowa;
 using ZtmDataViewer.Data.Config;
@@ -48,6 +49,16 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
 
         //  GETTERS & SETTERS
+
+        public Line Line
+        {
+            get => _line;
+            set
+            {
+                _line = value;
+                OnPropertyChanged(nameof(Line));
+            }
+        }
 
         public LineDetailsViewModel LineDetailsViewModel
         {
@@ -92,7 +103,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             InitializeComponent();
 
             //  Initialize data.
-            _line = line;
+            Line = line;
             LineDetailsViewModel = lineDetailsViewModel;
 
             //  Set additional values.
@@ -105,91 +116,28 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load line details data. </summary>
+        /// <param name="line"> Line data object. </param>
         /// <param name="dateTime"> Time table date. </param>
-        /// <param name="route"> Route id. </param>
-        /// <param name="reloadDepartures"> Request for reload departures. </param>
-        private void LoadLineDetails(DateTime? dateTime = null, string? route = null, bool reloadDepartures = false)
+        /// <param name="route"> Route variant identifier. </param>
+        /// <param name="isDataReload"> Reload data. </param>
+        private void LoadLineDetails(Line line, DateTime? dateTime = null, string? route = null, bool isDataReload = true)
         {
-            var requestModel = new MpkCzestochowaDownloader.Data.Line.LineDetailsRequestModel(
-                    _line.TransportType, _line.Value, dateTime, route);
-
-            LoadLineDetails(requestModel, reloadDepartures);
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Load line details data. </summary>
-        /// <param name="requestModel"> Request model for load line details data. </param>
-        /// <param name="reloadDepartures"> Request for reload departures. </param>
-        private void LoadLineDetails(LineDetailsRequestModel requestModel, bool reloadDepartures = false)
-        {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.LineDetailsViewPageDownloadDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, line, isDataReloaded) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
-
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDetailsDownloader();
-                var response = downloader.DownloadData(requestModel);
-
-                if (response.HasData && !response.HasErrors)
+                if (!isDataReload)
                 {
-                    var lineDetails = response.LineDetails;
-
-                    we.Result = lineDetails;
+                    _pagesController?.LoadPage(new LineDetailsViewPage(_pagesController, line, lineDetailsViewModel), false, true);
+                    return;
                 }
-                else
-                {
-                    we.Result = null;
-                }
-            };
 
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we.Error == null && we?.Result != null && we.Result is LineDetails lineDetails)
-                {
-                    imAwait.Close();
+                Line = line;
+                LineDetailsViewModel = lineDetailsViewModel;
 
-                    if (lineDetails != null)
-                    {
-                        LineDetailsViewModel = new LineDetailsViewModel(lineDetails);
-                        UpdateIconKind();
-                        _pagesController?.ForceUpdate();
+                UpdateIconKind();
+                _pagesController?.ForceUpdate();
+            });
 
-                        if (reloadDepartures && _lineStopViewModel != null)
-                            LoadLineDepartures(_lineStopViewModel.LineStop);
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
-                }
-                else
-                {
-                    imAwait.Close();
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLineDetails(line, onDataLoadedEventHandler, dateTime, route, isDataReload);
         }
 
         //  --------------------------------------------------------------------------------
@@ -197,70 +145,25 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="lineStop"> Line stop data. </param>
         private void LoadLineDepartures(LineStop lineStop)
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.Messages.DownloadTitle,
-                langConf.Messages.DeparturesViewPageDownloadDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDeparturesDataLoadedEventHandler((lineDeparturesViewModel) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                LineDeparturesViewModel = lineDeparturesViewModel;
+            });
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+            Loader.LoadLineDepartures(lineStop, onDataLoadedEventHandler);
+        }
 
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var downloader = new MpkCzestochowaDownloader.Downloaders.LineDeparturesDownloader();
-                var request = new MpkCzestochowaDownloader.Data.Departures.LineDeparturesRequestModel(lineStop.URL);
-                var response = downloader.DownloadData(request);
+        //  --------------------------------------------------------------------------------
+        /// <summary> Load line arrivals data. </summary>
+        /// <param name="departureViewModel"> Departure view model. </param>
+        private void LoadLineArrivals(DepartureViewModel departureViewModel)
+        {
+            var tripId = departureViewModel.Departure.DataTrip;
+            var time = departureViewModel.Departure.Time?.ToString("HH:mm:ss");
+            var date = (LineDeparturesViewModel.LineDepartures?.Dates.FirstOrDefault(d => d.Selected)?.Date ?? DateTime.Now)
+                .ToString("yyyy-MM-dd");
 
-                if (response.HasData && !response.HasErrors)
-                {
-                    var lineDepartures = response.LineDepartures;
-
-                    we.Result = lineDepartures;
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we.Error == null && we?.Result != null && we.Result is LineDepartures lineDeaprtures)
-                {
-                    imAwait.Close();
-
-                    if (lineDeaprtures != null)
-                    {
-                        LineDeparturesViewModel = new LineDeparturesViewModel(lineDeaprtures);
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.DeparturesViewPageDownloadErrorDesc);
-                }
-                else
-                {
-                    imAwait.Close();
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.DeparturesViewPageDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLineArrivals(tripId, time, date);
         }
 
         //  --------------------------------------------------------------------------------
@@ -285,24 +188,6 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
             SetupComboBox(timeTableDatesComboBox, UpdateMode.Set, TimeTableDatesComboBoxSelectionChanged,
                 _lineDetailsViewModel.Dates, _lineDetailsViewModel.SelectedDate);
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Show download error internal message method. </summary>
-        /// <param name="title"> Error message title. </param>
-        /// <param name="message"> Error message. </param>
-        private void ShowDownloadingErrorMessage(string title, string message)
-        {
-            //  Get basic data.
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-
-            var imError = InternalMessageEx.CreateErrorMessage(
-                imContainer, title, message);
-
-            InternalMessagesHelper.ApplyVisualStyle(imError);
-
-            imContainer.ShowMessage(imError);
         }
 
         #endregion DATA MANAGEMENT METHODS
@@ -366,22 +251,18 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
                 if (source.DataContext is OtherLineViewModel otherLineViewModel)
                 {
                     var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
-                    var lineValue = otherLineViewModel.OtherLine.Value;
+                    var value = otherLineViewModel.OtherLine.Value;
                     var transportType = TransportTypesMapper.MapFromAttributes(otherLineViewModel.OtherLine.Attributes);
 
                     if (transportType.HasValue)
                     {
-                        var requestModel = new LineDetailsRequestModel(transportType.Value, lineValue, dateTime);
-
-                        LineDeparturesViewModel = null;
-                        LineStopViewModel = null;
-                        LoadLineDetails(requestModel, false);
-
-                        _line = new Line()
+                        var line = new Line()
                         {
                             TransportType = transportType.Value,
-                            Value = lineValue
+                            Value = value
                         };
+
+                        LoadLineDetails(line, dateTime, null, false);
                     }
                 }
             }
@@ -397,7 +278,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             {
                 if (source.DataContext is DepartureViewModel departureViewModel)
                 {
-                    //
+                    LoadLineArrivals(departureViewModel);
                 }
             }
         }
@@ -415,7 +296,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             var dateTime = _lineDetailsViewModel?.SelectedDate?.TimeTableDate.Date;
             var routeVariant = _lineDetailsViewModel?.SelectedRouteVariant?.RouteVariant.Variant;
 
-            LoadLineDetails(dateTime, routeVariant, _lineDeparturesViewModel != null);
+            LoadLineDetails(_line, dateTime, routeVariant);
         }
 
         #endregion HEADER INTERACTION METHODS
@@ -435,7 +316,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
                 LineDeparturesViewModel = null;
                 LineStopViewModel = null;
-                LoadLineDetails(dateTime, routeVariant, false);
+                LoadLineDetails(_line, dateTime, routeVariant);
             }
         }
 

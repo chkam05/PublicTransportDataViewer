@@ -37,6 +37,11 @@ namespace ZtmDataViewer.Data.Config.Lang
         //  Start Page
         private string _startPageTitle = string.Empty;
 
+        //  Line Arrivals IM
+        private string _lineArrivalsTitle = string.Empty;
+        private string _lineArrivalStopHeader = string.Empty;
+        private string _lineArrivalDepartureHeader = string.Empty;
+
         //  Lines View Page
         private string _linesViewPageTitle = string.Empty;
         private string _linesViewPageMenuItem = string.Empty;
@@ -198,6 +203,28 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         #endregion Start Page
 
+        #region  Line Arrivals IM
+
+        public string LineArrivalsTitle
+        {
+            get => _lineArrivalsTitle;
+            set => SetStringProperty(ref _lineArrivalsTitle, nameof(LineArrivalsTitle), value);
+        }
+
+        public string LineArrivalStopHeader
+        {
+            get => _lineArrivalStopHeader;
+            set => SetStringProperty(ref _lineArrivalStopHeader, nameof(LineArrivalStopHeader), value);
+        }
+
+        public string LineArrivalDepartureHeader
+        {
+            get => _lineArrivalDepartureHeader;
+            set => SetStringProperty(ref _lineArrivalDepartureHeader, nameof(LineArrivalDepartureHeader), value);
+        }
+
+        #endregion  Line Arrivals IM
+
         #region Lines View Page
 
         public string LinesViewPageTitle
@@ -276,7 +303,12 @@ namespace ZtmDataViewer.Data.Config.Lang
 
             //  Start Page
             string? startPageTitle = null,
-            
+
+            //  Line Arrivals IM
+            string ? lineArrivalsTitle = null,
+            string ? lineArrivalStopHeader = null,
+            string ? lineArrivalDepartureHeader = null,
+
             //  Lines View Page
             string? linesViewPageTitle = null,
             string? linesViewPageMenuItem = null,
@@ -310,6 +342,11 @@ namespace ZtmDataViewer.Data.Config.Lang
 
             //  Start Page
             StartPageTitle = SetLanguageValue(startPageTitle, "Wybór miasta (przedsiębiorstwa komunikacyjnego)");
+
+            //  Line Arrivals IM
+            LineArrivalsTitle = SetLanguageValue(lineArrivalsTitle, "Godziny przyjazdów");
+            LineArrivalStopHeader = SetLanguageValue(lineArrivalStopHeader, "Nazwa przystanku");
+            LineArrivalDepartureHeader = SetLanguageValue(lineArrivalDepartureHeader, "Godz.");
 
             //  Lines View Page
             LinesViewPageTitle = SetLanguageValue(linesViewPageTitle, "Wybór linii");
