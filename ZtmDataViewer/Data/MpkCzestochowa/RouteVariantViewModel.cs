@@ -33,24 +33,12 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                 _routeVariant = value;
                 OnPropertyChanged(nameof(RouteVariant));
                 OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(IsSelected));
-                OnPropertyChanged(nameof(Variant));
             }
         }
 
         public string Name
         {
             get => _routeVariant.Name;
-        }
-
-        public bool IsSelected
-        {
-            get => _routeVariant.Selected;
-        }
-
-        public string? Variant
-        {
-            get => _routeVariant.Variant;
         }
 
 

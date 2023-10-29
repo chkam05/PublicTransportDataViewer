@@ -36,11 +36,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             }
         }
 
-        public string? TripTime
-        {
-            get => _lineArrivals.TripTime?.ToString("HH:mm");
-        }
-
         public ObservableCollection<ArrivalViewModel> Arrivals
         {
             get => _arrivals;

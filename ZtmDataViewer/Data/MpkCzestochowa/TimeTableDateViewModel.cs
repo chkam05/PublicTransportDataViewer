@@ -31,24 +31,12 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                 _timeTableDate = value;
                 OnPropertyChanged(nameof(TimeTableDate));
                 OnPropertyChanged(nameof(Date));
-                OnPropertyChanged(nameof(IsSelected));
-                OnPropertyChanged(nameof(Title));
             }
         }
 
         public string? Date
         {
             get => _timeTableDate.Date?.ToString("yyyy-MM-dd") ?? null;
-        }
-
-        public bool IsSelected
-        {
-            get => _timeTableDate.Selected;
-        }
-
-        public string Title
-        {
-            get => _timeTableDate.Title;
         }
 
 

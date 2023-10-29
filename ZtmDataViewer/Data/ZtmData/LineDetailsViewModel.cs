@@ -48,10 +48,7 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _lineDetails = value;
                 OnPropertyChanged(nameof(LineDetails));
-                OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(Description));
-                OnPropertyChanged(nameof(Information));
-                OnPropertyChanged(nameof(TransportType));
             }
         }
 
@@ -65,19 +62,9 @@ namespace ZtmDataViewer.Data.ZtmData
             }
         }
 
-        public string Name
-        {
-            get => _lineDetails.Name;
-        }
-
         public string Description
         {
             get => _lineDetails.Description;
-        }
-
-        public string Information
-        {
-            get => _lineDetails.Information;
         }
 
         public TransportType TransportType

@@ -22,7 +22,6 @@ namespace ZtmDataViewer.Data.ZtmData
         //  VARIABLES
 
         private Arrival _arrival;
-        private ObservableCollection<ArrivalLinkViewModel> _links;
 
 
         //  GETTERS & SETTERS
@@ -34,24 +33,12 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _arrival = value;
                 OnPropertyChanged(nameof(Arrival));
-                OnPropertyChanged(nameof(AdditionalInfo));
                 OnPropertyChanged(nameof(Color));
-                OnPropertyChanged(nameof(FullDistance));
-                OnPropertyChanged(nameof(FullTime));
-                OnPropertyChanged(nameof(Hour));
-                OnPropertyChanged(nameof(Minute));
                 OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(PartDistance));
-                OnPropertyChanged(nameof(PartTime));
                 OnPropertyChanged(nameof(SpecialDistance));
                 OnPropertyChanged(nameof(SpecialTime));
                 OnPropertyChanged(nameof(Value));
             }
-        }
-
-        public string AdditionalInfo
-        {
-            get => _arrival.AdditionalInfo;
         }
 
         public Color Color
@@ -59,39 +46,9 @@ namespace ZtmDataViewer.Data.ZtmData
             get => _arrival.GetColor();
         }
 
-        public string FullDistance
-        {
-            get => _arrival.FullDistance;
-        }
-
-        public string FullTime
-        {
-            get => _arrival.FullTime;
-        }
-
-        public int Hour
-        {
-            get => _arrival.Hour;
-        }
-
-        public int Minute
-        {
-            get => _arrival.Minute;
-        }
-
         public string Name
         {
             get => _arrival.Name;
-        }
-
-        public string PartDistance
-        {
-            get => _arrival.PartDistance;
-        }
-
-        public string PartTime
-        {
-            get => _arrival.PartTime;
         }
 
         public string SpecialDistance
@@ -109,17 +66,6 @@ namespace ZtmDataViewer.Data.ZtmData
             get => _arrival.Value;
         }
 
-        public ObservableCollection<ArrivalLinkViewModel> Links
-        {
-            get => _links;
-            private set
-            {
-                _links = value;
-                _links.CollectionChanged += OnLinksCollectionChanged;
-                OnPropertyChanged(nameof(Links));
-            }
-        }
-
         
         //  METHODS
 
@@ -131,9 +77,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public ArrivalViewModel(Arrival arrival)
         {
             Arrival = arrival;
-
-            Links = new ObservableCollection<ArrivalLinkViewModel>(
-                arrival.Links.Select(l => new ArrivalLinkViewModel(l)));
         }
 
         #endregion CLASS METHODS
@@ -149,15 +92,6 @@ namespace ZtmDataViewer.Data.ZtmData
 
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after links collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnLinksCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Links));
         }
 
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS

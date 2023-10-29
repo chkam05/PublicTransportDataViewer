@@ -40,11 +40,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                 _lineDetails = value;
                 OnPropertyChanged(nameof(LineDetails));
                 OnPropertyChanged(nameof(Description));
-                OnPropertyChanged(nameof(DirectionFrom));
-                OnPropertyChanged(nameof(DirectionTo));
-                OnPropertyChanged(nameof(LineId));
                 OnPropertyChanged(nameof(TransportType));
-                OnPropertyChanged(nameof(Value));
             }
         }
 
@@ -67,29 +63,9 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             }
         }
 
-        public string? DirectionFrom
-        {
-            get => _lineDetails.DirectionFrom;
-        }
-
-        public string? DirectionTo
-        {
-            get => _lineDetails.DirectionTo;
-        }
-
-        public string? LineId
-        {
-            get => _lineDetails.LineId;
-        }
-
         public TransportType TransportType
         {
             get => _lineDetails.TransportType;
-        }
-
-        public string? Value
-        {
-            get => _lineDetails.Value;
         }
 
         public ObservableCollection<TimeTableDateViewModel> Dates
@@ -176,9 +152,9 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             RouteVariants = new ObservableCollection<RouteVariantViewModel>(
                 lineDetails.RouteVariants.Select(r => new RouteVariantViewModel(r)));
 
-            SelectedDate = Dates.FirstOrDefault(d => d.IsSelected);
+            SelectedDate = Dates.FirstOrDefault(d => d.TimeTableDate.Selected);
             SelectedDirection = Directions.FirstOrDefault();
-            SelectedRouteVariant = RouteVariants.FirstOrDefault(r => r.IsSelected);
+            SelectedRouteVariant = RouteVariants.FirstOrDefault(r => r.RouteVariant.Selected);
         }
 
         #endregion CLASS METHODS

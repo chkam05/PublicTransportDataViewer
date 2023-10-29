@@ -30,14 +30,8 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             {
                 _otherLine = value;
                 OnPropertyChanged(nameof(OtherLine));
-                OnPropertyChanged(nameof(URL));
                 OnPropertyChanged(nameof(Value));
             }
-        }
-
-        public string? URL
-        {
-            get => _otherLine.URL;
         }
 
         public string Value

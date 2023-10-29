@@ -35,7 +35,6 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _departureGroup = value;
                 OnPropertyChanged(nameof(DepartureGroup));
-                OnPropertyChanged(nameof(Index));
                 OnPropertyChanged(nameof(Description));
             }
         }
@@ -49,11 +48,6 @@ namespace ZtmDataViewer.Data.ZtmData
                 _departures.CollectionChanged += OnDeparturesCollectionChanged;
                 OnPropertyChanged(nameof(Departures));
             }
-        }
-
-        public int Index
-        {
-            get => _departureGroup.Index;
         }
 
         public string Description

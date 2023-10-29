@@ -21,7 +21,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         //  VARIABLES
 
         private LineStop _lineStop;
-        private ObservableCollection<string> _attributes;
 
 
         //  GETTERS & SETTERS
@@ -34,29 +33,12 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                 _lineStop = value;
                 OnPropertyChanged(nameof(LineStop));
                 OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(URL));
             }
         }
 
         public string Name
         {
             get => _lineStop.Name;
-        }
-
-        public string? URL
-        {
-            get => _lineStop.URL;
-        }
-
-        public ObservableCollection<string> Attributes
-        {
-            get => _attributes;
-            set
-            {
-                _attributes = value;
-                _attributes.CollectionChanged += OnAttributesCollectionChanged;
-                OnPropertyChanged(nameof(Attributes));
-            }
         }
 
 
@@ -70,7 +52,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         public LineStopViewModel(LineStop lineStop)
         {
             LineStop = lineStop;
-            Attributes = new ObservableCollection<string>(lineStop.Attributes);
         }
 
         #endregion CLASS METHODS
@@ -86,15 +67,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after attributes collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnAttributesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Attributes));
         }
 
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS

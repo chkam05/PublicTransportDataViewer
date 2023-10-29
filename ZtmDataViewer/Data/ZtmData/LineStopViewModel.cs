@@ -31,7 +31,6 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _lineStop = value;
                 OnPropertyChanged(nameof(City));
-                OnPropertyChanged(nameof(Color));
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsOptional));
                 OnPropertyChanged(nameof(Platform));
@@ -42,11 +41,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public string City
         {
             get => _lineStop.City;
-        }
-
-        public Color Color
-        {
-            get => _lineStop.GetColor();
         }
 
         public string Name

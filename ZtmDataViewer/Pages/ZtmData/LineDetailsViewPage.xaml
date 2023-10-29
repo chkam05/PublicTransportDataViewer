@@ -52,7 +52,6 @@
                 <Setter Property="BorderBrush" Value="{Binding ConfigData.AppearanceConfig.ThemeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
                 <Setter Property="Margin" Value="0,2"/>
                 <Setter Property="Padding" Value="4"/>
-                <Setter Property="ToolTip" Value="{Binding PlatformDescription}"/>
             </Style>
 
             <Style x:Key="MessageListViewExStyle" BasedOn="{StaticResource ListViewExStyle}" TargetType="{x:Type cex:ListViewEx}">

@@ -37,7 +37,6 @@ namespace ZtmDataViewer.Data.ZtmData
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsPathChanged));
                 OnPropertyChanged(nameof(IsUpdated));
-                OnPropertyChanged(nameof(TransportType));
                 OnPropertyChanged(nameof(Value));
             }
         }
@@ -60,11 +59,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public bool IsUpdated
         {
             get => _line.IsUpdated;
-        }
-
-        public TransportType TransportType
-        {
-            get => _line.Type;
         }
 
         public string Value

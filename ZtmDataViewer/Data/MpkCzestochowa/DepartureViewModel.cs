@@ -30,20 +30,8 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             {
                 _departure = value;
                 OnPropertyChanged(nameof(Departure));
-                OnPropertyChanged(nameof(DataTrip));
-                OnPropertyChanged(nameof(DataRoute));
                 OnPropertyChanged(nameof(Time));
             }
-        }
-
-        public string? DataTrip
-        {
-            get => _departure.DataTrip;
-        }
-
-        public string? DataRoute
-        {
-            get => _departure.DataRoute;
         }
 
         public string? Time

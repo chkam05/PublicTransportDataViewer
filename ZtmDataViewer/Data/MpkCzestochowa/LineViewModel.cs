@@ -31,14 +31,8 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             {
                 _line = value;
                 OnPropertyChanged(nameof(Line));
-                OnPropertyChanged(nameof(TransportType));
                 OnPropertyChanged(nameof(Value));
             }
-        }
-
-        public TransportType TransportType
-        {
-            get => _line.TransportType;
         }
 
         public string Value

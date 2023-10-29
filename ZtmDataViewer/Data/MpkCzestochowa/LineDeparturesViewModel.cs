@@ -34,31 +34,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             {
                 _lineDepartures = value;
                 OnPropertyChanged(nameof(LineDepartures));
-                OnPropertyChanged(nameof(DirectionName));
-                OnPropertyChanged(nameof(ImageURL));
-                OnPropertyChanged(nameof(StopName));
-                OnPropertyChanged(nameof(Value));
             }
-        }
-
-        public string? DirectionName
-        {
-            get => _lineDepartures.DirectionName;
-        }
-
-        public string ImageURL
-        {
-            get => _lineDepartures.ImageURL;
-        }
-
-        public string? StopName
-        {
-            get => _lineDepartures.StopName;
-        }
-
-        public string? Value
-        {
-            get => _lineDepartures.Value;
         }
 
         public ObservableCollection<DepartureViewModel> Departures

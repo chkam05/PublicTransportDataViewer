@@ -22,7 +22,6 @@ namespace ZtmDataViewer.Data.ZtmData
         //  VARIABLES
 
         private LineDirection _lineDirection;
-        private ObservableCollection<CityViewModel> _cities;
         private ObservableCollection<LineStopViewModel> _stops;
 
 
@@ -42,17 +41,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public string Direction
         {
             get => _lineDirection.Direction;
-        }
-
-        public ObservableCollection<CityViewModel> Cities
-        {
-            get => _cities;
-            private set
-            {
-                _cities = value;
-                _cities.CollectionChanged += OnCitiesCollectionChanged;
-                OnPropertyChanged(nameof(Cities));
-            }
         }
 
         public ObservableCollection<LineStopViewModel> Stops
@@ -78,9 +66,6 @@ namespace ZtmDataViewer.Data.ZtmData
         {
             LineDirection = lineDirection;
 
-            Cities = new ObservableCollection<CityViewModel>(
-                lineDirection.Cities.Select(c => new CityViewModel(c)));
-
             Stops = new ObservableCollection<LineStopViewModel>(
                 lineDirection.Stops.Select(s => new LineStopViewModel(s)));
         }
@@ -98,15 +83,6 @@ namespace ZtmDataViewer.Data.ZtmData
 
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after cities collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnCitiesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Cities));
         }
 
         //  --------------------------------------------------------------------------------

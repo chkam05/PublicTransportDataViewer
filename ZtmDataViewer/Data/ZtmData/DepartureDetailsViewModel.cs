@@ -23,8 +23,6 @@ namespace ZtmDataViewer.Data.ZtmData
 
         private DepartureDetails _departureDetails;
         private ObservableCollection<ArrivalViewModel> _arrivals;
-        private ObservableCollection<CityViewModel> _cities;
-        private ObservableCollection<string> _infos;
         private ObservableCollection<KeyValuePair<string, string>> _informations;
 
 
@@ -58,28 +56,6 @@ namespace ZtmDataViewer.Data.ZtmData
             }
         }
 
-        public ObservableCollection<CityViewModel> Cities
-        {
-            get => _cities;
-            private set
-            {
-                _cities = value;
-                _cities.CollectionChanged += OnCitiesCollectionChanged;
-                OnPropertyChanged(nameof(Cities));
-            }
-        }
-
-        public ObservableCollection<string> Infos
-        {
-            get => _infos;
-            private set
-            {
-                _infos = value;
-                _infos.CollectionChanged += OnInfosCollectionChanged;
-                OnPropertyChanged(nameof(Infos));
-            }
-        }
-
         public ObservableCollection<KeyValuePair<string, string>> Informations
         {
             get => _informations;
@@ -105,12 +81,6 @@ namespace ZtmDataViewer.Data.ZtmData
 
             Arrivals = new ObservableCollection<ArrivalViewModel>(
                 departureDetails.Arrivals.Select(a => new ArrivalViewModel(a)));
-
-            Cities = new ObservableCollection<CityViewModel>(
-                departureDetails.Cities.Select(c => new CityViewModel(c)));
-
-            Infos = new ObservableCollection<string>(
-                departureDetails.Infos);
 
             Informations = new ObservableCollection<KeyValuePair<string, string>>(
                 departureDetails.Informations.Select(kvp => kvp));
@@ -138,24 +108,6 @@ namespace ZtmDataViewer.Data.ZtmData
         private void OnArrivalsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(Arrivals));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after cities collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnCitiesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Cities));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after infos collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnInfosCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Infos));
         }
 
         //  --------------------------------------------------------------------------------

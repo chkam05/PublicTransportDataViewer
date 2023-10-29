@@ -32,6 +32,7 @@ namespace ZtmDataViewer.Data.ZtmData
                 _message = value;
                 OnPropertyChanged(nameof(Message));
                 OnPropertyChanged(nameof(DateDescription));
+                OnPropertyChanged(nameof(HasDates));
                 OnPropertyChanged(nameof(HasStartDate));
                 OnPropertyChanged(nameof(HasEndDate));
                 OnPropertyChanged(nameof(MessageText));

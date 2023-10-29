@@ -30,11 +30,9 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _departure = value;
                 OnPropertyChanged(nameof(Departure));
-                OnPropertyChanged(nameof(Hour));
-                OnPropertyChanged(nameof(Minute));
+                OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsVariant));
                 OnPropertyChanged(nameof(LowFloor));
-                OnPropertyChanged(nameof(Variant));
                 OnPropertyChanged(nameof(Value));
             }
         }
@@ -42,16 +40,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public string Description
         {
             get => _departure.Description;
-        }
-
-        public int Hour
-        {
-            get => _departure.Hour;
-        }
-
-        public int Minute
-        {
-            get => _departure.Minute;
         }
 
         public bool IsVariant
@@ -62,11 +50,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public bool LowFloor
         {
             get => _departure.LowFloor;
-        }
-
-        public string Variant
-        {
-            get => _departure.Variant;
         }
 
         public string Value
@@ -92,11 +75,11 @@ namespace ZtmDataViewer.Data.ZtmData
         /// <returns> Value as string. </returns>
         public override string ToString()
         {
-            var hour = Hour < 10 ? $"0{Hour}" : $"{Hour}";
-            var minute = Minute < 10 ? $"0{Minute}" : $"{Minute}";
+            var hour = _departure.Hour < 10 ? $"0{_departure.Hour}" : $"{_departure.Hour}";
+            var minute = _departure.Minute < 10 ? $"0{_departure.Minute}" : $"{_departure.Minute}";
 
             return IsVariant
-                ? $"{hour}:{minute} {Variant}"
+                ? $"{hour}:{minute} {_departure.Variant}"
                 : $"{hour}:{minute}";
         }
 
