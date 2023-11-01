@@ -163,13 +163,13 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
 
             if (okButton != null)
             {
-                okButton.Content = langConfig.SelectButton;
+                okButton.Content = langConfig.ButtonSelect;
                 okButton.IsEnabled = false;
                 _okButton = okButton;
             }
 
             if (cancelButton != null)
-                cancelButton.Content = langConfig.CancelButton;
+                cancelButton.Content = langConfig.ButtonCancel;
         }
 
         #endregion TEMPLATE METHODS

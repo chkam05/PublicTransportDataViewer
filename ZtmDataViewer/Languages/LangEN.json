@@ -1,6 +1,21 @@
 {
   "Name": "English",
 
+  "Messages": {
+    "DownloadTitle": "Pobieranie danych",
+    "DownloadErrorTitle": "Błąd pobierania danych",
+    "ArrivalsDownloadDesc": "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...",
+    "ArrivalsDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
+    "DeparturesDownloadDesc": "Trwa pobieranie danych godzin odjazdów. \r\nProszę czekać ...",
+    "DeparturesDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin odjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
+    "LineDetailsDownloadDesc": "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...",
+    "LineDetailsDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
+    "LinesDownloadDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
+    "LinesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
+    "TimeTablesDownloadDesc": "Trwa pobieranie danych. \r\nProszę czekać...",
+    "TimeTablesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas."
+  },
+
   "MpkCzestochowa": {
     "Arrivals": {
 

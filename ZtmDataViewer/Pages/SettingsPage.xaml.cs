@@ -36,9 +36,9 @@ namespace ZtmDataViewer.Pages
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem(_langConfig.Settings.SettingsPageAppearanceMenuItem, PackIconKind.Palette, OnAppearanceMenuItemSelect, _langConfig.Settings.SettingsPageAppearanceMenuItemDesc),
-                new MainMenuItem(_langConfig.Settings.SettingsPageGeneralMenuItem, PackIconKind.Gear, OnGeneralMenuItemSelect, _langConfig.Settings.SettingsPageGeneralMenuItemDesc),
-                new MainMenuItem(_langConfig.Settings.SettingsPageInfoMenuItem, PackIconKind.InfoCircleOutline, OnInfoMenuItemSelect, _langConfig.Settings.SettingsPageInfoMenuItemDesc),
+                new MainMenuItem(_langConfig.Settings.MenuItemAppearance, PackIconKind.Palette, OnAppearanceMenuItemSelect, _langConfig.Settings.MenuItemAppearanceDesc),
+                new MainMenuItem(_langConfig.Settings.MenuItemGeneral, PackIconKind.Gear, OnGeneralMenuItemSelect, _langConfig.Settings.MenuItemGeneralDesc),
+                new MainMenuItem(_langConfig.Settings.MenuItemInfo, PackIconKind.InfoCircleOutline, OnInfoMenuItemSelect, _langConfig.Settings.MenuItemInfoDesc),
             };
         }
 

@@ -23,11 +23,11 @@ namespace ZtmDataViewer.Converters.Config
             switch (appearanceThemeType)
             {
                 case AppearanceThemeType.Light:
-                    return configManager.LangConfig.Settings.SettingsAppearance.SettingsAppearanceThemeLight;
+                    return configManager.LangConfig.Settings.Appearance.ThemeOptionLight;
 
                 case AppearanceThemeType.Dark:
                 default:
-                    return configManager.LangConfig.Settings.SettingsAppearance.SettingsAppearanceThemeDark;
+                    return configManager.LangConfig.Settings.Appearance.ThemeOptionDark;
             }
         }
 

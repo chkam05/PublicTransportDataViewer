@@ -379,7 +379,7 @@ namespace ZtmDataViewer.Components
         private void SetupMainMenu()
         {
             _menuHeaderItem = new MainMenuItem(
-                ConfigManager.Instance.LangConfig.MainMenuItem, PackIconKind.HamburgerMenu, OnHeaderItemSelected);
+                ConfigManager.Instance.LangConfig.MenuItemMain, PackIconKind.HamburgerMenu, OnHeaderItemSelected);
 
             var menuItems = new List<MainMenuItem>()
             {

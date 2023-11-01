@@ -17,6 +17,7 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         private string _name = string.Empty;
 
+        private MessagesLangConfig? _messages = null;
         private MpkCzestochowaLangConfig? _mpkCzestochowa = null;
         private SettingsLangConfig? _settings = null;
         private ZtmLangConfig? _ztm = null;
@@ -60,6 +61,22 @@ namespace ZtmDataViewer.Data.Config.Lang
         }
 
 
+        public MessagesLangConfig Messages
+        {
+            get
+            {
+                if (_messages == null)
+                    _messages = new MessagesLangConfig();
+
+                return _messages;
+            }
+            set
+            {
+                _messages = value;
+                OnPropertyChanged(nameof(Messages));
+            }
+        }
+        
         public MpkCzestochowaLangConfig MpkCzestochowa
         {
             get
@@ -228,6 +245,7 @@ namespace ZtmDataViewer.Data.Config.Lang
         public LangConfig(
             string? name = null,
 
+            MessagesLangConfig? messages = null,
             MpkCzestochowaLangConfig? mpkCzestochowa = null,
             SettingsLangConfig? settings = null,
             ZtmLangConfig? ztm = null,
@@ -253,6 +271,7 @@ namespace ZtmDataViewer.Data.Config.Lang
         {
             Name = SetLanguageValue(name, "Polski");
 
+            Messages = messages ?? new MessagesLangConfig();
             MpkCzestochowa = mpkCzestochowa ?? new MpkCzestochowaLangConfig();
             Settings = settings ?? new SettingsLangConfig();
             Ztm = ztm ?? new ZtmLangConfig();

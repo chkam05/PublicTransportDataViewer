@@ -60,7 +60,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
                 langConf.Messages.DownloadTitle,
-                langConf.Messages.LinesViewPageDownloadDesc,
+                langConf.Messages.LinesDownloadDesc,
                 PackIconKind.ChartTimelineVariant)
             {
                 AllowCancel = false,
@@ -113,7 +113,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LinesViewPageDownloadErrorDesc);
+                        langConf.Messages.LinesDownloadErrorDesc);
                 }
             };
 
@@ -141,7 +141,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
                 langConf.Messages.DownloadTitle,
-                langConf.Messages.LineDetailsViewPageDownloadDesc,
+                langConf.Messages.LineDetailsDownloadDesc,
                 PackIconKind.DepartureBoard)
             {
                 AllowCancel = false,
@@ -186,7 +186,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
+                        langConf.Messages.LineDetailsDownloadErrorDesc);
                 }
             };
 
@@ -210,7 +210,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
                 langConf.Messages.DownloadTitle,
-                langConf.Messages.DeparturesViewPageDownloadDesc,
+                langConf.Messages.DeparturesDownloadDesc,
                 PackIconKind.DepartureBoard)
             {
                 AllowCancel = false,
@@ -254,7 +254,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.DeparturesViewPageDownloadErrorDesc);
+                        langConf.Messages.DeparturesDownloadErrorDesc);
                 }
             };
 
@@ -279,7 +279,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Create await internal message.
             var imAwait = new AwaitInternalMessageEx(imContainer,
                 langConf.Messages.DownloadTitle,
-                langConf.Messages.ArrivalsViewPageDownloadDesc,
+                langConf.Messages.ArrivalsDownloadDesc,
                 PackIconKind.DepartureBoard)
             {
                 AllowCancel = false,
@@ -323,7 +323,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.ArrivalsViewPageDownloadErrorDesc);
+                        langConf.Messages.ArrivalsDownloadErrorDesc);
                 }
             };
 
