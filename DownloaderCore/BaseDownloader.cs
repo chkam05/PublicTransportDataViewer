@@ -40,6 +40,16 @@ namespace DownloaderCore
             throw new NotImplementedException();
         }
 
+        //  --------------------------------------------------------------------------------
+        // <summary> Overridable deserialize raw data from http response. </summary>
+        /// <param name="rawData"> Raw data from http response. </param>
+        /// <param name="parameters"> Additional deserialize parameters. </param>
+        /// <returns> Response data model. </returns>
+        protected virtual TResponse DeserializeData(string rawData, params object[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion INTERACTION METHODS
 
         #region WEB REQUEST PERFORM METHODS

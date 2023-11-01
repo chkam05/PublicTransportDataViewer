@@ -44,14 +44,11 @@
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="MouseOverBackground" Value="Transparent"/>
                 <Setter Property="MouseOverBorderBrush" Value="Transparent"/>
-                <Setter Property="MouseOverForeground" Value="{Binding ConfigData.AppearanceConfig.ThemeForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="SelectedBackground" Value="Transparent"/>
                 <Setter Property="SelectedBorderBrush" Value="Transparent"/>
-                <Setter Property="SelectedForeground" Value="{Binding ConfigData.AppearanceConfig.ThemeForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
                 <Setter Property="SelectedInactiveBackground" Value="Transparent"/>
                 <Setter Property="SelectedInactiveBorderBrush" Value="Transparent"/>
-                <Setter Property="SelectedInactiveForeground" Value="{Binding ConfigData.AppearanceConfig.ThemeForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
             </Style>
 
             <Style x:Key="DataSourcesExStyle" BasedOn="{StaticResource ListViewExStyle}" TargetType="{x:Type cex:ListViewEx}">
@@ -69,12 +66,24 @@
 
                     <TextBlock
                         Grid.Column="0"
-                        Text="{Binding Key}"/>
+                        Text="{Binding Key}"
+                        TextAlignment="Right"
+                        Width="224"/>
 
                     <TextBlock
                         Grid.Column="1"
                         Margin="16,0,0,0"
-                        Text="{Binding Value}"/>
+                        Text="{Binding Value}">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
             </DataTemplate>
 
@@ -181,7 +190,8 @@
                             ItemsSource="{Binding DataSources, Mode=OneWay, Source={StaticResource AppInfoManager}}"
                             ItemTemplate="{StaticResource DataSourceTemplate}"
                             Margin="0,0,0,8"
-                            Style="{StaticResource DataSourcesExStyle}"/>
+                            Style="{StaticResource DataSourcesExStyle}"
+                            PreviewMouseDoubleClick="SourcesListViewEx_PreviewMouseDoubleClick"/>
 
                     </StackPanel>
 

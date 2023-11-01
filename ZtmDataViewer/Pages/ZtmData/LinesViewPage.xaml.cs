@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace ZtmDataViewer.Pages.ZtmData
 
         private ObservableCollection<LineGroupViewModel> _lineGroups;
         private bool _loaded = false;
+        private string _sourceUrl = string.Empty;
 
 
         //  GETTERS & SETTERS
@@ -61,6 +63,16 @@ namespace ZtmDataViewer.Pages.ZtmData
                 _lineGroups = value;
                 _lineGroups.CollectionChanged += OnLineGroupsCollectionChanged;
                 OnPropertyChanged(nameof(LineGroups));
+            }
+        }
+
+        public string SourceUrl
+        {
+            get => _sourceUrl;
+            set
+            {
+                _sourceUrl = value;
+                OnPropertyChanged(nameof(SourceUrl));
             }
         }
 
@@ -86,9 +98,10 @@ namespace ZtmDataViewer.Pages.ZtmData
         /// <summary> Load lines data. </summary>
         private void LoadLinesData()
         {
-            var onDataLoadedEventHandler = new Loader.LinesDataLoadedEventHandler((lineGroupsCollection) =>
+            var onDataLoadedEventHandler = new Loader.LinesDataLoadedEventHandler((lineGroupsCollection, sourceUrl) =>
             {
                 LineGroups = lineGroupsCollection;
+                SourceUrl = sourceUrl ?? string.Empty;
             });
 
             Loader.LoadLinesData(onDataLoadedEventHandler);
@@ -114,6 +127,24 @@ namespace ZtmDataViewer.Pages.ZtmData
         private void RefreshButtonEx_Click(object sender, RoutedEventArgs e)
         {
             LoadLinesData();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking source text block. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void SourceTextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2 && !string.IsNullOrEmpty(SourceUrl))
+            {
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = SourceUrl,
+                    UseShellExecute = true
+                };
+
+                Process.Start(processStartInfo);
+            }
         }
 
         #endregion HEADER INTERACTION METHODS

@@ -11,7 +11,7 @@ using ZtmDataViewer.Utilities;
 
 namespace ZtmDataViewer.Data.Config
 {
-    public class AppearanceConfig : INotifyPropertyChanged
+    public class AppearanceConfig : BaseViewModel
     {
 
         //  CONST
@@ -24,11 +24,6 @@ namespace ZtmDataViewer.Data.Config
         private static readonly int FACTOR_MOUSE_OVER = 15;
         private static readonly int FACTOR_PRESSED = 10;
         private static readonly int FACTOR_SELECTED = 5;
-
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
 
         //  VARIABLES
@@ -233,21 +228,6 @@ namespace ZtmDataViewer.Data.Config
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
         #region UPDATE METHODS
 

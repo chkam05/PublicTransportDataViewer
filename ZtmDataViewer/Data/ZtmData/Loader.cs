@@ -1,34 +1,21 @@
 ﻿using chkam05.Tools.ControlsEx.Data;
-using chkam05.Tools.ControlsEx.Events;
 using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Policy;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Xml;
+using ZtmDataDownloader.Data.Arrivals;
 using ZtmDataDownloader.Data.Departures;
 using ZtmDataDownloader.Data.Global;
 using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.TimeTables;
+using ZtmDataDownloader.Downloaders;
 using ZtmDataViewer.Components;
 using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.MainMenu;
-using ZtmDataViewer.Data.MpkCzestochowa;
-using ZtmDataViewer.Data.ZtmData;
 using ZtmDataViewer.InternalMessages.ZtmData;
 using ZtmDataViewer.Pages.ZtmData;
 using ZtmDataViewer.Utilities;
@@ -42,13 +29,13 @@ namespace ZtmDataViewer.Data.ZtmData
         //  DELEGATES
 
         public delegate void LinesDataLoadedEventHandler(
-            ObservableCollection<LineGroupViewModel> lineGroupCollection);
+            ObservableCollection<LineGroupViewModel> lineGroupCollection, string? sourceUrl);
 
         public delegate void LineDetailsDataLoadedEventHandler(
-            LineDetailsViewModel lineDetailsViewModel);
+            LineDetailsViewModel lineDetailsViewModel, string? sourceUrl);
 
         public delegate void LineDearpturesDataLoadedEventHandler(
-            ObservableCollection<LineDepartureGroupViewModel> departureGroupViewModelCollection);
+            ObservableCollection<LineDepartureGroupViewModel> departureGroupViewModelCollection, string? sourceUrl);
 
 
         //  METHODS
@@ -81,34 +68,36 @@ namespace ZtmDataViewer.Data.ZtmData
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var linesDict = ZtmDataDownloader.SimpleDownloader.DownloadLines();
+                var downloader = new LinesDownloader();
+                var request = new LinesRequestModel();
+                var response = downloader.DownloadData(request);
 
-                if (linesDict?.Any() ?? false)
+                List<LineGroupViewModel>? result = null;
+                string? requestUrl = response.URL;
+
+                if (response != null && response.HasData)
                 {
-                    var lineGroups = linesDict.Select(kvp => new LineGroupViewModel(kvp)).ToList();
-                    we.Result = lineGroups;
+                    result = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
                 }
-                else
-                {
-                    we.Result = null;
-                }
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null)
-                {
-                    var lineGroups = (List<LineGroupViewModel>)we.Result;
-                    var lineGroupsCollection = new ObservableCollection<LineGroupViewModel>(lineGroups);
+                List<LineGroupViewModel>? result = null;
+                string? requestUrl = null;
 
-                    onDataLoadedEventHandler?.Invoke(lineGroupsCollection);
+                if (GetListResult(we, out result, out requestUrl))
+                {
+                    var lineGroupsCollection = new ObservableCollection<LineGroupViewModel>(result);
+
+                    onDataLoadedEventHandler?.Invoke(lineGroupsCollection, requestUrl);
+
                     imAwait.Close();
                 }
                 else
                 {
-                    var lineGroupsCollection = new ObservableCollection<LineGroupViewModel>();
-
-                    onDataLoadedEventHandler?.Invoke(lineGroupsCollection);
                     imAwait.Close();
 
                     ShowDownloadingErrorMessage(
@@ -154,43 +143,50 @@ namespace ZtmDataViewer.Data.ZtmData
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var lineDetails = ZtmDataDownloader.SimpleDownloader.DownloadLineDetails(line, timeTableId);
+                LineDetails? result = null;
+                string? requestUrl = null;
 
-                if (lineDetails != null)
+                if (line != null)
                 {
-                    we.Result = lineDetails;
+                    var downloader = new LineDetailsDownloader();
+                    var request = new LineDetailsRequestModel(line.Value, line.Type, timeTableId);
+                    var response = downloader.DownloadData(request);
+
+                    requestUrl = response.URL;
+
+                    if (response != null && response.HasData)
+                    {
+                        result = response.Line;
+                    }
                 }
-                else
-                {
-                    we.Result = null;
-                }
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is LineDetails lineDetails)
-                {
-                    var lineDetailsViewModel = new LineDetailsViewModel(line, lineDetails, timeTableId);
+                LineDetails? result = null;
+                string? requestUrl = null;
 
-                    if (isDataReload)
-                    {
-                        onDataLoadedEventHandler?.Invoke(lineDetailsViewModel);
-                    }
-                    else
-                    {
-                        var lineDetailsViewPage = new LineDetailsViewPage(pagesController, lineDetailsViewModel);
-                        pagesController?.LoadPage(lineDetailsViewPage);
-                    }
+                if (GetResult(we, out result, out requestUrl))
+                {
+                    var lineDetailsViewModel = new LineDetailsViewModel(line, result, timeTableId);
 
                     imAwait.Close();
+
+                    pagesController.LoadPage(
+                        new LineDetailsViewPage(pagesController, lineDetailsViewModel, requestUrl));
                 }
                 else if (!string.IsNullOrEmpty(timeTableId))
                 {
                     imAwait.Close();
+
                     LoadTimeTablesData(line, pagesController);
                 }
                 else
                 {
+                    imAwait.Close();
+
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
                         langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
@@ -229,28 +225,39 @@ namespace ZtmDataViewer.Data.ZtmData
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var timeTables = ZtmDataDownloader.SimpleDownloader.DownloadTimeTables(line);
+                List<TimeTable>? result = null;
+                string? requestUrl = null;
 
-                if (timeTables != null)
+                if (line != null)
                 {
-                    we.Result = timeTables;
+                    var downloader = new TimeTablesDownloader();
+                    var request = new TimeTableRequestModel(line.Value, line.Type);
+                    var response = downloader.DownloadData(request);
+
+                    requestUrl = response.URL;
+
+                    if (response != null && response.HasData)
+                    {
+                        result = response.TimeTables;
+                    }
                 }
-                else
-                {
-                    we.Result = null;
-                }
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
                 imAwait.Close();
 
-                if (we?.Result != null && we.Result is List<TimeTable> timeTables)
+                List<TimeTable>? timeTables = null;
+                string? requestUrl = null;
+
+                if (GetListResult(we, out timeTables, out requestUrl))
                 {
                     var timeTableViewModels = timeTables.Select(t => new TimeTableViewModel(t)).ToList();
 
                     var imTimeTableSelector = new TimeTableSelectorInternalMessage(
-                        imContainer, line, timeTableViewModels);
+                            imContainer, line, timeTableViewModels);
 
                     imTimeTableSelector.OnClose += (sender, e) =>
                     {
@@ -309,36 +316,42 @@ namespace ZtmDataViewer.Data.ZtmData
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var departures = ZtmDataDownloader.SimpleDownloader.DownloadDepartures(
-                    line, lineStop);
+                Dictionary<DepartureGroup, List<Departure>>? result = null;
+                string? requestUrl = null;
 
-                if (departures?.Any() ?? false)
+                if (line != null && lineStop != null)
                 {
-                    we.Result = departures;
+                    var downloader = new DeparturesDownloader();
+                    var request = new DeparturesRequestModel(line.Value, line.Type, lineStop.DirectionID, lineStop.ID, lineStop.TimeTableID);
+                    var response = downloader.DownloadData(request);
+
+                    requestUrl = response.URL;
+
+                    if (response != null && response.HasData)
+                    {
+                        result = response.Departures;
+                    }
                 }
-                else
-                {
-                    we.Result = null;
-                }
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is Dictionary<DepartureGroup, List<Departure>> departures)
+                Dictionary<DepartureGroup, List<Departure>>? result = null;
+                string? requestUrl = null;
+
+                if (GetDictResult(we, out result, out requestUrl))
                 {
                     var departureGroupViewModels = new ObservableCollection<LineDepartureGroupViewModel>(
-                        departures.Select(kvp => new LineDepartureGroupViewModel(kvp.Key, kvp.Value)));
+                        result.Select(kvp => new LineDepartureGroupViewModel(kvp.Key, kvp.Value)));
 
-                    onDataLoadedEventHandler?.Invoke(departureGroupViewModels);
+                    onDataLoadedEventHandler?.Invoke(departureGroupViewModels, requestUrl);
 
                     imAwait.Close();
                 }
                 else
                 {
-                    var departureGroupViewModels = new ObservableCollection<LineDepartureGroupViewModel>();
-
-                    onDataLoadedEventHandler?.Invoke(departureGroupViewModels);
-
                     imAwait.Close();
 
                     ShowDownloadingErrorMessage(
@@ -379,26 +392,36 @@ namespace ZtmDataViewer.Data.ZtmData
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                var departureDetails = ZtmDataDownloader.SimpleDownloader.DownloadArrivalsData(
-                    line, departure);
+                DepartureDetailsViewModel? result = null;
+                string? requestUrl = null;
 
-                if (departureDetails != null)
+                if (line != null && departure != null)
                 {
-                    we.Result = new DepartureDetailsViewModel(departureDetails);
+                    var downloader = new ArrivalsDownloader();
+                    var request = new ArrivalRequestModel(line.Value, line.Type, departure.DirectionID, departure.StopID, departure.TimeTableID, departure.ID, departure.DirectID);
+                    var response = downloader.DownloadData(request);
+
+                    requestUrl = response.URL;
+
+                    if (response != null && response.HasData)
+                    {
+                        result = new DepartureDetailsViewModel(response.DepartureDetails);
+                    }
                 }
-                else
-                {
-                    we.Result = null;
-                }
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is DepartureDetailsViewModel departureDetailsViewModel)
+                DepartureDetailsViewModel? result = null;
+                string? requestUrl = null;
+
+                if (GetResult(we, out result, out requestUrl))
                 {
                     imAwait.Close();
 
-                    var imArrivals = new ArrivalsInternalMessage(imContainer, departureDetailsViewModel);
+                    var imArrivals = new ArrivalsInternalMessage(imContainer, result);
 
                     imContainer.ShowMessage(imArrivals);
                 }
@@ -412,6 +435,99 @@ namespace ZtmDataViewer.Data.ZtmData
         #endregion LOADER METHODS
 
         #region UTILITY METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get background worker result. </summary>
+        /// <typeparam name="T"> Result data type. </typeparam>
+        /// <param name="data"> Background worker result. </param>
+        /// <param name="result"> Result data. </param>
+        /// <param name="requestUrl"> Request url. </param>
+        /// <returns> True - data retrieved; False - otherwise. </returns>
+        private static bool GetResult<T>(RunWorkerCompletedEventArgs data, out T? result, out string? requestUrl) where T: class
+        {
+            if (data.Error == null)
+            {
+                var resultData = data?.Result as object?[];
+
+                if (resultData != null && resultData.Length == 2)
+                {
+                    result = resultData[0] as T;
+                    requestUrl = resultData[1] as string;
+
+                    if (result != null && !string.IsNullOrEmpty(requestUrl))
+                        return true;
+                }
+            }
+
+            result = null;
+            requestUrl = null;
+            return false;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get background worker result list. </summary>
+        /// <typeparam name="T"> Result data type. </typeparam>
+        /// <param name="data"> Background worker result. </param>
+        /// <param name="result"> List of result data. </param>
+        /// <param name="requestUrl"> Request url. </param>
+        /// <returns> True - data retrieved; False - otherwise. </returns>
+        private static bool GetListResult<T>(RunWorkerCompletedEventArgs data, out List<T> result, out string? requestUrl) where T: class
+        {
+            if (data.Error == null)
+            {
+                var resultData = data?.Result as object?[];
+
+                if (resultData != null && resultData.Length == 2)
+                {
+                    var listResult = resultData[0] as List<T>;
+                    requestUrl = resultData[1] as string;
+
+                    if (listResult != null && !string.IsNullOrEmpty(requestUrl))
+                    {
+                        result = listResult;
+                        return true;
+                    }
+                }
+            }
+
+            result = new List<T>();
+            requestUrl = null;
+            return false;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get background worker result dictionary. </summary>
+        /// <typeparam name="TKey"> Result key data type. </typeparam>
+        /// <typeparam name="TValue"> Result value data type. </typeparam>
+        /// <param name="data"> Background worker result. </param>
+        /// <param name="result"> Dictionary of result data. </param>
+        /// <param name="requestUrl"> Request url. </param>
+        /// <returns> True - data retrieved; False - otherwise. </returns>
+        private static bool GetDictResult<TKey,TValue>(RunWorkerCompletedEventArgs data, out Dictionary<TKey, TValue> result, out string? requestUrl)
+            where TKey : class
+            where TValue : class
+        {
+            if (data.Error == null)
+            {
+                var resultData = data?.Result as object?[];
+
+                if (resultData != null && resultData.Length == 2)
+                {
+                    var dictResult = resultData[0] as Dictionary<TKey, TValue>;
+                    requestUrl = resultData[1] as string;
+
+                    if (dictResult != null && !string.IsNullOrEmpty(requestUrl))
+                    {
+                        result = dictResult;
+                        return true;
+                    }
+                }
+            }
+
+            result = new Dictionary<TKey, TValue>();
+            requestUrl = null;
+            return false;
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Show download error internal message method. </summary>

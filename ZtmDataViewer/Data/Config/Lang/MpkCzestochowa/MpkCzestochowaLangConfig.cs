@@ -12,64 +12,92 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
 
         //  VARIABLES
 
-        private MpkCzestochowaLineDetailsViewLangConfig? _mpkCzestochowaLineDetailsViewLangConfig = null;
-        private MpkCzestochowaLinesViewLangConfig? _mpkCzestochowaLinesViewLangConfig = null;
-        private MpkCzestochowaTransportTypesLangConfig? _mpkCzestochowaTransportTypesLangConfig = null;
+        private ArrivalsViewLangConfig? _arrivals = null;
+        private LineDetailsViewLangConfig? _lineDetails = null;
+        private LinesViewLangConfig? _lines = null;
+        private MessagesViewLangConfig? _messages = null;
+        private TransportTypesLangConfig? _transportTypes = null;
 
 
         //  GETTERS & SETTERS
 
-        public MpkCzestochowaLineDetailsViewLangConfig MpkCzestochowaLineDetailsViewLangConfig
+        public ArrivalsViewLangConfig Arrivals
         {
             get
             {
-                if (_mpkCzestochowaLineDetailsViewLangConfig == null)
-                {
-                    _mpkCzestochowaLineDetailsViewLangConfig = new MpkCzestochowaLineDetailsViewLangConfig();
-                    OnPropertyChanged(nameof(MpkCzestochowaLineDetailsViewLangConfig));
-                }
-                return _mpkCzestochowaLineDetailsViewLangConfig;
+                if (_arrivals == null)
+                    _arrivals = new ArrivalsViewLangConfig();
+
+                return _arrivals;
             }
             set
             {
-                _mpkCzestochowaLineDetailsViewLangConfig = value;
-                OnPropertyChanged(nameof(MpkCzestochowaLineDetailsViewLangConfig));
+                _arrivals = value;
+                OnPropertyChanged(nameof(Arrivals));
             }
         }
 
-        public MpkCzestochowaLinesViewLangConfig MpkCzestochowaLinesView
+        public LineDetailsViewLangConfig LineDetails
         {
             get
             {
-                if (_mpkCzestochowaLinesViewLangConfig == null)
-                {
-                    _mpkCzestochowaLinesViewLangConfig = new MpkCzestochowaLinesViewLangConfig();
-                    OnPropertyChanged(nameof(MpkCzestochowaLinesView));
-                }
-                return _mpkCzestochowaLinesViewLangConfig;
+                if (_lineDetails == null)
+                    _lineDetails = new LineDetailsViewLangConfig();
+
+                return _lineDetails;
             }
             set
             {
-                _mpkCzestochowaLinesViewLangConfig = value;
-                OnPropertyChanged(nameof(MpkCzestochowaLinesView));
+                _lineDetails = value;
+                OnPropertyChanged(nameof(LineDetails));
             }
         }
 
-        public MpkCzestochowaTransportTypesLangConfig MpkCzestochowaTransportTypes
+        public LinesViewLangConfig Lines
         {
             get
             {
-                if (_mpkCzestochowaTransportTypesLangConfig == null)
-                {
-                    _mpkCzestochowaTransportTypesLangConfig = new MpkCzestochowaTransportTypesLangConfig();
-                    OnPropertyChanged(nameof(MpkCzestochowaTransportTypes));
-                }
-                return _mpkCzestochowaTransportTypesLangConfig;
+                if (_lines == null)
+                    _lines = new LinesViewLangConfig();
+
+                return _lines;
             }
             set
             {
-                _mpkCzestochowaTransportTypesLangConfig = value;
-                OnPropertyChanged(nameof(MpkCzestochowaTransportTypes));
+                _lines = value;
+                OnPropertyChanged(nameof(Lines));
+            }
+        }
+
+        public MessagesViewLangConfig Messages
+        {
+            get
+            {
+                if (_messages == null)
+                    _messages = new MessagesViewLangConfig();
+
+                return _messages;
+            }
+            set
+            {
+                _messages = value;
+                OnPropertyChanged(nameof(Messages));
+            }
+        }
+
+        public TransportTypesLangConfig TransportTypes
+        {
+            get
+            {
+                if (_transportTypes == null)
+                    _transportTypes = new TransportTypesLangConfig();
+
+                return _transportTypes;
+            }
+            set
+            {
+                _transportTypes = value;
+                OnPropertyChanged(nameof(TransportTypes));
             }
         }
 
@@ -82,13 +110,15 @@ namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
         /// <summary> MpkCzestochowaLangConfig class constructor. </summary>
         [JsonConstructor]
         public MpkCzestochowaLangConfig(
-            MpkCzestochowaLineDetailsViewLangConfig? mpkCzestochowaLineDetailsViewLangConfig = null,
-            MpkCzestochowaLinesViewLangConfig? mpkCzestochowaLinesView = null,
-            MpkCzestochowaTransportTypesLangConfig? mpkCzestochowaTransportTypes = null)
+            LineDetailsViewLangConfig? mpkCzestochowaLineDetailsViewLangConfig = null,
+            LinesViewLangConfig? mpkCzestochowaLinesView = null,
+            MessagesViewLangConfig? mpkCzestochowaMessagesIM = null,
+            TransportTypesLangConfig? mpkCzestochowaTransportTypes = null)
         {
-            MpkCzestochowaLineDetailsViewLangConfig = mpkCzestochowaLineDetailsViewLangConfig ?? new MpkCzestochowaLineDetailsViewLangConfig();
-            MpkCzestochowaLinesView = mpkCzestochowaLinesView ?? new MpkCzestochowaLinesViewLangConfig();
-            MpkCzestochowaTransportTypes = mpkCzestochowaTransportTypes ?? new MpkCzestochowaTransportTypesLangConfig();
+            LineDetails = mpkCzestochowaLineDetailsViewLangConfig ?? new LineDetailsViewLangConfig();
+            Lines = mpkCzestochowaLinesView ?? new LinesViewLangConfig();
+            Messages = mpkCzestochowaMessagesIM ?? new MessagesViewLangConfig();
+            TransportTypes = mpkCzestochowaTransportTypes ?? new TransportTypesLangConfig();
         }
 
         #endregion CLASS METHODS

@@ -30,17 +30,20 @@ namespace MpkCzestochowaDownloader.Downloaders
             if (rawData == null)
                 throw new DataSerializationException(typeof(LineDeparturesResponseModel));
 
-            return DeserializeData(rawData);
+            return DeserializeData(rawData, request.URL);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Deserialize raw line departures data from http response. </summary>
         /// <param name="rawData"> Raw line departures data from http response. </param>
+        /// <param name="parameters"> Additional deserialize parameters. </param>
         /// <returns> Line departures response data model. </returns>
-        private LineDeparturesResponseModel DeserializeData(string rawData)
+        protected override LineDeparturesResponseModel DeserializeData(string rawData, params object[] parameters)
         {
             var serializer = new LineDeparturesSerializer();
-            var result = serializer.Deserialize(rawData);
+            var result = serializer.Deserialize(rawData, parameters);
+
+            result.URL = (string)parameters[0];
 
             return result;
         }

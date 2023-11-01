@@ -145,6 +145,32 @@
         </StackPanel>
     </pages:BasePage.HeaderContent>
 
+    <pages:BasePage.FooterContent>
+        <StackPanel
+            Orientation="Horizontal">
+
+            <TextBlock
+                FontWeight="SemiBold"
+                Text="{Binding LangConfig.SourceTitle, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+
+            <TextBlock
+                Margin="8,0,0,0"
+                Text="{Binding SourceUrl}"
+                PreviewMouseDown="SourceTextBlock_PreviewMouseDown">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+        </StackPanel>
+    </pages:BasePage.FooterContent>
+
     <Grid>
 
         <Grid.ColumnDefinitions>

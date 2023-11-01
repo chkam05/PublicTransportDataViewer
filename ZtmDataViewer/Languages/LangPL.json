@@ -1,118 +1,107 @@
 {
   "Name": "Polski",
 
-  "Messages": {
-    "DownloadTitle": "Pobieranie danych",
-    "DownloadErrorTitle": "Błąd pobierania danych",
-    "ArrivalsViewPageDownloadDesc": "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...",
-    "ArrivalsViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
-    "DeparturesViewPageDownloadDesc": "Trwa pobieranie danych godzin odjazdów. \r\nProszę czekać ...",
-    "DeparturesViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin odjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
-    "LinesViewPageDownloadDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
-    "LinesViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-    "LineDetailsViewPageDownloadDesc": "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...",
-    "LineDetailsViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-    "TimeTablesViewPageDownloadDesc": "Błąd pobierania danych",
-    "TimeTablesViewPageDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas."
-  },
-
   "MpkCzestochowa": {
-    "MpkCzestochowaLineDetailsViewLangConfig": {
-      "MpkCzestochowaLineDetailsViewPageOtherLines": "Inne linie odjeżdżające z tego przystanku: "
+    "Arrivals": {
+
     },
 
-    "MpkCzestochowaLinesView": {
-      "MpkCzestochowaLinesViewPageMessages": "Komunikaty: ",
-      "MpkCzestochowaLinesViewPageMsgDateTitle": "Data obowiązywania: ",
-      "MpkCzestochowaLinesViewPageMsgLinesTitle": "Dotyczy linii: "
+    "LineDetails": {
+      "OtherLines": "Inne linie odjeżdżające z tego przystanku: "
     },
 
-    "MpkCzestochowaTransportTypes": {
-      "MpkCzestochowaTransportTypeBus": "Autobus",
-      "MpkCzestochowaTransportTypeBusNight": "Autobus nocny",
-      "MpkCzestochowaTransportTypeBusSuburban": "Autobus podmiejski",
-      "MpkCzestochowaTransportTypeTram": "Tramwaj"
+    "Lines": {
+
+    },
+
+    "Messages": {
+      "Date": "Data obowiązywania: ",
+      "Lines": "Dotyczy linii: ",
+      "Title": "Komunikaty: "
+    },
+
+    "TransportTypes": {
+      "Bus": "Autobus",
+      "BusNight": "Autobus nocny",
+      "BusSuburban": "Autobus podmiejski",
+      "Tram": "Tramwaj"
     }
   },
 
   "Settings": {
-    "SettingsAppearance": {
-      "SettingsAppearanceTheme": "Motyw",
-      "SettingsAppearanceThemeDesc": "Ustaw motyw aplikacji.",
-      "SettingsAppearanceThemeDark": "Ciemny",
-      "SettingsAppearanceThemeLight": "Jasny",
-      "SettingsAppearnaceAccentColors": "Wybór koloru akcentu: ",
-      "SettingsAppearanceAccentColorsHistory": "Ostatnio wybierane kolory: "
+    "Appearance": {
+      "ColorsHistoryTitle": "Ostatnio wybierane kolory: ",
+      "ColorsTitle": "Wybór koloru akcentu: ",
+      "ThemeDesc": "Ustaw motyw aplikacji.",
+      "ThemeOptionDark": "Ciemny",
+      "ThemeOptionLight": "Jasny",
+      "ThemeTitle": "Motyw"
     },
 
-    "SettingsGeneral": {
-      "SettingsGeneralPageLanguage": "Język",
-      "SettingsGeneralPageLanguageDesc": "Wybór języka aplikacji."
+    "General": {
+      "LangDesc": "Wybór języka aplikacji.",
+      "LangTitle": "Język"
     },
 
-    "SettingsInfo": {
-      "SettingsInfoPageDataSources": "Źródła danych: ",
-      "SettingsInfoPageDescription": "Opis: ",
-      "SettingsInfoPageAuthor": "Autor: ",
-      "SettingsInfoPageCopyright": "Prawa autorskie: ",
-      "SettingsInfoPageLocation": "Lokalizacja: "
-    },
-
-    "SettingsPageTitle": "Ustawienia",
-    "SettingsPageAppearanceMenuItem": "Personalizacja",
-    "SettingsPageAppearanceMenuItemDesc": "Konfiguracja motywu i wyglądu aplikacji.",
-    "SettingsPageGeneralMenuItem": "Ogólne",
-    "SettingsPageGeneralMenuItemDesc": "Ogólne opcje konfiguracji.",
-    "SettingsPageInfoMenuItem": "Informacje",
-    "SettingsPageInfoMenuItemDesc": "Informacje o aplikacji."
-  },
-
-  "Ztm": {
-    "ZtmArrivalsIM": {
-      "ZtmArrivalTripTimeHeader": "Czas podróży",
-      "ZtmArrivalTripDistanceHeader": "Odległość"
-    },
-
-    "ZtmLinesView": {
-
-    },
-
-    "ZtmLineDetailsView": {
-      "ZtmLineDetailsViewPageMessages": "Komunikaty: "
-    },
-
-    "ZtmTimeTableSelectorIM": {
-      "ZtmTimeTablesSelectorFromToTitle": "Rozkład ważny",
-      "ZtmTimeTablesSelectorFrom": "od",
-      "ZtmTimeTablesSelectorTo": "do"
-    },
-
-    "ZtmTransportTypes": {
-      "ZtmTransportTypeBus": "Autobus",
-      "ZtmTransportTypeBusAirport": "Autobus na lotnisko",
-      "ZtmTransportTypeBusMetropolitan": "Autobus metropolitalny",
-      "ZtmTransportTypeBusNight": "Autobus nocny",
-      "ZtmTransportTypeBusReplacement": "Autobus zastępczy",
-      "ZtmTransportTypeTram": "Tramwaj",
-      "ZtmTransportTypeTrolley": "Trolejbus"
+    "Info": {
+      "Author": "Autor: ",
+      "Copyright": "Prawa autorskie: ",
+      "DataSources": "Źródła danych: ",
+      "Description": "Opis: "
     }
   },
 
-  "MainMenuItem": "Menu główne",
-  "StartPageMpkCzestochowaItem": "MPK Częstochowa",
-  "StartPageZtmMenuItem": "Zarząd Transportu Metropolitalnego",
-  "StartPageSettingsMenuItem": "Ustawienia",
-  "CancelButton": "Anuluj",
-  "CloseButton": "Zamknij",
-  "SelectButton": "Wybierz",
+  "Ztm": {
+    "Arrivals": {
+      "TripDistance": "Odległość",
+      "TripTime": "Czas podróży"
+    },
+
+    "LineDetails": {
+
+    },
+
+    "Lines": {
+
+    },
+
+    "Messages": {
+      "Title": "Komunikaty: "
+    },
+
+    "TimeTables": {
+      "FromTo": "Rozkład ważny",
+      "From": "od",
+      "To": "do"
+    },
+
+    "TransportTypes": {
+      "Bus": "Autobus",
+      "BusAirport": "Autobus na lotnisko",
+      "BusMetropolitan": "Autobus metropolitalny",
+      "BusNight": "Autobus nocny",
+      "BusReplacement": "Autobus zastępczy",
+      "Tram": "Tramwaj",
+      "Trolley": "Trolejbus"
+    }
+  },
+
+  "ArrivalsDeparture": "Godz.",
+  "ArrivalsStop": "Nazwa przystanku",
+  "ArrivalsTitle": "Godziny przyjazdów",
+  "ButtonCancel": "Anuluj",
+  "ButtonClose": "Zamknij",
+  "ButtonMessages": "Komunikaty",
+  "ButtonRefresh": "Odśwież",
+  "ButtonSelect": "Wybierz",
+  "LineDetailsDepartures": "Godziny odjazdów: ",
+  "LineDetailsDirection": "Wybór kierunku: ",
+  "LinesTitle": "Wybór linii",
+  "MenuItemLines": "Wybór linii",
+  "MenuItemMain": "Menu główne",
+  "MenuItemMpkCzestochowa": "MPK Częstochowa",
+  "MenuItemSettings": "Ustawienia",
+  "MenuItemZtm": "Zarząd Transportu Metropolitalnego",
   "StartPageTitle": "Wybór miasta (przedsiębiorstwa komunikacyjnego)",
-  "LineArrivalsTitle": "Godziny przyjazdów",
-  "LineArrivalStopHeader": "Nazwa przystanku",
-  "LineArrivalDepartureHeader": "Godz.",
-  "LinesViewPageTitle": "Wybór linii",
-  "LinesViewPageMenuItem": "Wybór linii",
-  "LinesViewPageRefreshButton": "Odśwież",
-  "LineDetailsViewPageDepartures": "Godziny odjazdów: ",
-  "LineDetailsViewPageDirectionSelection": "Wybór kierunku: ",
-  "TimeTablesViewPageTitle": "Wybór rozkładu jazdy"
+  "TimeTablesTitle": "Wybór rozkładu jazdy"
 }

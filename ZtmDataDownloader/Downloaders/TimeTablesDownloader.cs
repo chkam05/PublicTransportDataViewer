@@ -32,18 +32,24 @@ namespace ZtmDataDownloader.Downloaders
             if (rawData == null)
                 throw new DataSerializationException(typeof(TimeTableResponseModel));
 
-            return DeserializeData(rawData, request.Line, request.TransportType);
+            return DeserializeData(rawData, request.URL, request.Line, request.TransportType);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Deserialize raw special time tables data from http response. </summary>
         /// <param name="rawData"> Raw special time tables data from http response. </param>
+        /// <param name="parameters"> Additional deserialize parameters. </param>
         /// <returns> Special time tables response data model. </returns>
-        private TimeTableResponseModel DeserializeData(
-            string rawData, string line, Data.Static.TransportType transportType)
+        protected override TimeTableResponseModel DeserializeData(string rawData, params object[] parameters)
         {
             var serializer = new TimeTablesSerializer();
-            var result = serializer.Deserialize(rawData, new object[] { line, transportType });
+            var result = serializer.Deserialize(rawData, new object[]
+            {
+                (string) parameters[1],
+                (Data.Static.TransportType) parameters[2]
+            });
+
+            result.URL = (string)parameters[0];
 
             return result;
         }

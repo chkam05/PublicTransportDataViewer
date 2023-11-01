@@ -28,15 +28,18 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
 
         public delegate void LinesDataLoadedEventHandler(
             ObservableCollection<LineGroupViewModel> lineGroupViewModelCollection,
-            ObservableCollection<MessageViewModel> messageViewModelCollection);
+            ObservableCollection<MessageViewModel> messageViewModelCollection,
+            string? requestUrl);
 
         public delegate void LineDetailsDataLoadedEventHandler(
             LineDetailsViewModel lineDetailsViewModel,
             Line line,
-            bool isDataReload);
+            bool isDataReload,
+            string? requestUrl);
 
         public delegate void LineDeparturesDataLoadedEventHandler(
-            LineDeparturesViewModel lineDeparturesViewModel);
+            LineDeparturesViewModel lineDeparturesViewModel,
+            string? requestUrl);
 
 
         //  METHODS
@@ -73,37 +76,39 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                 var request = new MpkCzestochowaDownloader.Data.Lines.LinesRequestModel();
                 var response = downloader.DownloadData(request);
 
+                List<LineGroupViewModel>? result = null;
+                List<MessageViewModel>? messages = null;
+                string? requestUrl = response.URL;
+
                 if (response.HasData && !response.HasErrors)
                 {
-                    var lineGroups = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
-                    var messages = response.Messages.Select(m => new MessageViewModel(m)).ToList();
+                    result = response.Lines.Select(kvp => new LineGroupViewModel(kvp)).ToList();
+                    messages = response.Messages.Select(m => new MessageViewModel(m)).ToList();
+                }
 
-                    we.Result = new Tuple<List<LineGroupViewModel>, List<MessageViewModel>>(
-                        lineGroups, messages);
-                }
-                else
-                {
-                    we.Result = null;
-                }
+                we.Result = new object?[] { result, requestUrl, messages };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we.Error == null && we?.Result != null)
-                {
-                    var tupleResult = (Tuple<List<LineGroupViewModel>, List<MessageViewModel>>)we.Result;
-                    var lineGroups = new ObservableCollection<LineGroupViewModel>(tupleResult.Item1);
-                    var messages = new ObservableCollection<MessageViewModel>(tupleResult.Item2);
+                List<LineGroupViewModel>? result = null;
+                string? requestUrl = null;
 
-                    onDataLoadedEventHandler?.Invoke(lineGroups, messages);
+                if (GetResult(we, out result, out requestUrl))
+                {
+                    var objResult = we?.Result as object?[];
+
+                    var lineGroups = new ObservableCollection<LineGroupViewModel>(result);
+                    ObservableCollection<MessageViewModel>? messages = null;
+
+                    if (objResult?.Length > 2 && objResult[2] is List<MessageViewModel> messagesResult)
+                        messages = new ObservableCollection<MessageViewModel>(messagesResult);
+
+                    onDataLoadedEventHandler?.Invoke(lineGroups, messages, requestUrl);
                     imAwait.Close();
                 }
                 else
                 {
-                    var lineGroups = new ObservableCollection<LineGroupViewModel>();
-                    var messages = new ObservableCollection<MessageViewModel>();
-
-                    onDataLoadedEventHandler?.Invoke(lineGroups, messages);
                     imAwait.Close();
 
                     ShowDownloadingErrorMessage(
@@ -153,38 +158,32 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                     line.TransportType, line.Value, dateTime, route);
                 var response = downloader.DownloadData(request);
 
-                if (response.HasData && !response.HasErrors)
-                {
-                    var lineDetails = response.LineDetails;
+                LineDetails? result = null;
+                string? requestUrl = response.URL;
 
-                    we.Result = lineDetails;
-                }
-                else
-                {
-                    we.Result = null;
-                }
+                if (response.HasData && !response.HasErrors)
+                    result = response.LineDetails;
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we.Error == null && we?.Result != null && we.Result is LineDetails lineDetails)
+                LineDetails? result = null;
+                string? requestUrl = null;
+
+                if (GetResult(we, out result, out requestUrl))
                 {
                     imAwait.Close();
 
-                    if (lineDetails != null)
-                    {
-                        var lineDetailsViewModel = new LineDetailsViewModel(lineDetails);
+                    var lineDetailsViewModel = new LineDetailsViewModel(result);
 
-                        onDataLoadedEventHandler?.Invoke(lineDetailsViewModel, line, isDataReload);
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
+                    onDataLoadedEventHandler?.Invoke(lineDetailsViewModel, line, isDataReload, requestUrl);
                 }
                 else
                 {
                     imAwait.Close();
+
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
                         langConf.Messages.LineDetailsViewPageDownloadErrorDesc);
@@ -223,48 +222,36 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             //  Setup background worker methods.
             bgLoader.DoWork += (s, we) =>
             {
-                if (string.IsNullOrEmpty(lineStop?.URL))
-                {
-                    we.Result = null;
-                    return;
-                }
-
                 var downloader = new MpkCzestochowaDownloader.Downloaders.LineDeparturesDownloader();
                 var request = new MpkCzestochowaDownloader.Data.Departures.LineDeparturesRequestModel(lineStop.URL);
                 var response = downloader.DownloadData(request);
 
-                if (response.HasData && !response.HasErrors)
-                {
-                    var lineDepartures = response.LineDepartures;
+                LineDepartures? result = null;
+                string? requestUrl = response.URL;
 
-                    we.Result = lineDepartures;
-                }
-                else
-                {
-                    we.Result = null;
-                }
+                if (response.HasData && !response.HasErrors)
+                    result = response.LineDepartures;
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we.Error == null && we?.Result != null && we.Result is LineDepartures lineDeaprtures)
+                LineDepartures? result = null;
+                string? requestUrl = null;
+
+                if (GetResult(we, out result, out requestUrl))
                 {
                     imAwait.Close();
 
-                    if (lineDeaprtures != null)
-                    {
-                        var lineDeparturesViewModel = new LineDeparturesViewModel(lineDeaprtures);
+                    var lineDeparturesViewModel = new LineDeparturesViewModel(result);
 
-                        onDataLoadedEventHandler.Invoke(lineDeparturesViewModel);
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.Messages.DownloadErrorTitle,
-                            langConf.Messages.DeparturesViewPageDownloadErrorDesc);
+                    onDataLoadedEventHandler.Invoke(lineDeparturesViewModel, requestUrl);
                 }
                 else
                 {
                     imAwait.Close();
+
                     ShowDownloadingErrorMessage(
                         langConf.Messages.DownloadErrorTitle,
                         langConf.Messages.DeparturesViewPageDownloadErrorDesc);
@@ -308,27 +295,35 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
                 var request = new LineArrivalsRequestModel(tripId, departureTime, departureDate);
                 var response = downloader.DownloadData(request);
 
-                if (!response.HasErrors && response.HasData)
-                {
-                    var lineArrivalsViewModel = new LineArrivalsViewModel(response.LineArrivals);
+                LineArrivalsViewModel? result = null;
+                string? requestUrl = response.URL;
 
-                    we.Result = lineArrivalsViewModel;
-                }
-                else
-                {
-                    we.Result = null;
-                }
+                if (!response.HasErrors && response.HasData)
+                    result = new LineArrivalsViewModel(response.LineArrivals);
+
+                we.Result = new object?[] { result, requestUrl };
             };
 
             bgLoader.RunWorkerCompleted += (s, we) =>
             {
-                if (we?.Result != null && we.Result is LineArrivalsViewModel lineArrivalsViewModel)
+                LineArrivalsViewModel? result = null;
+                string? requestUrl = null;
+
+                if (GetResult(we, out result, out requestUrl))
                 {
                     imAwait.Close();
 
-                    var imArrivals = new ArrivalsInternalMessage(imContainer, lineArrivalsViewModel);
+                    var imArrivals = new ArrivalsInternalMessage(imContainer, result);
 
                     imContainer.ShowMessage(imArrivals);
+                }
+                else
+                {
+                    imAwait.Close();
+
+                    ShowDownloadingErrorMessage(
+                        langConf.Messages.DownloadErrorTitle,
+                        langConf.Messages.ArrivalsViewPageDownloadErrorDesc);
                 }
             };
 
@@ -340,6 +335,99 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         #endregion LOADER METHODS
 
         #region UTILITY METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get background worker result. </summary>
+        /// <typeparam name="T"> Result data type. </typeparam>
+        /// <param name="data"> Background worker result. </param>
+        /// <param name="result"> Result data. </param>
+        /// <param name="requestUrl"> Request url. </param>
+        /// <returns> True - data retrieved; False - otherwise. </returns>
+        private static bool GetResult<T>(RunWorkerCompletedEventArgs data, out T? result, out string? requestUrl) where T : class
+        {
+            if (data.Error == null)
+            {
+                var resultData = data?.Result as object?[];
+
+                if (resultData != null && resultData.Length >= 2)
+                {
+                    result = resultData[0] as T;
+                    requestUrl = resultData[1] as string;
+
+                    if (result != null && !string.IsNullOrEmpty(requestUrl))
+                        return true;
+                }
+            }
+
+            result = null;
+            requestUrl = null;
+            return false;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get background worker result list. </summary>
+        /// <typeparam name="T"> Result data type. </typeparam>
+        /// <param name="data"> Background worker result. </param>
+        /// <param name="result"> List of result data. </param>
+        /// <param name="requestUrl"> Request url. </param>
+        /// <returns> True - data retrieved; False - otherwise. </returns>
+        private static bool GetListResult<T>(RunWorkerCompletedEventArgs data, out List<T> result, out string? requestUrl) where T : class
+        {
+            if (data.Error == null)
+            {
+                var resultData = data?.Result as object?[];
+
+                if (resultData != null && resultData.Length >= 2)
+                {
+                    var listResult = resultData[0] as List<T>;
+                    requestUrl = resultData[1] as string;
+
+                    if (listResult != null && !string.IsNullOrEmpty(requestUrl))
+                    {
+                        result = listResult;
+                        return true;
+                    }
+                }
+            }
+
+            result = new List<T>();
+            requestUrl = null;
+            return false;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Get background worker result dictionary. </summary>
+        /// <typeparam name="TKey"> Result key data type. </typeparam>
+        /// <typeparam name="TValue"> Result value data type. </typeparam>
+        /// <param name="data"> Background worker result. </param>
+        /// <param name="result"> Dictionary of result data. </param>
+        /// <param name="requestUrl"> Request url. </param>
+        /// <returns> True - data retrieved; False - otherwise. </returns>
+        private static bool GetDictResult<TKey, TValue>(RunWorkerCompletedEventArgs data, out Dictionary<TKey, TValue> result, out string? requestUrl)
+            where TKey : class
+            where TValue : class
+        {
+            if (data.Error == null)
+            {
+                var resultData = data?.Result as object?[];
+
+                if (resultData != null && resultData.Length >= 2)
+                {
+                    var dictResult = resultData[0] as Dictionary<TKey, TValue>;
+                    requestUrl = resultData[1] as string;
+
+                    if (dictResult != null && !string.IsNullOrEmpty(requestUrl))
+                    {
+                        result = dictResult;
+                        return true;
+                    }
+                }
+            }
+
+            result = new Dictionary<TKey, TValue>();
+            requestUrl = null;
+            return false;
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Show download error internal message method. </summary>

@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace ZtmDataViewer.Data.MainMenu
 {
-    public class MainMenuItem : INotifyPropertyChanged
+    public class MainMenuItem : BaseViewModel
     {
 
         //  EVENTS
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<EventArgs> Action;
 
 
@@ -96,21 +95,6 @@ namespace ZtmDataViewer.Data.MainMenu
         }
 
         #endregion ACTION METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method for invoking PropertyChangedEventHandler event. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

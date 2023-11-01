@@ -12,18 +12,13 @@ using ZtmDataViewer.Data.Info;
 
 namespace ZtmDataViewer.Data.Config
 {
-    public class ConfigManager : INotifyPropertyChanged, IDisposable
+    public class ConfigManager : BaseViewModel, IDisposable
     {
 
         //  CONST
 
         private static readonly string CONFIG_FILE_NAME = "config.json";
         private static readonly string LANGS_CATALOG_NAME = "Languages";
-
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
 
         //  VARIABLES
@@ -244,17 +239,6 @@ namespace ZtmDataViewer.Data.Config
         {
             if (e.PropertyName == nameof(ConfigData.Language))
                 LoadLanguage();
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS

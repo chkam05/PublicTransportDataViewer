@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZtmDataViewer.Data.Config.Lang.Ztm
 {
-    public class ZtmLinesViewLangConfig : BaseLangConfig
+    public class LineDetailsViewLangConfig : BaseLangConfig
     {
 
         //  VARIABLES
@@ -21,9 +21,9 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         #region CLASS METHODS
 
         //  --------------------------------------------------------------------------------
-        /// <summary> ZtmLinesViewLangConfig class constructor. </summary>
+        /// <summary> LineDetailsViewLangConfig class constructor. </summary>
         [JsonConstructor]
-        public ZtmLinesViewLangConfig()
+        public LineDetailsViewLangConfig()
         {
             //
         }

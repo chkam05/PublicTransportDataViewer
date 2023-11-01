@@ -12,22 +12,22 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         //  VARIABLES
 
-        private string _settingsGeneralPageLanguage = string.Empty;
-        private string _settingsGeneralPageLanguageDesc = string.Empty;
+        private string _langDesc = string.Empty;
+        private string _langTitle = string.Empty;
 
 
         //  GETTERS & SETTERS
 
-        public string SettingsGeneralPageLanguage
+        public string LangDesc
         {
-            get => _settingsGeneralPageLanguage;
-            set => SetStringProperty(ref _settingsGeneralPageLanguage, nameof(SettingsGeneralPageLanguage), value);
+            get => _langDesc;
+            set => SetStringProperty(ref _langDesc, nameof(LangDesc), value);
         }
 
-        public string SettingsGeneralPageLanguageDesc
+        public string LangTitle
         {
-            get => _settingsGeneralPageLanguageDesc;
-            set => SetStringProperty(ref _settingsGeneralPageLanguageDesc, nameof(SettingsGeneralPageLanguageDesc), value);
+            get => _langTitle;
+            set => SetStringProperty(ref _langTitle, nameof(LangTitle), value);
         }
 
 
@@ -39,11 +39,11 @@ namespace ZtmDataViewer.Data.Config.Lang
         /// <summary> SettingsGeneralLangConfig class constructor. </summary>
         [JsonConstructor]
         public SettingsGeneralLangConfig(
-            string? settingsGeneralPageLanguage = null,
-            string? settingsGeneralPageLanguageDesc = null)
+            string? langDesc = null,
+            string? langTitle = null)
         {
-            SettingsGeneralPageLanguage = SetLanguageValue(settingsGeneralPageLanguage, "Język");
-            SettingsGeneralPageLanguageDesc = SetLanguageValue(settingsGeneralPageLanguageDesc, "Wybór języka aplikacji.");
+            LangDesc = SetLanguageValue(langDesc, "Wybór języka aplikacji.");
+            LangTitle = SetLanguageValue(langTitle, "Język");
         }
 
         #endregion CLASS METHODS

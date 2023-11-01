@@ -17,42 +17,34 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         private string _name = string.Empty;
 
-        //  Components
-        private MessagesLangConfig? _messagesLangConfig = null;
-        private MpkCzestochowaLangConfig? _mpkCzestochowaLangConfig = null;
-        private SettingsLangConfig? _settingsLangConfig = null;
-        private ZtmLangConfig? _ztmLangConfig = null;
+        private MpkCzestochowaLangConfig? _mpkCzestochowa = null;
+        private SettingsLangConfig? _settings = null;
+        private ZtmLangConfig? _ztm = null;
 
-        //  Main Menu
-        private string _mainMenuItem = string.Empty;
-        private string _startPageMpkCzestochowaItem = string.Empty;
-        private string _startPageZtmMenuItem = string.Empty;
-        private string _startPageSettingsMenuItem = string.Empty;
+        private string _arrivalsDeparture = string.Empty;
+        private string _arrivalsStop = string.Empty;
+        private string _arrivalsTitle = string.Empty;
 
-        //  Buttons
-        private string _cancelButton = string.Empty;
-        private string _closeButton = string.Empty;
-        private string _selectButton = string.Empty;
+        private string _buttonCancel = string.Empty;
+        private string _buttonClose = string.Empty;
+        private string _buttonMessages = string.Empty;
+        private string _buttonRefresh = string.Empty;
+        private string _buttonSelect = string.Empty;
 
-        //  Start Page
+        private string _lineDetailsDepartures = string.Empty;
+        private string _lineDetailsDirection = string.Empty;
+
+        private string _linesTitle = string.Empty;
+
+        private string _menuItemLines = string.Empty;
+        private string _menuItemMain = string.Empty;
+        private string _menuItemMpkCzestochowa = string.Empty;
+        private string _menuItemSettings = string.Empty;
+        private string _menuItemZtm = string.Empty;
+
         private string _startPageTitle = string.Empty;
 
-        //  Line Arrivals IM
-        private string _lineArrivalsTitle = string.Empty;
-        private string _lineArrivalStopHeader = string.Empty;
-        private string _lineArrivalDepartureHeader = string.Empty;
-
-        //  Lines View Page
-        private string _linesViewPageTitle = string.Empty;
-        private string _linesViewPageMenuItem = string.Empty;
-        private string _linesViewPageRefreshButton = string.Empty;
-
-        //  Line Details View Page
-        private string _lineDetailsViewPageDepartures = string.Empty;
-        private string _lineDetailsViewPageDirectionSelection = string.Empty;
-
-        //  Time Tables View Page
-        private string _timeTablesViewPageTitle = string.Empty;
+        private string _timeTablesTitle = string.Empty;
 
 
         //  GETTERS & SETTERS
@@ -67,40 +59,19 @@ namespace ZtmDataViewer.Data.Config.Lang
             }
         }
 
-        #region Components
-
-        public MessagesLangConfig Messages
-        {
-            get
-            {
-                if (_messagesLangConfig == null)
-                {
-                    _messagesLangConfig = new MessagesLangConfig();
-                    OnPropertyChanged(nameof(Messages));
-                }
-                return _messagesLangConfig;
-            }
-            set
-            {
-                _messagesLangConfig = value;
-                OnPropertyChanged(nameof(Messages));
-            }
-        }
 
         public MpkCzestochowaLangConfig MpkCzestochowa
         {
             get
             {
-                if (_mpkCzestochowaLangConfig == null)
-                {
-                    _mpkCzestochowaLangConfig = new MpkCzestochowaLangConfig();
-                    OnPropertyChanged(nameof(MpkCzestochowa));
-                }
-                return _mpkCzestochowaLangConfig;
+                if (_mpkCzestochowa == null)
+                    _mpkCzestochowa = new MpkCzestochowaLangConfig();
+
+                return _mpkCzestochowa;
             }
             set
             {
-                _mpkCzestochowaLangConfig = value;
+                _mpkCzestochowa = value;
                 OnPropertyChanged(nameof(MpkCzestochowa));
             }
         }
@@ -109,16 +80,14 @@ namespace ZtmDataViewer.Data.Config.Lang
         {
             get
             {
-                if (_settingsLangConfig == null)
-                {
-                    _settingsLangConfig = new SettingsLangConfig();
-                    OnPropertyChanged(nameof(Settings));
-                }
-                return _settingsLangConfig;
+                if (_settings == null)
+                    _settings = new SettingsLangConfig();
+
+                return _settings;
             }
             set
             {
-                _settingsLangConfig = value;
+                _settings = value;
                 OnPropertyChanged(nameof(Settings));
             }
         }
@@ -127,73 +96,114 @@ namespace ZtmDataViewer.Data.Config.Lang
         {
             get
             {
-                if (_ztmLangConfig == null)
-                {
-                    _ztmLangConfig = new ZtmLangConfig();
-                    OnPropertyChanged(nameof(Ztm));
-                }
-                return _ztmLangConfig;
+                if (_ztm == null)
+                    _ztm = new ZtmLangConfig();
+
+                return _ztm;
             }
             set
             {
-                _ztmLangConfig = value;
+                _ztm = value;
                 OnPropertyChanged(nameof(Ztm));
             }
         }
 
-        #endregion Components
 
-        #region Main Menu
-
-        public string MainMenuItem
+        public string ArrivalsDeparture
         {
-            get => _mainMenuItem;
-            set => SetStringProperty(ref _mainMenuItem, nameof(MainMenuItem), value);
+            get => _arrivalsDeparture;
+            set => SetStringProperty(ref _arrivalsDeparture, nameof(ArrivalsDeparture), value);
         }
 
-        public string StartPageMpkCzestochowaItem
+        public string ArrivalsStop
         {
-            get => _startPageMpkCzestochowaItem;
-            set => SetStringProperty(ref _startPageMpkCzestochowaItem, nameof(StartPageMpkCzestochowaItem), value);
+            get => _arrivalsStop;
+            set => SetStringProperty(ref _arrivalsStop, nameof(ArrivalsStop), value);
         }
 
-        public string StartPageZtmMenuItem
+        public string ArrivalsTitle
         {
-            get => _startPageZtmMenuItem;
-            set => SetStringProperty(ref _startPageZtmMenuItem, nameof(StartPageZtmMenuItem), value);
+            get => _arrivalsTitle;
+            set => SetStringProperty(ref _arrivalsTitle, nameof(ArrivalsTitle), value);
         }
 
-        public string StartPageSettingsMenuItem
+        public string ButtonCancel
         {
-            get => _startPageSettingsMenuItem;
-            set => SetStringProperty(ref _startPageSettingsMenuItem, nameof(StartPageSettingsMenuItem), value);
+            get => _buttonCancel;
+            set => SetStringProperty(ref _buttonCancel, nameof(ButtonCancel), value);
         }
 
-        #endregion MainMenu
-
-        #region Buttons
-
-        public string CancelButton
+        public string ButtonClose
         {
-            get => _cancelButton;
-            set => SetStringProperty(ref _cancelButton, nameof(CancelButton), value);
+            get => _buttonClose;
+            set => SetStringProperty(ref _buttonClose, nameof(ButtonClose), value);
         }
 
-        public string CloseButton
+        public string ButtonMessages
         {
-            get => _closeButton;
-            set => SetStringProperty(ref _closeButton, nameof(CloseButton), value);
+            get => _buttonMessages;
+            set => SetStringProperty(ref _buttonMessages, nameof(ButtonMessages), value);
         }
 
-        public string SelectButton
+        public string ButtonRefresh
         {
-            get => _selectButton;
-            set => SetStringProperty(ref _selectButton, nameof(SelectButton), value);
+            get => _buttonRefresh;
+            set => SetStringProperty(ref _buttonRefresh, nameof(ButtonRefresh), value);
         }
 
-        #endregion Buttons
+        public string ButtonSelect
+        {
+            get => _buttonSelect;
+            set => SetStringProperty(ref _buttonSelect, nameof(ButtonSelect), value);
+        }
 
-        #region Start Page
+        public string LineDetailsDepartures
+        {
+            get => _lineDetailsDepartures;
+            set => SetStringProperty(ref _lineDetailsDepartures, nameof(LineDetailsDepartures), value);
+        }
+
+        public string LineDetailsDirection
+        {
+            get => _lineDetailsDirection;
+            set => SetStringProperty(ref _lineDetailsDirection, nameof(LineDetailsDirection), value);
+        }
+
+        public string LinesTitle
+        {
+            get => _linesTitle;
+            set => SetStringProperty(ref _linesTitle, nameof(LinesTitle), value);
+        }
+
+        public string MenuItemLines
+        {
+            get => _menuItemLines;
+            set => SetStringProperty(ref _menuItemLines, nameof(MenuItemLines), value);
+        }
+
+        public string MenuItemMain
+        {
+            get => _menuItemMain;
+            set => SetStringProperty(ref _menuItemMain, nameof(MenuItemMain), value);
+        }
+
+        public string MenuItemMpkCzestochowa
+        {
+            get => _menuItemMpkCzestochowa;
+            set => SetStringProperty(ref _menuItemMpkCzestochowa, nameof(MenuItemMpkCzestochowa), value);
+        }
+
+        public string MenuItemSettings
+        {
+            get => _menuItemSettings;
+            set => SetStringProperty(ref _menuItemSettings, nameof(MenuItemSettings), value);
+        }
+
+        public string MenuItemZtm
+        {
+            get => _menuItemZtm;
+            set => SetStringProperty(ref _menuItemZtm, nameof(MenuItemZtm), value);
+        }
 
         public string StartPageTitle
         {
@@ -201,77 +211,11 @@ namespace ZtmDataViewer.Data.Config.Lang
             set => SetStringProperty(ref _startPageTitle, nameof(StartPageTitle), value);
         }
 
-        #endregion Start Page
-
-        #region  Line Arrivals IM
-
-        public string LineArrivalsTitle
+        public string TimeTablesTitle
         {
-            get => _lineArrivalsTitle;
-            set => SetStringProperty(ref _lineArrivalsTitle, nameof(LineArrivalsTitle), value);
+            get => _timeTablesTitle;
+            set => SetStringProperty(ref _timeTablesTitle, nameof(TimeTablesTitle), value);
         }
-
-        public string LineArrivalStopHeader
-        {
-            get => _lineArrivalStopHeader;
-            set => SetStringProperty(ref _lineArrivalStopHeader, nameof(LineArrivalStopHeader), value);
-        }
-
-        public string LineArrivalDepartureHeader
-        {
-            get => _lineArrivalDepartureHeader;
-            set => SetStringProperty(ref _lineArrivalDepartureHeader, nameof(LineArrivalDepartureHeader), value);
-        }
-
-        #endregion  Line Arrivals IM
-
-        #region Lines View Page
-
-        public string LinesViewPageTitle
-        {
-            get => _linesViewPageTitle;
-            set => SetStringProperty(ref _linesViewPageTitle, nameof(LinesViewPageTitle), value);
-        }
-
-        public string LinesViewPageMenuItem
-        {
-            get => _linesViewPageMenuItem;
-            set => SetStringProperty(ref _linesViewPageMenuItem, nameof(LinesViewPageMenuItem), value);
-        }
-
-        public string LinesViewPageRefreshButton
-        {
-            get => _linesViewPageRefreshButton;
-            set => SetStringProperty(ref _linesViewPageRefreshButton, nameof(LinesViewPageRefreshButton), value);
-        }
-
-        #endregion Lines View Page
-
-        #region Line Details View Page
-
-        public string LineDetailsViewPageDepartures
-        {
-            get => _lineDetailsViewPageDepartures;
-            set => SetStringProperty(ref _lineDetailsViewPageDepartures, nameof(LineDetailsViewPageDepartures), value);
-        }
-
-        public string LineDetailsViewPageDirectionSelection
-        {
-            get => _lineDetailsViewPageDirectionSelection;
-            set => SetStringProperty(ref _lineDetailsViewPageDirectionSelection, nameof(LineDetailsViewPageDirectionSelection), value);
-        }
-
-        #endregion Line Details View Page
-
-        #region Time Tables View Page
-
-        public string TimeTablesViewPageTitle
-        {
-            get => _timeTablesViewPageTitle;
-            set => SetStringProperty(ref _timeTablesViewPageTitle, nameof(TimeTablesViewPageTitle), value);
-        }
-
-        #endregion Time Tables View Page
 
 
         //  METHODS
@@ -284,81 +228,53 @@ namespace ZtmDataViewer.Data.Config.Lang
         public LangConfig(
             string? name = null,
 
-            //  Components
-            MessagesLangConfig? messages = null,
             MpkCzestochowaLangConfig? mpkCzestochowa = null,
             SettingsLangConfig? settings = null,
             ZtmLangConfig? ztm = null,
 
-            //  Main Menu
-            string? mainMenuItem = null,
-            string? startPageMpkCzestochowaItem = null,
-            string? startPageZtmMenuItem = null,
-            string? startPageSettingsMenuItem = null,
-
-            //  Buttons
-            string? cancelButton = null,
-            string? closeButton = null,
-            string? selectButton = null,
-
-            //  Start Page
+            string? arrivalsDeparture = null,
+            string? arrivalsStop = null,
+            string? arrivalsTitle = null,
+            string? buttonCancel = null,
+            string? buttonClose = null,
+            string? buttonMessages = null,
+            string? buttonRefresh = null,
+            string? buttonSelect = null,
+            string? lineDetailsDepartures = null,
+            string? lineDetailsDirection = null,
+            string? linesTitle = null,
+            string? menuItemLines = null,
+            string? menuItemMain = null,
+            string? menuItemMpkCzestochowa = null,
+            string? menuItemSettings = null,
+            string? menuItemZtm = null,
             string? startPageTitle = null,
-
-            //  Line Arrivals IM
-            string ? lineArrivalsTitle = null,
-            string ? lineArrivalStopHeader = null,
-            string ? lineArrivalDepartureHeader = null,
-
-            //  Lines View Page
-            string? linesViewPageTitle = null,
-            string? linesViewPageMenuItem = null,
-            string? linesViewPageRefreshButton = null,
-
-            //  Line Details View Page
-            string? lineDetailsViewPageDepartures = null,
-            string? lineDetailsViewPageDirectionSelection = null,
-
-            //  Time Tables View Page
-            string? timeTablesViewPageTitle = null)
+            string? timeTablesTitle = null)
         {
             Name = SetLanguageValue(name, "Polski");
 
-            //  Components
-            Messages = messages ?? new MessagesLangConfig();
             MpkCzestochowa = mpkCzestochowa ?? new MpkCzestochowaLangConfig();
             Settings = settings ?? new SettingsLangConfig();
             Ztm = ztm ?? new ZtmLangConfig();
 
-            //  Main Menu
-            MainMenuItem = SetLanguageValue(mainMenuItem, "Menu główne");
-            StartPageMpkCzestochowaItem = SetLanguageValue(startPageMpkCzestochowaItem, "MPK Częstochowa");
-            StartPageZtmMenuItem = SetLanguageValue(startPageZtmMenuItem, "Zarząd Transportu Metropolitalnego");
-            StartPageSettingsMenuItem = SetLanguageValue(startPageSettingsMenuItem, "Ustawienia");
-
-            //  Buttons
-            CancelButton = SetLanguageValue(cancelButton, "Anuluj");
-            CloseButton = SetLanguageValue(closeButton, "Zamknij");
-            SelectButton = SetLanguageValue(selectButton, "Wybierz");
-
-            //  Start Page
+            ArrivalsDeparture = SetLanguageValue(arrivalsDeparture, "Godz.");
+            ArrivalsStop = SetLanguageValue(arrivalsStop, "Nazwa przystanku");
+            ArrivalsTitle = SetLanguageValue(arrivalsTitle, "Godziny przyjazdów");
+            ButtonCancel = SetLanguageValue(buttonCancel, "Anuluj");
+            ButtonClose = SetLanguageValue(buttonClose, "Zamknij");
+            ButtonMessages = SetLanguageValue(buttonMessages, "Komunikaty");
+            ButtonRefresh = SetLanguageValue(buttonRefresh, "Odśwież");
+            ButtonSelect = SetLanguageValue(buttonSelect, "Wybierz");
+            LineDetailsDepartures = SetLanguageValue(lineDetailsDepartures, "Godziny odjazdów: ");
+            LineDetailsDirection = SetLanguageValue(lineDetailsDirection, "Wybór kierunku: ");
+            LinesTitle = SetLanguageValue(linesTitle, "Wybór linii");
+            MenuItemLines = SetLanguageValue(menuItemLines, "Wybór linii");
+            MenuItemMain = SetLanguageValue(menuItemMain, "Menu główne");
+            MenuItemMpkCzestochowa = SetLanguageValue(menuItemMpkCzestochowa, "MPK Częstochowa");
+            MenuItemSettings = SetLanguageValue(menuItemSettings, "Ustawienia");
+            MenuItemZtm = SetLanguageValue(menuItemZtm, "Zarząd Transportu Metropolitalnego");
             StartPageTitle = SetLanguageValue(startPageTitle, "Wybór miasta (przedsiębiorstwa komunikacyjnego)");
-
-            //  Line Arrivals IM
-            LineArrivalsTitle = SetLanguageValue(lineArrivalsTitle, "Godziny przyjazdów");
-            LineArrivalStopHeader = SetLanguageValue(lineArrivalStopHeader, "Nazwa przystanku");
-            LineArrivalDepartureHeader = SetLanguageValue(lineArrivalDepartureHeader, "Godz.");
-
-            //  Lines View Page
-            LinesViewPageTitle = SetLanguageValue(linesViewPageTitle, "Wybór linii");
-            LinesViewPageMenuItem = SetLanguageValue(linesViewPageMenuItem, "Wybór linii");
-            LinesViewPageRefreshButton = SetLanguageValue(linesViewPageRefreshButton, "Odśwież");
-
-            //  Line Details View Page
-            LineDetailsViewPageDepartures = SetLanguageValue(lineDetailsViewPageDepartures, "Godziny odjazdów: ");
-            LineDetailsViewPageDirectionSelection = SetLanguageValue(lineDetailsViewPageDirectionSelection, "Wybór kierunku: ");
-
-            //  Time Tables View Page
-            TimeTablesViewPageTitle = SetLanguageValue(timeTablesViewPageTitle, "Wybór rozkładu jazdy");
+            TimeTablesTitle = SetLanguageValue(timeTablesTitle, "Wybór rozkładu jazdy");
         }
 
         #endregion CLASS METHODS

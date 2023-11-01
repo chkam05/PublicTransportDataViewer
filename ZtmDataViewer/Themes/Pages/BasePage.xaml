@@ -11,17 +11,46 @@
         <Grid
             Background="Transparent">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
             <Border
                 Background="{TemplateBinding Background}"
                 CornerRadius="8,0,8,0"
                 Grid.Row="1">
 
-                <ContentPresenter
-                    Content="{TemplateBinding Content}"/>
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="AUto"/>
+                    </Grid.RowDefinitions>
+
+                    <ContentPresenter
+                        Content="{TemplateBinding Content}"
+                        Grid.Row="0"/>
+
+                    <Border
+                        Background="Transparent"
+                        BorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+                        BorderThickness="0,1,0,0"
+                        Grid.Row="1"
+                        Margin="0,4,0,0"
+                        Padding="4">
+
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FooterContent}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <ContentPresenter
+                            Content="{TemplateBinding FooterContent}"/>
+
+                    </Border>
+
+                </Grid>
 
             </Border>
 

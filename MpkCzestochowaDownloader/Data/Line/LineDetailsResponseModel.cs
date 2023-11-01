@@ -29,6 +29,7 @@ namespace MpkCzestochowaDownloader.Data.Line
 
         //  --------------------------------------------------------------------------------
         /// <summary> LineDetailsResponseModel class constructor. </summary>
+        /// <param name="url"> Request url. </param>
         public LineDetailsResponseModel() : base()
         {
             //

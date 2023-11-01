@@ -50,7 +50,7 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
         //  --------------------------------------------------------------------------------
         /// <summary> ArrivalsInternalMessage class constructor. </summary>
         /// <param name="parentContainer"> Parent InternalMessagesEx container. </param>
-        /// <param name="timeTables"> Time tables list. </param>
+        /// <param name="departureDetailsViewModel"> Departure details view model. </param>
         public ArrivalsInternalMessage(InternalMessagesExContainer parentContainer, DepartureDetailsViewModel departureDetailsViewModel)
             : base(parentContainer)
         {
@@ -82,7 +82,7 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
             ButtonEx cancelButton = GetButtonEx("cancelButton");
 
             if (cancelButton != null)
-                cancelButton.Content = langConfig.CancelButton;
+                cancelButton.Content = langConfig.CloseButton;
         }
 
         #endregion TEMPLATE METHODS

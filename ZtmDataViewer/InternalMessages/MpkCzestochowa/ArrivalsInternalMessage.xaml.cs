@@ -66,7 +66,7 @@ namespace ZtmDataViewer.InternalMessages.MpkCzestochowa
             ButtonEx cancelButton = GetButtonEx("cancelButton");
 
             if (cancelButton != null)
-                cancelButton.Content = langConfig.CancelButton;
+                cancelButton.Content = langConfig.CloseButton;
         }
 
         #endregion TEMPLATE METHODS

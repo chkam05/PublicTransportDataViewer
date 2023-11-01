@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,7 @@ namespace ZtmDataViewer.Pages.ZtmData
         private LineDirectionViewModel _selectedLineDirectionViewModel;
         private LineStopViewModel _selectedLineStopViewModel;
         private ObservableCollection<LineDepartureGroupViewModel> _departures;
+        private string _sourceUrl;
 
 
         //  GETTERS & SETTERS
@@ -89,6 +91,16 @@ namespace ZtmDataViewer.Pages.ZtmData
             }
         }
 
+        public string SourceUrl
+        {
+            get => _sourceUrl;
+            set
+            {
+                _sourceUrl = value;
+                OnPropertyChanged(nameof(SourceUrl));
+            }
+        }
+
 
         //  METHODS
 
@@ -97,10 +109,13 @@ namespace ZtmDataViewer.Pages.ZtmData
         //  --------------------------------------------------------------------------------
         /// <summary> LineDetailsViewPage class constructor. </summary>
         /// <param name="pagesController"> Pages controller. </param>
-        public LineDetailsViewPage(PagesController pagesController, LineDetailsViewModel lineDetailsViewModel) : base(pagesController)
+        /// <param name="lineDetailsViewModel"> Line details view model. </param>
+        /// <param name="sourceUrl"> Source url. </param>
+        public LineDetailsViewPage(PagesController pagesController, LineDetailsViewModel lineDetailsViewModel, string sourceUrl) : base(pagesController)
         {
             //  Initialize data.
             LineDetailsViewModel = lineDetailsViewModel;
+            SourceUrl = sourceUrl;
             SelectedLineDirectionViewModel = lineDetailsViewModel.Directions.FirstOrDefault();
 
             //  Initialize user interface.
@@ -118,9 +133,10 @@ namespace ZtmDataViewer.Pages.ZtmData
         /// <summary> Load line details data. </summary>
         private void LoadLineDetails()
         {
-            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel) =>
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, sourceUrl) =>
             {
                 LineDetailsViewModel = lineDetailsViewModel;
+                SourceUrl = sourceUrl ?? string.Empty;
 
                 if (lineDetailsViewModel.Directions.Any())
                     SelectedLineDirectionViewModel = LineDetailsViewModel.Directions.First();
@@ -135,9 +151,10 @@ namespace ZtmDataViewer.Pages.ZtmData
         private void LoadDepartures()
         {
             var onDataLoadedEventHandler = new Loader.LineDearpturesDataLoadedEventHandler(
-                (lineDepartureGroupViewModelCollection) =>
+                (lineDepartureGroupViewModelCollection, sourceUrl) =>
             {
                 Departures = lineDepartureGroupViewModelCollection;
+                SourceUrl = sourceUrl ?? string.Empty;
             });
 
             Loader.LoadLineDepartures(
@@ -201,6 +218,39 @@ namespace ZtmDataViewer.Pages.ZtmData
         {
             LoadLineDetails();
             LoadDepartures();
+        }
+        
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking refresh button. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void MessagesButtonEx_Click(object sender, RoutedEventArgs e)
+        {
+            //  Get basic data.
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+
+            var imMessages = new MessagesInternalMessage(imContainer, LineDetailsViewModel);
+
+            imContainer.ShowMessage(imMessages);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking source text block. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void SourceTextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2 && !string.IsNullOrEmpty(SourceUrl))
+            {
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = SourceUrl,
+                    UseShellExecute = true
+                };
+
+                Process.Start(processStartInfo);
+            }
         }
 
         #endregion HEADER INTERACTION METHODS

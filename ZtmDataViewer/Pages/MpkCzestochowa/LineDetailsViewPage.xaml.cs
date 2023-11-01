@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -46,6 +47,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         private LineDetailsViewModel _lineDetailsViewModel;
         private LineStopViewModel _lineStopViewModel;
         private LineDeparturesViewModel _lineDeparturesViewModel;
+        private string _sourceUrl;
 
 
         //  GETTERS & SETTERS
@@ -86,6 +88,16 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             }
         }
 
+        public string SourceUrl
+        {
+            get => _sourceUrl;
+            set
+            {
+                _sourceUrl = value;
+                OnPropertyChanged(nameof(SourceUrl));
+            }
+        }
+
 
         //  METHODS
 
@@ -96,7 +108,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="pagesController"> Pages controller. </param>
         /// <param name="line"> Line data object. </param>
         /// <param name="lineDetailsViewModel"> Line details view model. </param>
-        public LineDetailsViewPage(PagesController pagesController, Line line, LineDetailsViewModel lineDetailsViewModel)
+        public LineDetailsViewPage(PagesController pagesController, Line line, LineDetailsViewModel lineDetailsViewModel, string sourceUrl)
             : base(pagesController)
         {
             //  Initialize user interface.
@@ -105,6 +117,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             //  Initialize data.
             Line = line;
             LineDetailsViewModel = lineDetailsViewModel;
+            SourceUrl = sourceUrl;
 
             //  Set additional values.
             UpdateIconKind();
@@ -122,16 +135,19 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="isDataReload"> Reload data. </param>
         private void LoadLineDetails(Line line, DateTime? dateTime = null, string? route = null, bool isDataReload = true)
         {
-            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, line, isDataReloaded) =>
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, line, isDataReloaded, sourceUrl) =>
             {
                 if (!isDataReload)
                 {
-                    _pagesController?.LoadPage(new LineDetailsViewPage(_pagesController, line, lineDetailsViewModel), false, true);
+                    _pagesController?.LoadPage(
+                        new LineDetailsViewPage(_pagesController, line, lineDetailsViewModel, sourceUrl ?? string.Empty),
+                        false, true);
                     return;
                 }
 
                 Line = line;
                 LineDetailsViewModel = lineDetailsViewModel;
+                SourceUrl = sourceUrl ?? string.Empty;
 
                 UpdateIconKind();
                 _pagesController?.ForceUpdate();
@@ -145,9 +161,10 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="lineStop"> Line stop data. </param>
         private void LoadLineDepartures(LineStop lineStop)
         {
-            var onDataLoadedEventHandler = new Loader.LineDeparturesDataLoadedEventHandler((lineDeparturesViewModel) =>
+            var onDataLoadedEventHandler = new Loader.LineDeparturesDataLoadedEventHandler((lineDeparturesViewModel, sourceUrl) =>
             {
                 LineDeparturesViewModel = lineDeparturesViewModel;
+                SourceUrl = sourceUrl ?? string.Empty;
             });
 
             Loader.LoadLineDepartures(lineStop, onDataLoadedEventHandler);
@@ -297,6 +314,24 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             var routeVariant = _lineDetailsViewModel?.SelectedRouteVariant?.RouteVariant.Variant;
 
             LoadLineDetails(_line, dateTime, routeVariant);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking source text block. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void SourceTextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2 && !string.IsNullOrEmpty(SourceUrl))
+            {
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = SourceUrl,
+                    UseShellExecute = true
+                };
+
+                Process.Start(processStartInfo);
+            }
         }
 
         #endregion HEADER INTERACTION METHODS

@@ -12,115 +12,110 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         //  VARIABLES
 
-        private SettingsAppearanceLangConfig? _settingsAppearanceLangConfig = null;
-        private SettingsGeneralLangConfig? _settingsGeneralLangConfig = null;
-        private SettingsInfoLangConfig? _settingsInfoLangConfig = null;
+        private SettingsAppearanceLangConfig? _appearance = null;
+        private SettingsGeneralLangConfig? _general = null;
+        private SettingsInfoLangConfig? _info = null;
 
-        private string _settingsPageTitle = string.Empty;
-        private string _settingsPageAppearanceMenuItem = string.Empty;
-        private string _settingsPageAppearanceMenuItemDesc = string.Empty;
-        private string _settingsPageGeneralMenuItem = string.Empty;
-        private string _settingsPageGeneralMenuItemDesc = string.Empty;
-        private string _settingsPageInfoMenuItem = string.Empty;
-        private string _settingsPageInfoMenuItemDesc = string.Empty;
+        private string _menuItemAppearance = string.Empty;
+        private string _menuItemAppearanceDesc = string.Empty;
+        private string _menuItemGeneral = string.Empty;
+        private string _menuItemGeneralDesc = string.Empty;
+        private string _menuItemInfo = string.Empty;
+        private string _menuItemInfoDesc = string.Empty;
+        private string _title = string.Empty;
 
 
         //  GETTERS & SETTERS
 
-        public SettingsAppearanceLangConfig SettingsAppearance
+        public SettingsAppearanceLangConfig Appearance
         {
             get
             {
-                if (_settingsAppearanceLangConfig == null)
-                {
-                    _settingsAppearanceLangConfig = new SettingsAppearanceLangConfig();
-                    OnPropertyChanged(nameof(SettingsAppearance));
-                }
-                return _settingsAppearanceLangConfig;
+                if (_appearance == null)
+                    _appearance = new SettingsAppearanceLangConfig();
+
+                return _appearance;
             }
             set
             {
-                _settingsAppearanceLangConfig = value;
-                OnPropertyChanged(nameof(SettingsAppearance));
+                _appearance = value;
+                OnPropertyChanged(nameof(Appearance));
             }
         }
 
-        public SettingsGeneralLangConfig SettingsGeneral
+        public SettingsGeneralLangConfig General
         {
             get
             {
-                if (_settingsGeneralLangConfig == null)
-                {
-                    _settingsGeneralLangConfig = new SettingsGeneralLangConfig();
-                    OnPropertyChanged(nameof(SettingsGeneral));
-                }
-                return _settingsGeneralLangConfig;
+                if (_general == null)
+                    _general = new SettingsGeneralLangConfig();
+
+                return _general;
             }
             set
             {
-                _settingsGeneralLangConfig = value;
-                OnPropertyChanged(nameof(SettingsGeneral));
+                _general = value;
+                OnPropertyChanged(nameof(General));
             }
         }
 
-        public SettingsInfoLangConfig SettingsInfo
+        public SettingsInfoLangConfig Info
         {
             get
             {
-                if (_settingsInfoLangConfig == null)
-                {
-                    _settingsInfoLangConfig = new SettingsInfoLangConfig();
-                    OnPropertyChanged(nameof(SettingsInfo));
-                }
-                return _settingsInfoLangConfig;
+                if (_info == null)
+                    _info = new SettingsInfoLangConfig();
+
+                return _info;
             }
             set
             {
-                _settingsInfoLangConfig = value;
-                OnPropertyChanged(nameof(SettingsInfo));
+                _info = value;
+                OnPropertyChanged(nameof(Info));
             }
         }
 
-        public string SettingsPageTitle
+
+        public string MenuItemAppearance
         {
-            get => _settingsPageTitle;
-            set => SetStringProperty(ref _settingsPageTitle, nameof(SettingsPageTitle), value);
+            get => _menuItemAppearance;
+            set => SetStringProperty(ref _menuItemAppearance, nameof(MenuItemAppearance), value);
         }
 
-        public string SettingsPageAppearanceMenuItem
+        public string MenuItemAppearanceDesc
         {
-            get => _settingsPageAppearanceMenuItem;
-            set => SetStringProperty(ref _settingsPageAppearanceMenuItem, nameof(SettingsPageAppearanceMenuItem), value);
+            get => _menuItemAppearanceDesc;
+            set => SetStringProperty(ref _menuItemAppearanceDesc, nameof(MenuItemAppearanceDesc), value);
         }
 
-        public string SettingsPageAppearanceMenuItemDesc
+        public string MenuItemGeneral
         {
-            get => _settingsPageAppearanceMenuItemDesc;
-            set => SetStringProperty(ref _settingsPageAppearanceMenuItemDesc, nameof(SettingsPageAppearanceMenuItemDesc), value);
+            get => _menuItemGeneral;
+            set => SetStringProperty(ref _menuItemGeneral, nameof(MenuItemGeneral), value);
         }
 
-        public string SettingsPageGeneralMenuItem
+        public string MenuItemGeneralDesc
         {
-            get => _settingsPageGeneralMenuItem;
-            set => SetStringProperty(ref _settingsPageGeneralMenuItem, nameof(SettingsPageGeneralMenuItem), value);
+            get => _menuItemGeneralDesc;
+            set => SetStringProperty(ref _menuItemGeneralDesc, nameof(MenuItemGeneralDesc), value);
         }
 
-        public string SettingsPageGeneralMenuItemDesc
+        public string MenuItemInfo
         {
-            get => _settingsPageGeneralMenuItemDesc;
-            set => SetStringProperty(ref _settingsPageGeneralMenuItemDesc, nameof(SettingsPageGeneralMenuItemDesc), value);
+            get => _menuItemInfo;
+            set => SetStringProperty(ref _menuItemInfo, nameof(MenuItemInfo), value);
         }
 
-        public string SettingsPageInfoMenuItem
+        public string MenuItemInfoDesc
         {
-            get => _settingsPageInfoMenuItem;
-            set => SetStringProperty(ref _settingsPageInfoMenuItem, nameof(SettingsPageInfoMenuItem), value);
+            get => _menuItemInfoDesc;
+            set => SetStringProperty(ref _menuItemInfoDesc, nameof(MenuItemInfoDesc), value);
         }
 
-        public string SettingsPageInfoMenuItemDesc
+        public string Title
         {
-            get => _settingsPageInfoMenuItemDesc;
-            set => SetStringProperty(ref _settingsPageInfoMenuItemDesc, nameof(SettingsPageAppearanceMenuItemDesc), value);
+            get => _title;
+            set => SetStringProperty(ref _title, nameof(Title), value);
         }
 
 
@@ -132,29 +127,29 @@ namespace ZtmDataViewer.Data.Config.Lang
         /// <summary> SettingsLangConfig class constructor. </summary>
         [JsonConstructor]
         public SettingsLangConfig(
-            SettingsAppearanceLangConfig? settingsAppearance = null,
-            SettingsGeneralLangConfig? settingsGeneral = null,
-            SettingsInfoLangConfig? settingsInfo = null,
+            SettingsAppearanceLangConfig? appearance = null,
+            SettingsGeneralLangConfig? general = null,
+            SettingsInfoLangConfig? info = null,
 
-            string? settingsPageTitle = null,
-            string? settingsPageAppearanceMenuItem = null,
-            string? settingsPageAppearanceMenuItemDesc = null,
-            string? settingsPageGeneralMenuItem = null,
-            string? settingsPageGeneralMenuItemDesc = null,
-            string? settingsPageInfoMenuItem = null,
-            string? settingsPageInfoMenuItemDesc = null)
+            string? menuItemAppearance = null,
+            string? menuItemAppearanceDesc = null,
+            string? menuItemGeneral = null,
+            string? menuItemGeneralDesc = null,
+            string? menuItemInfo = null,
+            string? menuItemInfoDesc = null,
+            string? title = null)
         {
-            SettingsAppearance = settingsAppearance ?? new SettingsAppearanceLangConfig();
-            SettingsGeneral = settingsGeneral ?? new SettingsGeneralLangConfig();
-            SettingsInfo = settingsInfo ?? new SettingsInfoLangConfig();
+            Appearance = appearance ?? new SettingsAppearanceLangConfig();
+            General = general ?? new SettingsGeneralLangConfig();
+            Info = info ?? new SettingsInfoLangConfig();
 
-            SettingsPageTitle = SetLanguageValue(settingsPageTitle, "Ustawienia");
-            SettingsPageAppearanceMenuItem = SetLanguageValue(settingsPageAppearanceMenuItem, "Personalizacja");
-            SettingsPageAppearanceMenuItemDesc = SetLanguageValue(settingsPageAppearanceMenuItemDesc, "Konfiguracja motywu i wyglądu aplikacji.");
-            SettingsPageGeneralMenuItem = SetLanguageValue(settingsPageGeneralMenuItem, "Ogólne");
-            SettingsPageGeneralMenuItemDesc = SetLanguageValue(settingsPageGeneralMenuItemDesc, "Ogólne opcje konfiguracji.");
-            SettingsPageInfoMenuItem = SetLanguageValue(settingsPageInfoMenuItem, "Informacje");
-            SettingsPageInfoMenuItemDesc = SetLanguageValue(settingsPageInfoMenuItemDesc, "Informacje o aplikacji.");
+            MenuItemAppearance = SetLanguageValue(menuItemAppearance, "Personalizacja");
+            MenuItemAppearanceDesc = SetLanguageValue(menuItemAppearanceDesc, "Konfiguracja motywu i wyglądu aplikacji.");
+            MenuItemGeneral = SetLanguageValue(menuItemGeneral, "Ogólne");
+            MenuItemGeneralDesc = SetLanguageValue(menuItemGeneralDesc, "Ogólne opcje konfiguracji.");
+            MenuItemInfo = SetLanguageValue(menuItemInfo, "Informacje");
+            MenuItemInfoDesc = SetLanguageValue(menuItemInfoDesc, "Informacje o aplikacji.");
+            Title = SetLanguageValue(title, "Ustawienia");
         }
 
         #endregion CLASS METHODS

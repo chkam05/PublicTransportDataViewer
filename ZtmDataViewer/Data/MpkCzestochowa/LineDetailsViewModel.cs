@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ZtmDataViewer.Data.MpkCzestochowa
 {
-    public class LineDetailsViewModel : INotifyPropertyChanged
+    public class LineDetailsViewModel : BaseViewModel
     {
 
         //  EVENTS
@@ -74,7 +74,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             set
             {
                 _dates = value;
-                _dates.CollectionChanged += OnTimeTableDatesCollectionChanged;
+                AddCollectionChangedMethod(_dates, nameof(Dates));
                 OnPropertyChanged(nameof(Dates));
             }
         }
@@ -85,7 +85,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             set
             {
                 _directions = value;
-                _directions.CollectionChanged += OnDirectionsCollectionChanged;
+                AddCollectionChangedMethod(_directions, nameof(Directions));
                 OnPropertyChanged(nameof(Directions));
             }
         }
@@ -96,7 +96,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             set
             {
                 _routeVariants = value;
-                _routeVariants.CollectionChanged += OnRouteVariantsCollectionChanged;
+                AddCollectionChangedMethod(_routeVariants, nameof(RouteVariants));
                 OnPropertyChanged(nameof(RouteVariants));
             }
         }
@@ -158,48 +158,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after directions collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnDirectionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Directions));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after time table dates collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnTimeTableDatesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Dates));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after route variants collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnRouteVariantsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(RouteVariants));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -16,6 +17,7 @@ using ZtmDataViewer.Components;
 using ZtmDataViewer.Data.Config;
 using ZtmDataViewer.Data.MainMenu;
 using ZtmDataViewer.Data.MpkCzestochowa;
+using ZtmDataViewer.InternalMessages.MpkCzestochowa;
 using ZtmDataViewer.Utilities;
 using ZtmDataViewer.Windows;
 
@@ -28,6 +30,7 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
         private ObservableCollection<LineGroupViewModel> _lineGroups;
         private ObservableCollection<MessageViewModel> _messages;
+        private string _sourceUrl = string.Empty;
         private bool _loaded = false;
 
 
@@ -64,6 +67,16 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
             }
         }
 
+        public string SourceUrl
+        {
+            get => _sourceUrl;
+            set
+            {
+                _sourceUrl = value;
+                OnPropertyChanged(nameof(SourceUrl));
+            }
+        }
+
 
         //  METHODS
 
@@ -86,10 +99,11 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <summary> Load lines data. </summary>
         private void LoadLinesData()
         {
-            var onDataLoadedEventHandler = new Loader.LinesDataLoadedEventHandler((lineGroupCollection, messagesCollection) =>
+            var onDataLoadedEventHandler = new Loader.LinesDataLoadedEventHandler((lineGroupCollection, messagesCollection, sourceUrl) =>
             {
                 LineGroups = lineGroupCollection;
                 Messages = messagesCollection;
+                SourceUrl = sourceUrl ?? string.Empty;
             });
 
             Loader.LoadLinesData(onDataLoadedEventHandler);
@@ -101,10 +115,10 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         /// <param name="pagesController"> Pages controller. </param>
         private void LoadLineDetails(Line line, PagesController pagesController)
         {
-            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, line, isDataReload) =>
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, line, isDataReload, sourceUrl) =>
             {
                 pagesController?.LoadPage(
-                    new LineDetailsViewPage(pagesController, line, lineDetailsViewModel));
+                    new LineDetailsViewPage(pagesController, line, lineDetailsViewModel, sourceUrl ?? string.Empty));
             });
 
             Loader.LoadLineDetails(line, onDataLoadedEventHandler);
@@ -121,6 +135,39 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         private void RefreshButtonEx_Click(object sender, RoutedEventArgs e)
         {
             LoadLinesData();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking refresh button. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void MessagesButtonEx_Click(object sender, RoutedEventArgs e)
+        {
+            //  Get basic data.
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+
+            var imMessages = new MessagesInternalMessage(imContainer, Messages);
+
+            imContainer.ShowMessage(imMessages);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking source text block. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void SourceTextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2 && !string.IsNullOrEmpty(SourceUrl))
+            {
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = SourceUrl,
+                    UseShellExecute = true
+                };
+
+                Process.Start(processStartInfo);
+            }
         }
 
         #endregion HEADER INTERACTION METHODS

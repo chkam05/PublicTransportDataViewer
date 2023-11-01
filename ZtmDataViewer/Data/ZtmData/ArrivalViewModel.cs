@@ -11,13 +11,8 @@ using ZtmDataDownloader.Data.Arrivals;
 
 namespace ZtmDataViewer.Data.ZtmData
 {
-    public class ArrivalViewModel : INotifyPropertyChanged
+    public class ArrivalViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -80,21 +75,6 @@ namespace ZtmDataViewer.Data.ZtmData
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

@@ -12,50 +12,50 @@ namespace ZtmDataViewer.Data.Config.Lang
 
         //  VARIABLES
 
-        private string _settingsAppearanceTheme = string.Empty;
-        private string _settingsAppearanceThemeDesc = string.Empty;
-        private string _settingsAppearanceThemeDark = string.Empty;
-        private string _settingsAppearanceThemeLight = string.Empty;
-        private string _settingsAppearnaceAccentColors = string.Empty;
-        private string _settingsAppearanceAccentColorsHistory = string.Empty;
+        private string _colorsHistoryTitle = string.Empty;
+        private string _colorsTitle = string.Empty;
+        private string _themeDesc = string.Empty;
+        private string _themeOptionDark = string.Empty;
+        private string _themeOptionLight = string.Empty;
+        private string _themeTitle = string.Empty;
 
 
         //  GETTERS & SETTERS
 
-        public string SettingsAppearanceTheme
+        public string ColorsHistoryTitle
         {
-            get => _settingsAppearanceTheme;
-            set => SetStringProperty(ref _settingsAppearanceTheme, nameof(SettingsAppearanceTheme), value);
+            get => _colorsHistoryTitle;
+            set => SetStringProperty(ref _colorsHistoryTitle, nameof(ColorsHistoryTitle), value);
         }
 
-        public string SettingsAppearanceThemeDesc
+        public string ColorsTitle
         {
-            get => _settingsAppearanceThemeDesc;
-            set => SetStringProperty(ref _settingsAppearanceThemeDesc, nameof(SettingsAppearanceThemeDesc), value);
+            get => _colorsTitle;
+            set => SetStringProperty(ref _colorsTitle, nameof(ColorsTitle), value);
         }
 
-        public string SettingsAppearanceThemeDark
+        public string ThemeDesc
         {
-            get => _settingsAppearanceThemeDark;
-            set => SetStringProperty(ref _settingsAppearanceThemeDark, nameof(SettingsAppearanceThemeDark), value);
+            get => _themeDesc;
+            set => SetStringProperty(ref _themeDesc, nameof(ThemeDesc), value);
         }
 
-        public string SettingsAppearanceThemeLight
+        public string ThemeOptionDark
         {
-            get => _settingsAppearanceThemeLight;
-            set => SetStringProperty(ref _settingsAppearanceThemeLight, nameof(SettingsAppearanceThemeLight), value);
+            get => _themeOptionDark;
+            set => SetStringProperty(ref _themeOptionDark, nameof(ThemeOptionDark), value);
         }
 
-        public string SettingsAppearnaceAccentColors
+        public string ThemeOptionLight
         {
-            get => _settingsAppearnaceAccentColors;
-            set => SetStringProperty(ref _settingsAppearnaceAccentColors, nameof(SettingsAppearnaceAccentColors), value);
+            get => _themeOptionLight;
+            set => SetStringProperty(ref _themeOptionLight, nameof(ThemeOptionLight), value);
         }
 
-        public string SettingsAppearanceAccentColorsHistory
+        public string ThemeTitle
         {
-            get => _settingsAppearanceAccentColorsHistory;
-            set => SetStringProperty(ref _settingsAppearanceAccentColorsHistory, nameof(SettingsAppearanceAccentColorsHistory), value);
+            get => _themeTitle;
+            set => SetStringProperty(ref _themeTitle, nameof(ThemeTitle), value);
         }
 
 
@@ -67,19 +67,19 @@ namespace ZtmDataViewer.Data.Config.Lang
         /// <summary> SettingsAppearanceLangConfig class constructor. </summary>
         [JsonConstructor]
         public SettingsAppearanceLangConfig(
-            string? settingsAppearanceTheme = null,
-            string? settingsAppearanceThemeDesc = null,
-            string? settingsAppearanceThemeDark = null,
-            string? settingsAppearanceThemeLight = null,
-            string? settingsAppearnaceAccentColors = null,
-            string? settingsAppearanceAccentColorsHistory = null)
+            string? colorsHistoryTitle = null,
+            string? colorsTitle = null,
+            string? themeDesc = null,
+            string? themeOptionDark = null,
+            string? themeOptionLight = null,
+            string? themeTitle = null)
         {
-            SettingsAppearanceTheme = SetLanguageValue(settingsAppearanceTheme, "Motyw");
-            SettingsAppearanceThemeDesc = SetLanguageValue(settingsAppearanceThemeDesc, "Ustaw motyw aplikacji.");
-            SettingsAppearanceThemeDark = SetLanguageValue(settingsAppearanceThemeDark, "Ciemny");
-            SettingsAppearanceThemeLight = SetLanguageValue(settingsAppearanceThemeLight, "Jasny");
-            SettingsAppearnaceAccentColors = SetLanguageValue(settingsAppearnaceAccentColors, "Wybór koloru akcentu: ");
-            SettingsAppearanceAccentColorsHistory = SetLanguageValue(settingsAppearanceAccentColorsHistory, "Ostatnio wybierane kolory: ");
+            ColorsHistoryTitle = SetLanguageValue(colorsHistoryTitle, "Ostatnio wybierane kolory: ");
+            ColorsTitle = SetLanguageValue(colorsTitle, "Wybór koloru akcentu: ");
+            ThemeDesc = SetLanguageValue(themeDesc, "Ustaw motyw aplikacji.");
+            ThemeOptionDark = SetLanguageValue(themeOptionDark, "Ciemny");
+            ThemeOptionLight = SetLanguageValue(themeOptionLight, "Jasny");
+            ThemeTitle = SetLanguageValue(themeTitle, "Motyw");
         }
 
         #endregion CLASS METHODS

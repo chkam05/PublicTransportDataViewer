@@ -23,6 +23,12 @@ namespace ZtmDataViewer.Pages
             typeof(BasePage),
             new PropertyMetadata(null));
 
+        public static readonly DependencyProperty FooterContentProperty = DependencyProperty.Register(
+            nameof(FooterContent),
+            typeof(object),
+            typeof(BasePage),
+            new PropertyMetadata(null));
+
 
         //  EVENTS
 
@@ -46,6 +52,16 @@ namespace ZtmDataViewer.Pages
             {
                 SetValue(HeaderContentProperty, value);
                 OnPropertyChanged(nameof(HeaderContent));
+            }
+        }
+
+        public object FooterContent
+        {
+            get => GetValue(FooterContentProperty);
+            set
+            {
+                SetValue(FooterContentProperty, value);
+                OnPropertyChanged(nameof(FooterContent));
             }
         }
 

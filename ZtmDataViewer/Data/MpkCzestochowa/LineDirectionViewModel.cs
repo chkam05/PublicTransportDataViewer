@@ -11,13 +11,8 @@ using System.Xml.Linq;
 
 namespace ZtmDataViewer.Data.MpkCzestochowa
 {
-    public class LineDirectionViewModel : INotifyPropertyChanged
+    public class LineDirectionViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -49,7 +44,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             set
             {
                 _stops = value;
-                _stops.CollectionChanged += OnStopsCollectionChanged;
+                AddCollectionChangedMethod(_stops, nameof(Stops));
                 OnPropertyChanged(nameof(Stops));
             }
         }
@@ -71,30 +66,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after stops collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnStopsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Stops));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

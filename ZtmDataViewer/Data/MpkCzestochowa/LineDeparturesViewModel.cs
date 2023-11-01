@@ -10,13 +10,8 @@ using System.Threading.Tasks;
 
 namespace ZtmDataViewer.Data.MpkCzestochowa
 {
-    public class LineDeparturesViewModel : INotifyPropertyChanged
+    public class LineDeparturesViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -43,7 +38,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             set
             {
                 _departures = value;
-                _departures.CollectionChanged += OnDeparturesCollectionChanged;
+                AddCollectionChangedMethod(_departures, nameof(Departures));
                 OnPropertyChanged(nameof(Departures));
             }
         }
@@ -54,7 +49,7 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
             set
             {
                 _otherLines = value;
-                _otherLines.CollectionChanged += OnOtherLinesCollectionChanged;
+                AddCollectionChangedMethod(_otherLines, nameof(OtherLines));
                 OnPropertyChanged(nameof(OtherLines));
             }
         }
@@ -79,39 +74,6 @@ namespace ZtmDataViewer.Data.MpkCzestochowa
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after departures collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnDeparturesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Departures));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after other lines collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnOtherLinesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(OtherLines));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

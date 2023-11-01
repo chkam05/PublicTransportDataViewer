@@ -12,102 +12,109 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
 
         //  VARIABLES
 
-        private ZtmArrivalsIMLangConfig? _ztmArrivalsIMLangConfig = null;
-        private ZtmLinesViewLangConfig? _ztmLinesViewLangConfig = null;
-        private ZtmLineDetailsViewLangConfig? _ztmLineDetailsViewLangConfig = null;
-        private ZtmTimeTableSelectorIMLangConfig? _ztmTimeTableSelectorIMLangConfig = null;
-        private ZtmTransportTypesLangConfig? _ztmTransportTypesLangConfig = null;
+        private ArrivalsLangConfig? _arrivals = null;
+        private LineDetailsViewLangConfig? _lineDetails = null;
+        private LinesViewLangConfig? _lines = null;
+        private MessagesLangConfig? _messages = null;
+        private TimeTablesLangConfig? _timeTables = null;
+        private TransportTypesLangConfig? _transportTypes = null;
 
 
         //  GETTERS & SETTERS
 
-        public ZtmArrivalsIMLangConfig ZtmArrivalsIM
+        public ArrivalsLangConfig Arrivals
         {
             get
             {
-                if (_ztmArrivalsIMLangConfig == null)
-                {
-                    _ztmArrivalsIMLangConfig = new ZtmArrivalsIMLangConfig();
-                    OnPropertyChanged(nameof(ZtmArrivalsIM));
-                }
-                return _ztmArrivalsIMLangConfig;
+                if (_arrivals == null)
+                    _arrivals = new ArrivalsLangConfig();
+
+                return _arrivals;
             }
             set
             {
-                _ztmArrivalsIMLangConfig = value;
-                OnPropertyChanged(nameof(ZtmArrivalsIM));
+                _arrivals = value;
+                OnPropertyChanged(nameof(Arrivals));
             }
         }
 
-        public ZtmLinesViewLangConfig ZtmLinesView
+        public LineDetailsViewLangConfig LineDetails
         {
             get
             {
-                if (_ztmLinesViewLangConfig == null)
-                {
-                    _ztmLinesViewLangConfig = new ZtmLinesViewLangConfig();
-                    OnPropertyChanged(nameof(ZtmLinesView));
-                }
-                return _ztmLinesViewLangConfig;
+                if (_lineDetails == null)
+                    _lineDetails = new LineDetailsViewLangConfig();
+
+                return _lineDetails;
             }
             set
             {
-                _ztmLinesViewLangConfig = value;
-                OnPropertyChanged(nameof(ZtmLinesView));
+                _lineDetails = value;
+                OnPropertyChanged(nameof(LineDetails));
             }
         }
 
-        public ZtmLineDetailsViewLangConfig ZtmLineDetailsView
+        public LinesViewLangConfig Lines
         {
             get
             {
-                if (_ztmLineDetailsViewLangConfig == null)
-                {
-                    _ztmLineDetailsViewLangConfig = new ZtmLineDetailsViewLangConfig();
-                    OnPropertyChanged(nameof(ZtmLineDetailsView));
-                }
-                return _ztmLineDetailsViewLangConfig;
+                if (_lines == null)
+                    _lines = new LinesViewLangConfig();
+
+                return _lines;
             }
             set
             {
-                _ztmLineDetailsViewLangConfig = value;
-                OnPropertyChanged(nameof(ZtmLineDetailsView));
+                _lines = value;
+                OnPropertyChanged(nameof(Lines));
             }
         }
 
-        public ZtmTimeTableSelectorIMLangConfig ZtmTimeTableSelectorIM
+        public MessagesLangConfig Messages
         {
             get
             {
-                if (_ztmTimeTableSelectorIMLangConfig == null)
-                {
-                    _ztmTimeTableSelectorIMLangConfig = new ZtmTimeTableSelectorIMLangConfig();
-                    OnPropertyChanged(nameof(ZtmTimeTableSelectorIM));
-                }
-                return _ztmTimeTableSelectorIMLangConfig;
+                if (_messages == null)
+                    _messages = new MessagesLangConfig();
+
+                return _messages;
             }
             set
             {
-                _ztmTimeTableSelectorIMLangConfig = value;
-                OnPropertyChanged(nameof(ZtmTimeTableSelectorIM));
+                _messages = value;
+                OnPropertyChanged(nameof(Messages));
             }
         }
 
-        public ZtmTransportTypesLangConfig ZtmTransportTypes
+        public TimeTablesLangConfig TimeTables
         {
             get
             {
-                if (_ztmTransportTypesLangConfig == null)
-                {
-                    _ztmTransportTypesLangConfig = new ZtmTransportTypesLangConfig();
-                    OnPropertyChanged(nameof(ZtmTransportTypes));
-                }
-                return _ztmTransportTypesLangConfig;
+                if (_timeTables == null)
+                    _timeTables = new TimeTablesLangConfig();
+
+                return _timeTables;
             }
             set
             {
-                _ztmTransportTypesLangConfig = value;
-                OnPropertyChanged(nameof(ZtmTransportTypes));
+                _timeTables = value;
+                OnPropertyChanged(nameof(TimeTables));
+            }
+        }
+
+        public TransportTypesLangConfig TransportTypes
+        {
+            get
+            {
+                if (_transportTypes == null)
+                    _transportTypes = new TransportTypesLangConfig();
+
+                return _transportTypes;
+            }
+            set
+            {
+                _transportTypes = value;
+                OnPropertyChanged(nameof(TransportTypes));
             }
         }
 
@@ -120,17 +127,19 @@ namespace ZtmDataViewer.Data.Config.Lang.Ztm
         /// <summary> ZtmLangConfig class constructor. </summary>
         [JsonConstructor]
         public ZtmLangConfig(
-            ZtmArrivalsIMLangConfig? ztmArrivalsIM = null,
-            ZtmLinesViewLangConfig? ztmLinesView = null,
-            ZtmLineDetailsViewLangConfig? ztmLineDetailsView = null,
-            ZtmTimeTableSelectorIMLangConfig? ztmTimeTableSelectorIM = null,
-            ZtmTransportTypesLangConfig? ztmTransportTypes = null)
+            ArrivalsLangConfig? arrivals = null,
+            LineDetailsViewLangConfig? lineDetails = null,
+            LinesViewLangConfig? lines = null,
+            MessagesLangConfig? messages = null,
+            TimeTablesLangConfig? timeTables = null,
+            TransportTypesLangConfig? transportTypes = null)
         {
-            ZtmArrivalsIM = ztmArrivalsIM ?? new ZtmArrivalsIMLangConfig();
-            ZtmLinesView = ztmLinesView ?? new ZtmLinesViewLangConfig();
-            ZtmLineDetailsView = ztmLineDetailsView ?? new ZtmLineDetailsViewLangConfig();
-            ZtmTimeTableSelectorIM = ztmTimeTableSelectorIM ?? new ZtmTimeTableSelectorIMLangConfig();
-            ZtmTransportTypes = ztmTransportTypes ?? new ZtmTransportTypesLangConfig();
+            Arrivals = arrivals ?? new ArrivalsLangConfig();
+            Lines = lines ?? new LinesViewLangConfig();
+            LineDetails = lineDetails ?? new LineDetailsViewLangConfig();
+            Messages = messages ?? new MessagesLangConfig();
+            TimeTables = timeTables ?? new TimeTablesLangConfig();
+            TransportTypes = transportTypes ?? new TransportTypesLangConfig();
         }
 
         #endregion CLASS METHODS

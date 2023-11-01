@@ -47,19 +47,6 @@
                 <Setter Property="Padding" Value="0"/>
             </Style>
 
-            <Style x:Key="MessageListViewItemExStyle" BasedOn="{StaticResource ListViewItemExStyle}" TargetType="{x:Type cex:ListViewItemEx}">
-                <Setter Property="Background" Value="{Binding ConfigData.AppearanceConfig.ThemeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
-                <Setter Property="BorderBrush" Value="{Binding ConfigData.AppearanceConfig.ThemeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
-                <Setter Property="Margin" Value="0,2"/>
-                <Setter Property="Padding" Value="4"/>
-            </Style>
-
-            <Style x:Key="MessageListViewExStyle" BasedOn="{StaticResource ListViewExStyle}" TargetType="{x:Type cex:ListViewEx}">
-                <Setter Property="ItemContainerStyle" Value="{StaticResource MessageListViewItemExStyle}"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-            </Style>
-
             <Style x:Key="DepartureListViewItemExStyle" BasedOn="{StaticResource ListViewItemExStyle}" TargetType="{x:Type cex:ListViewItemEx}">
                 <Setter Property="Margin" Value="2"/>
                 <Setter Property="Padding" Value="4"/>
@@ -171,112 +158,6 @@
                 </Grid>
             </DataTemplate>
 
-            <DataTemplate x:Key="MessageDataTemplate">
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <materialDesign:PackIcon
-                        Grid.Column="0"
-                        Height="24"
-                        Kind="CommentTextOutline"
-                        Margin="0,0,8,0"
-                        VerticalAlignment="Center"
-                        Width="24"/>
-
-                    <StackPanel
-                        Grid.Column="1"
-                        Orientation="Vertical"
-                        VerticalAlignment="Center">
-
-                        <TextBlock
-                            Text="{Binding MessageText}"/>
-
-                        <Border
-                            BorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"
-                            BorderThickness="0,1,0,0"
-                            Margin="0,4,0,0"
-                            Padding="0,4,0,0">
-
-                            <Border.Style>
-                                <Style TargetType="{x:Type Border}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding HasDates}" Value="False">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <StackPanel
-                                Orientation="Vertical">
-
-                                <TextBlock
-                                    Text="{Binding DateDescription}"/>
-
-                                <StackPanel
-                                    Margin="0,4,0,0"
-                                    Orientation="Horizontal">
-
-                                    <StackPanel
-                                        Orientation="Horizontal">
-
-                                        <StackPanel.Style>
-                                            <Style TargetType="{x:Type StackPanel}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding HasStartDate}" Value="False">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
-
-                                        <TextBlock
-                                            Text="{Binding LangConfig.Ztm.ZtmTimeTableSelectorIM.ZtmTimeTablesSelectorFrom, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
-
-                                        <TextBlock
-                                            Margin="4,0,0,0"
-                                            Text="{Binding StartDate, Mode=OneWay}"/>
-
-                                    </StackPanel>
-
-                                    <StackPanel
-                                        Margin="4,0,0,0"
-                                        Orientation="Horizontal">
-
-                                        <StackPanel.Style>
-                                            <Style TargetType="{x:Type StackPanel}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding HasEndDate}" Value="False">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
-
-                                        <TextBlock
-                                            Text="{Binding LangConfig.Ztm.ZtmTimeTableSelectorIM.ZtmTimeTablesSelectorTo, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
-
-                                        <TextBlock
-                                            Margin="4,0,0,0"
-                                            Text="{Binding EndDate, Mode=OneWay}"/>
-
-                                    </StackPanel>
-
-                                </StackPanel>
-
-                            </StackPanel>
-
-                        </Border>
-
-                    </StackPanel>
-
-                </Grid>
-            </DataTemplate>
-
             <DataTemplate x:Key="DepartureTemplate">
                 <TextBlock
                     MinWidth="40"
@@ -334,12 +215,44 @@
             Orientation="Horizontal">
 
             <cex:ButtonEx
+                Content="{Binding LangConfig.MessagesButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                IconKind="Message"
+                Click="MessagesButtonEx_Click"/>
+
+            <cex:ButtonEx
                 Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
+                Margin="4,0,0,0"
                 Click="RefresButtonEx_Click"/>
 
         </StackPanel>
     </pages:BasePage.HeaderContent>
+
+    <pages:BasePage.FooterContent>
+        <StackPanel
+            Orientation="Horizontal">
+
+            <TextBlock
+                FontWeight="SemiBold"
+                Text="{Binding LangConfig.SourceTitle, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+
+            <TextBlock
+                Margin="8,0,0,0"
+                Text="{Binding SourceUrl}"
+                PreviewMouseDown="SourceTextBlock_PreviewMouseDown">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+        </StackPanel>
+    </pages:BasePage.FooterContent>
 
     <Grid>
 
@@ -348,19 +261,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
         <!-- Directions -->
         
         <Border
             Background="{Binding ConfigData.AppearanceConfig.ThemeShadeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"
             Grid.Column="0"
-            Grid.Row="0"
             CornerRadius="4"
-            Margin="8,8,4,4"
+            Margin="8,8,4,8"
             MaxWidth="384"
             Padding="8">
 
@@ -417,9 +324,8 @@
         <Border
             Background="{Binding ConfigData.AppearanceConfig.ThemeShadeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"
             Grid.Column="1"
-            Grid.Row="0"
             CornerRadius="4"
-            Margin="4,8,8,4"
+            Margin="4,8,8,8"
             Padding="8">
 
             <Grid>
@@ -456,57 +362,6 @@
                         ItemsSource="{Binding Departures}"
                         ItemTemplate="{StaticResource DepartureGroupTemplate}"
                         Style="{StaticResource DepartureGroupListViewExStyle}"/>
-
-                </cex:ScrollViewerEx>
-
-            </Grid>
-
-        </Border>
-        
-        <!-- Messages -->
-
-        <Border
-            Background="{Binding ConfigData.AppearanceConfig.ThemeShadeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"
-            Grid.ColumnSpan="2"
-            Grid.Row="1"
-            CornerRadius="4"
-            Margin="8,4,8,8"
-            MaxHeight="216"
-            Padding="8">
-
-            <Grid>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Border
-                    BorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"
-                    BorderThickness="0,0,0,1"
-                    Margin="0,0,0,8"
-                    Padding="0,0,0,8">
-
-                    <StackPanel
-                        Orientation="Vertical">
-
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Text="{Binding LangConfig.Ztm.ZtmLineDetailsView.ZtmLineDetailsViewPageMessages, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
-
-                    </StackPanel>
-
-                </Border>
-
-                <cex:ScrollViewerEx
-                    Grid.Row="1"
-                    VerticalScrollBarVisibility="Auto">
-
-                    <cex:ListViewEx
-                        ItemsSource="{Binding LineDetailsViewModel.Messages}"
-                        ItemTemplate="{StaticResource MessageDataTemplate}"
-                        Style="{StaticResource MessageListViewExStyle}"/>
 
                 </cex:ScrollViewerEx>
 
