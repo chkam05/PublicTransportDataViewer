@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZtmDataDownloader", "ZtmDataDownloader\ZtmDataDownloader.csproj", "{6C2D05D6-70F2-43CC-AB42-FE2B5595218D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZtmDataTester", "ZtmDataTester\ZtmDataTester.csproj", "{1AB83F8D-65D4-40A1-807A-3C9732C91226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTester", "ZtmDataTester\DataTester.csproj", "{1AB83F8D-65D4-40A1-807A-3C9732C91226}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderCore", "DownloaderCore\DownloaderCore.csproj", "{2D5665AE-E51B-46E7-B4A9-6736CA112FE1}"
 EndProject

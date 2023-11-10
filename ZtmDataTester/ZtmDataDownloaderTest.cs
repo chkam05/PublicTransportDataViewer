@@ -91,7 +91,7 @@ namespace ZtmDataTester
                 bool anyTimeTableLoaded = false;
                 int lineIndex = 0;
 
-                foreach (var line in lines[_transportTypeTest].Where(l => l.IsPathChanged && l.IsUpdated))
+                foreach (var line in lines[_transportTypeTest].Where(l => l.IsPathChanged || l.IsUpdated))
                 {
                     var timeTables = SimpleDownloader.DownloadTimeTables(line);
 
@@ -335,7 +335,7 @@ namespace ZtmDataTester
         {
             timeTables = null;
 
-            foreach (var line in lines.Where(l => l.IsPathChanged && l.IsUpdated))
+            foreach (var line in lines.Where(l => l.IsPathChanged || l.IsUpdated))
             {
                 timeTables = SimpleDownloader.DownloadTimeTables(line);
 
