@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Arrivals;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class ArrivalViewModel : BaseViewModel
     {

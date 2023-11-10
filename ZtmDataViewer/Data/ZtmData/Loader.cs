@@ -14,14 +14,14 @@ using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.TimeTables;
 using ZtmDataDownloader.Downloaders;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.InternalMessages.ZtmData;
-using ZtmDataViewer.Pages.ZtmData;
-using ZtmDataViewer.Utilities;
-using ZtmDataViewer.Windows;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.InternalMessages.ZtmData;
+using PublicTransportDataViewer.Pages.ZtmData;
+using PublicTransportDataViewer.Utilities;
+using PublicTransportDataViewer.Windows;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public static class Loader
     {
@@ -177,19 +177,11 @@ namespace ZtmDataViewer.Data.ZtmData
                     pagesController.LoadPage(
                         new LineDetailsViewPage(pagesController, lineDetailsViewModel, requestUrl));
                 }
-                else if (!string.IsNullOrEmpty(timeTableId))
-                {
-                    imAwait.Close();
-
-                    LoadTimeTablesData(line, pagesController);
-                }
                 else
                 {
                     imAwait.Close();
 
-                    ShowDownloadingErrorMessage(
-                        langConf.Messages.DownloadErrorTitle,
-                        langConf.Messages.LineDetailsDownloadErrorDesc);
+                    LoadTimeTablesData(line, pagesController);
                 }
             };
 

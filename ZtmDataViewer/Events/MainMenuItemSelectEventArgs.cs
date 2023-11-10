@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZtmDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Data.MainMenu;
 
-namespace ZtmDataViewer.Events
+namespace PublicTransportDataViewer.Events
 {
     public class MainMenuItemSelectEventArgs : EventArgs
     {

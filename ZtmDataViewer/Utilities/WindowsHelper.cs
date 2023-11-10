@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace ZtmDataViewer.Utilities
+namespace PublicTransportDataViewer.Utilities
 {
     public static class WindowsHelper
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZtmDataDownloader.Data.TimeTables;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class TimeTableViewModel : BaseViewModel
     {

@@ -2,8 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
-    xmlns:cfg="clr-namespace:ZtmDataViewer.Data.Config"
-    xmlns:pages="clr-namespace:ZtmDataViewer.Pages">
+    xmlns:cfg="clr-namespace:PublicTransportDataViewer.Data.Config"
+    xmlns:pages="clr-namespace:PublicTransportDataViewer.Pages">
 
     <x:Static x:Key="ConfigManager" Member="cfg:ConfigManager.Instance" />
 

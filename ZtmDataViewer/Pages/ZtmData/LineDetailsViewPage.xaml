@@ -1,14 +1,14 @@
 ﻿<pages:BasePage
-    xmlns:pages="clr-namespace:ZtmDataViewer.Pages"
-    x:Class="ZtmDataViewer.Pages.ZtmData.LineDetailsViewPage"
+    xmlns:pages="clr-namespace:PublicTransportDataViewer.Pages"
+    x:Class="PublicTransportDataViewer.Pages.ZtmData.LineDetailsViewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
-    xmlns:cfg="clr-namespace:ZtmDataViewer.Data.Config"
-    xmlns:convZtm="clr-namespace:ZtmDataViewer.Converters.ZtmData"
-    xmlns:local="clr-namespace:ZtmDataViewer.Pages.ZtmData"
+    xmlns:cfg="clr-namespace:PublicTransportDataViewer.Data.Config"
+    xmlns:convZtm="clr-namespace:PublicTransportDataViewer.Converters.ZtmData"
+    xmlns:local="clr-namespace:PublicTransportDataViewer.Pages.ZtmData"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d"
     
@@ -22,7 +22,7 @@
     <pages:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PublicTransportDataViewer;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <x:Static x:Key="ConfigManager" Member="cfg:ConfigManager.Instance" />
@@ -215,12 +215,12 @@
             Orientation="Horizontal">
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.MessagesButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.ButtonMessages, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Message"
                 Click="MessagesButtonEx_Click"/>
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.ButtonRefresh, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
                 Margin="4,0,0,0"
                 Click="RefresButtonEx_Click"/>
@@ -291,7 +291,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.LineDetailsViewPageDirectionSelection, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.LineDetailsDirection, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                         <cex:ComboBoxEx
                             ItemsSource="{Binding LineDetailsViewModel.Directions}"
@@ -348,7 +348,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.LineDetailsViewPageDepartures, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.LineDetailsDepartures, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                     </StackPanel>
 

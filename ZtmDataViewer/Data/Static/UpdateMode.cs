@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Data.Static
+namespace PublicTransportDataViewer.Data.Static
 {
     public enum UpdateMode
     {

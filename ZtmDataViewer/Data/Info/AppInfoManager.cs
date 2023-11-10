@@ -5,9 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Data.Info
+namespace PublicTransportDataViewer.Data.Info
 {
     public class AppInfoManager
     {

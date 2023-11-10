@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ZtmDataViewer.Data.Config
+namespace PublicTransportDataViewer.Data.Config
 {
     public class ConfigData : BaseViewModel
     {

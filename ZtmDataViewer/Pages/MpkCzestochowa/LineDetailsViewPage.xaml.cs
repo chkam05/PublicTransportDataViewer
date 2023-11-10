@@ -25,15 +25,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using ZtmDataDownloader.Data.Line;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Converters.MpkCzestochowa;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.MpkCzestochowa;
-using ZtmDataViewer.Data.Static;
-using ZtmDataViewer.Utilities;
-using ZtmDataViewer.Windows;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Converters.MpkCzestochowa;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Data.MpkCzestochowa;
+using PublicTransportDataViewer.Data.Static;
+using PublicTransportDataViewer.Utilities;
+using PublicTransportDataViewer.Windows;
 
-namespace ZtmDataViewer.Pages.MpkCzestochowa
+namespace PublicTransportDataViewer.Pages.MpkCzestochowa
 {
     /// <summary>
     /// Logika interakcji dla klasy LineDetailsViewPage.xaml
@@ -51,6 +52,15 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
 
 
         //  GETTERS & SETTERS
+
+        public override List<MainMenuItem> MainMenuItems
+        {
+            get => new List<MainMenuItem>()
+            {
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemLines, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemSettings, PackIconKind.Gear, OnSettingsMenuItemSelect),
+            };
+        }
 
         public Line Line
         {
@@ -335,6 +345,28 @@ namespace ZtmDataViewer.Pages.MpkCzestochowa
         }
 
         #endregion HEADER INTERACTION METHODS
+
+        #region MENU ITEMS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting lines menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnLinesMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new MpkCzestochowa.LinesViewPage(_pagesController));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting settings menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnSettingsMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new SettingsPage(_pagesController));
+        }
+
+        #endregion MENU ITEMS METHODS
 
         #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 

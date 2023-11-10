@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZtmDataViewer.Data.Config.Lang.MpkCzestochowa;
-using ZtmDataViewer.Data.Config.Lang.Ztm;
+using PublicTransportDataViewer.Data.Config.Lang.MpkCzestochowa;
+using PublicTransportDataViewer.Data.Config.Lang.Ztm;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
-namespace ZtmDataViewer.Data.Config.Lang
+namespace PublicTransportDataViewer.Data.Config.Lang
 {
     public class LangConfig : BaseLangConfig
     {
@@ -42,6 +42,8 @@ namespace ZtmDataViewer.Data.Config.Lang
         private string _menuItemMpkCzestochowa = string.Empty;
         private string _menuItemSettings = string.Empty;
         private string _menuItemZtm = string.Empty;
+
+        private string _sourceTitle = string.Empty;
 
         private string _startPageTitle = string.Empty;
 
@@ -222,6 +224,12 @@ namespace ZtmDataViewer.Data.Config.Lang
             set => SetStringProperty(ref _menuItemZtm, nameof(MenuItemZtm), value);
         }
 
+        public string SourceTitle
+        {
+            get => _sourceTitle;
+            set => SetStringProperty(ref _sourceTitle, nameof(SourceTitle), value);
+        }
+
         public string StartPageTitle
         {
             get => _startPageTitle;
@@ -266,6 +274,7 @@ namespace ZtmDataViewer.Data.Config.Lang
             string? menuItemMpkCzestochowa = null,
             string? menuItemSettings = null,
             string? menuItemZtm = null,
+            string? sourceTitle = null,
             string? startPageTitle = null,
             string? timeTablesTitle = null)
         {
@@ -292,6 +301,7 @@ namespace ZtmDataViewer.Data.Config.Lang
             MenuItemMpkCzestochowa = SetLanguageValue(menuItemMpkCzestochowa, "MPK Częstochowa");
             MenuItemSettings = SetLanguageValue(menuItemSettings, "Ustawienia");
             MenuItemZtm = SetLanguageValue(menuItemZtm, "Zarząd Transportu Metropolitalnego");
+            SourceTitle = SetLanguageValue(sourceTitle, "Źródło danych: ");
             StartPageTitle = SetLanguageValue(startPageTitle, "Wybór miasta (przedsiębiorstwa komunikacyjnego)");
             TimeTablesTitle = SetLanguageValue(timeTablesTitle, "Wybór rozkładu jazdy");
         }

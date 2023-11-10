@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Data.MainMenu
+namespace PublicTransportDataViewer.Data.MainMenu
 {
     public class MainMenuItem : BaseViewModel
     {

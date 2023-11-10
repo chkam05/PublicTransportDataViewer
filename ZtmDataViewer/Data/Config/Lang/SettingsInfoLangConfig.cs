@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Data.Config.Lang
+namespace PublicTransportDataViewer.Data.Config.Lang
 {
     public class SettingsInfoLangConfig : BaseLangConfig
     {

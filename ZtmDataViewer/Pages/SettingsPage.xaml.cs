@@ -2,6 +2,9 @@
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,20 +17,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.Config.Lang;
-using ZtmDataViewer.Data.MainMenu;
-using ZtmDataViewer.Pages.Settings;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config.Lang;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Pages.Settings;
 
-namespace ZtmDataViewer.Pages
+namespace PublicTransportDataViewer.Pages
 {
     public partial class SettingsPage : BasePage
     {
 
         //  VARIABLES
 
-        private LangConfig _langConfig = ConfigManager.Instance.LangConfig;
+        private ObservableCollection<MainMenuItem> _internalMenuItems;
 
 
         //  GETTERS & SETTERS
@@ -36,10 +39,24 @@ namespace ZtmDataViewer.Pages
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem(_langConfig.Settings.MenuItemAppearance, PackIconKind.Palette, OnAppearanceMenuItemSelect, _langConfig.Settings.MenuItemAppearanceDesc),
-                new MainMenuItem(_langConfig.Settings.MenuItemGeneral, PackIconKind.Gear, OnGeneralMenuItemSelect, _langConfig.Settings.MenuItemGeneralDesc),
-                new MainMenuItem(_langConfig.Settings.MenuItemInfo, PackIconKind.InfoCircleOutline, OnInfoMenuItemSelect, _langConfig.Settings.MenuItemInfoDesc),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.Settings.MenuItemAppearance, PackIconKind.Palette, OnAppearanceMenuItemSelect,
+                    ConfigManager.Instance.LangConfig.Settings.MenuItemAppearanceDesc),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.Settings.MenuItemGeneral, PackIconKind.Gear, OnGeneralMenuItemSelect,
+                    ConfigManager.Instance.LangConfig.Settings.MenuItemGeneralDesc),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.Settings.MenuItemInfo, PackIconKind.InfoCircleOutline, OnInfoMenuItemSelect,
+                    ConfigManager.Instance.LangConfig.Settings.MenuItemInfoDesc),
             };
+        }
+
+        public ObservableCollection<MainMenuItem> InternalMenuItems
+        {
+            get => _internalMenuItems;
+            set
+            {
+                _internalMenuItems = value;
+                _internalMenuItems.CollectionChanged += OnInternalMenuItemsCollectionChanged;
+                OnPropertyChanged(nameof(InternalMenuItems));
+            }
         }
 
 
@@ -54,6 +71,13 @@ namespace ZtmDataViewer.Pages
         {
             //  Initialize user interface.
             InitializeComponent();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Provides a mechanism for releasing unmanaged resources. </summary>
+        public override void Dispose()
+        {
+            ConfigManager.Instance.LanguageUpdated -= OnLanguageUpdated;
         }
 
         #endregion CLASS METHODS
@@ -105,6 +129,53 @@ namespace ZtmDataViewer.Pages
         }
 
         #endregion MENU ITEMS INTERACTION METHODS
+
+        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after internal menu items collection changed. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
+        protected void OnInternalMenuItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(InternalMenuItems));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after updating language. </summary>
+        /// <param name="languageConfig"> Loaded language configuration. </param>
+        private void OnLanguageUpdated(LangConfig languageConfig)
+        {
+            _pagesController.ForceUpdateMainMenuItems(MainMenuItems);
+        }
+
+        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        #region PAGE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after loading page. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void BasePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!ConfigManager.Instance.HasLanguageUpdatedRegisteredMethod(OnLanguageUpdated))
+                ConfigManager.Instance.LanguageUpdated += OnLanguageUpdated;
+
+            //  Setup internal menu.
+            InternalMenuItems = new ObservableCollection<MainMenuItem>(MainMenuItems);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after unloading page. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void BasePage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //
+        }
+
+        #endregion PAGE METHODS
 
     }
 }

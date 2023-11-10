@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ZtmDataDownloader.Data.Global;
 using ZtmDataDownloader.Data.Line;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class MessageViewModel : BaseViewModel
     {

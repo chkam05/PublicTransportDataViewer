@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Data.Config.Lang.MpkCzestochowa
+namespace PublicTransportDataViewer.Data.Config.Lang.MpkCzestochowa
 {
     public class LinesViewLangConfig : BaseLangConfig
     {

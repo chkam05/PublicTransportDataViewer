@@ -1,14 +1,14 @@
 ﻿<pages:BasePage
-    xmlns:pages="clr-namespace:ZtmDataViewer.Pages"
-    x:Class="ZtmDataViewer.Pages.ZtmData.LinesViewPage"
+    xmlns:pages="clr-namespace:PublicTransportDataViewer.Pages"
+    x:Class="PublicTransportDataViewer.Pages.ZtmData.LinesViewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
-    xmlns:cfg="clr-namespace:ZtmDataViewer.Data.Config"
-    xmlns:convZtm="clr-namespace:ZtmDataViewer.Converters.ZtmData"
-    xmlns:local="clr-namespace:ZtmDataViewer.Pages.ZtmData"
+    xmlns:cfg="clr-namespace:PublicTransportDataViewer.Data.Config"
+    xmlns:convZtm="clr-namespace:PublicTransportDataViewer.Converters.ZtmData"
+    xmlns:local="clr-namespace:PublicTransportDataViewer.Pages.ZtmData"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d"
     
@@ -16,14 +16,14 @@
     d:DesignWidth="800"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     IconKind="ChartTimelineVariant"
-    Title="{Binding LangConfig.LinesViewPageTitle, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
+    Title="{Binding LangConfig.LinesTitle, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
     Loaded="BasePage_Loaded"
     Unloaded="BasePage_Unloaded">
 
     <pages:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PublicTransportDataViewer;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <x:Static x:Key="ConfigManager" Member="cfg:ConfigManager.Instance" />
@@ -129,7 +129,7 @@
             Orientation="Horizontal">
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.ButtonRefresh, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
                 Click="RefreshButtonEx_Click"/>
 

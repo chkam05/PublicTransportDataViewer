@@ -25,16 +25,17 @@ using ZtmDataDownloader.Data.Departures;
 using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.TimeTables;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Converters.ZtmData;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.InternalMessages.ZtmData;
-using ZtmDataViewer.Utilities;
-using ZtmDataViewer.Windows;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Converters.ZtmData;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.InternalMessages.ZtmData;
+using PublicTransportDataViewer.Utilities;
+using PublicTransportDataViewer.Windows;
 using static System.Windows.Forms.LinkLabel;
 
-namespace ZtmDataViewer.Pages.ZtmData
+namespace PublicTransportDataViewer.Pages.ZtmData
 {
     public partial class LineDetailsViewPage : BasePage
     {
@@ -49,6 +50,15 @@ namespace ZtmDataViewer.Pages.ZtmData
 
 
         //  GETTERS & SETTERS
+
+        public override List<MainMenuItem> MainMenuItems
+        {
+            get => new List<MainMenuItem>()
+            {
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemLines, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemSettings, PackIconKind.Gear, OnSettingsMenuItemSelect),
+            };
+        }
 
         public LineDetailsViewModel LineDetailsViewModel
         {
@@ -254,6 +264,28 @@ namespace ZtmDataViewer.Pages.ZtmData
         }
 
         #endregion HEADER INTERACTION METHODS
+
+        #region MENU ITEMS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting lines menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnLinesMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new ZtmData.LinesViewPage(_pagesController));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting settings menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnSettingsMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new SettingsPage(_pagesController));
+        }
+
+        #endregion MENU ITEMS METHODS
 
         #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 

@@ -1,14 +1,14 @@
 ﻿<pages:BasePage
-    xmlns:pages="clr-namespace:ZtmDataViewer.Pages"
-    x:Class="ZtmDataViewer.Pages.MpkCzestochowa.LineDetailsViewPage"
+    xmlns:pages="clr-namespace:PublicTransportDataViewer.Pages"
+    x:Class="PublicTransportDataViewer.Pages.MpkCzestochowa.LineDetailsViewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
-    xmlns:cfg="clr-namespace:ZtmDataViewer.Data.Config"
-    xmlns:convMpkCz="clr-namespace:ZtmDataViewer.Converters.MpkCzestochowa"
-    xmlns:local="clr-namespace:ZtmDataViewer.Pages.MpkCzestochowa"
+    xmlns:cfg="clr-namespace:PublicTransportDataViewer.Data.Config"
+    xmlns:convMpkCz="clr-namespace:PublicTransportDataViewer.Converters.MpkCzestochowa"
+    xmlns:local="clr-namespace:PublicTransportDataViewer.Pages.MpkCzestochowa"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
     
@@ -22,7 +22,7 @@
     <pages:BasePage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ZtmDataViewer;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PublicTransportDataViewer;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <x:Static x:Key="ConfigManager" Member="cfg:ConfigManager.Instance" />
@@ -137,7 +137,7 @@
                 Width="128"/>
 
             <cex:ButtonEx
-                Content="{Binding LangConfig.LinesViewPageRefreshButton, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                Content="{Binding LangConfig.ButtonRefresh, Mode=OneWay, Source={StaticResource ConfigManager}}"
                 IconKind="Refresh"
                 Margin="8,0,0,0"
                 Click="RefresButtonEx_Click"/>
@@ -215,7 +215,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.LineDetailsViewPageDirectionSelection, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.LineDetailsDirection, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                         <cex:ComboBoxEx
                             ItemsSource="{Binding LineDetailsViewModel.Directions}"
@@ -257,7 +257,7 @@
                 Orientation="Horizontal">
 
                 <TextBlock
-                    Text="{Binding LangConfig.MpkCzestochowa.MpkCzestochowaLineDetailsViewLangConfig.MpkCzestochowaLineDetailsViewPageOtherLines, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                    Text="{Binding LangConfig.MpkCzestochowa.LineDetails.OtherLines, Mode=OneWay, Source={StaticResource ConfigManager}}"
                     VerticalAlignment="Center"/>
 
                 <cex:ScrollViewerEx

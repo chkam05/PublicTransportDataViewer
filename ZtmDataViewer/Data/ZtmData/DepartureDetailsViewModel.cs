@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ZtmDataDownloader.Data.Arrivals;
 using ZtmDataDownloader.Data.Global;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class DepartureDetailsViewModel : BaseViewModel
     {

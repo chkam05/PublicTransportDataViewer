@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Converters.Config
+namespace PublicTransportDataViewer.Converters.Config
 {
     public class AppearanceThemeTypeNameConverter : IValueConverter
     {

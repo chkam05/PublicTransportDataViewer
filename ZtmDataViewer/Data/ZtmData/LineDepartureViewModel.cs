@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZtmDataDownloader.Data.Departures;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class LineDepartureViewModel : BaseViewModel
     {

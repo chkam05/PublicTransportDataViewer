@@ -19,11 +19,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using ZtmDataDownloader.Data.Lines;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.InternalMessages.ZtmData
+namespace PublicTransportDataViewer.InternalMessages.ZtmData
 {
     public partial class TimeTableSelectorInternalMessage : StandardInternalMessageEx
     {

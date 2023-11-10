@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace ZtmDataViewer.Converters.MpkCzestochowa
+namespace PublicTransportDataViewer.Converters.MpkCzestochowa
 {
     public class TransportTypeIconKindConverter : IValueConverter
     {

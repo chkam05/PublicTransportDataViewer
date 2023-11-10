@@ -15,12 +15,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 using System.Collections.ObjectModel;
-using ZtmDataViewer.Data.MpkCzestochowa;
+using PublicTransportDataViewer.Data.MpkCzestochowa;
 using System.Collections.Specialized;
 
-namespace ZtmDataViewer.InternalMessages.MpkCzestochowa
+namespace PublicTransportDataViewer.InternalMessages.MpkCzestochowa
 {
     public partial class MessagesInternalMessage : StandardInternalMessageEx
     {

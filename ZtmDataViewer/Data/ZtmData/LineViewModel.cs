@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.Static;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class LineViewModel : BaseViewModel
     {

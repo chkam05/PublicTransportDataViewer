@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Data
+namespace PublicTransportDataViewer.Data
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
@@ -63,6 +63,16 @@ namespace ZtmDataViewer.Data
             {
                 OnPropertyChanged(nameof(propertyName));
             };
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Check if PropertyChanged has a registered method. </summary>
+        /// <param name="method"> Method. </param>
+        /// <returns> True - PropertyChanged has a registered method; False - otherwise. </returns>
+        public bool HasPropertyChangedRegisteredMethod(Delegate method)
+        {
+            return PropertyChanged?.GetInvocationList()
+                .Any(h => h == method) ?? false;
         }
 
         #endregion UTILITY METHODS

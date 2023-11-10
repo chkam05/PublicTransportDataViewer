@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,18 +14,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Events;
-using ZtmDataViewer.Pages;
-using static ZtmDataViewer.Events.EventsDefinitions;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Events;
+using PublicTransportDataViewer.Pages;
+using static PublicTransportDataViewer.Data.Static.CustomEvents;
+using static PublicTransportDataViewer.Events.EventsDefinitions;
 
-namespace ZtmDataViewer.Components
+namespace PublicTransportDataViewer.Components
 {
     public partial class PagesController : UserControl, INotifyPropertyChanged
     {
 
         //  EVENTS
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public event HeaderPageForceUpdateEventHandler? OnHeaderPageForceUpdate;
+        public event MainMenuItemsForceUpdateEventHandler? OnMainMenuItemsForceUpdate;
         public event PagesManagerNavigatedEventHandler OnPageBack;
         public event PagesManagerNavigatedEventHandler OnPageNavigated;
 
@@ -193,7 +199,7 @@ namespace ZtmDataViewer.Components
         /// <param name="propertyName"> Changed property name. </param>
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedEventHandler? handler = PropertyChanged;
 
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
@@ -232,6 +238,27 @@ namespace ZtmDataViewer.Components
             var args = new OnPageLoadedEventArgs(LoadedPage, LoadedPage);
             OnPageNavigated?.Invoke(this, args);
             OnPropertyChanged(nameof(LoadedPage));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Force update page header. </summary>
+        /// <param name="icon"> Header icon. </param>
+        /// <param name="title"> Header title. </param>
+        public void ForceUpdateHeader(PackIconKind? icon = null, string? title = null)
+        {
+            if (icon.HasValue && !string.IsNullOrEmpty(title))
+                OnHeaderPageForceUpdate?.Invoke(icon.Value, title);
+
+            else if (LoadedPage != null)
+                OnHeaderPageForceUpdate?.Invoke(LoadedPage.IconKind, LoadedPage.Title);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Force update main menu items. </summary>
+        /// <param name="mainMenuItems"> List of main menu items. </param>
+        public void ForceUpdateMainMenuItems(List<MainMenuItem> mainMenuItems)
+        {
+            OnMainMenuItemsForceUpdate?.Invoke(mainMenuItems);
         }
 
         #endregion UPDATE METHODS

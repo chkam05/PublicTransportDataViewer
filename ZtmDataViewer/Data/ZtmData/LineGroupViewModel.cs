@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.Static;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class LineGroupViewModel : BaseViewModel
     {

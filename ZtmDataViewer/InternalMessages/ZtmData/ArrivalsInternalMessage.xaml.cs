@@ -17,10 +17,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZtmDataDownloader.Data.TimeTables;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.ZtmData;
 
-namespace ZtmDataViewer.InternalMessages.ZtmData
+namespace PublicTransportDataViewer.InternalMessages.ZtmData
 {
     public partial class ArrivalsInternalMessage : StandardInternalMessageEx
     {

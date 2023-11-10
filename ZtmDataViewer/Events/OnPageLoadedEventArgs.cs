@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZtmDataViewer.Pages;
+using PublicTransportDataViewer.Pages;
 
-namespace ZtmDataViewer.Events
+namespace PublicTransportDataViewer.Events
 {
     public class OnPageLoadedEventArgs : EventArgs
     {

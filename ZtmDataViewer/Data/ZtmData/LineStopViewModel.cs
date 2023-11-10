@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Global;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class LineStopViewModel : BaseViewModel
     {

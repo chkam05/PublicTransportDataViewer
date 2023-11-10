@@ -11,15 +11,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.Events;
-using ZtmDataViewer.InternalMessages.MpkCzestochowa;
-using ZtmDataViewer.Utilities;
-using ZtmDataViewer.Windows;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.Events;
+using PublicTransportDataViewer.InternalMessages.MpkCzestochowa;
+using PublicTransportDataViewer.Utilities;
+using PublicTransportDataViewer.Windows;
 
-namespace ZtmDataViewer.Data.MpkCzestochowa
+namespace PublicTransportDataViewer.Data.MpkCzestochowa
 {
     public static class Loader
     {

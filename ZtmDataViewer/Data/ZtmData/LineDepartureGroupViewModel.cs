@@ -10,7 +10,7 @@ using ZtmDataDownloader.Data.Departures;
 using ZtmDataDownloader.Data.Global;
 using static System.Formats.Asn1.AsnWriter;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class LineDepartureGroupViewModel : BaseViewModel
     {

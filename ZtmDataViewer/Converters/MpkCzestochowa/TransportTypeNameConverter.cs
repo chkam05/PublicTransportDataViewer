@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Converters.MpkCzestochowa
+namespace PublicTransportDataViewer.Converters.MpkCzestochowa
 {
     public class TransportTypeNameConverter : IValueConverter
     {
@@ -24,13 +24,13 @@ namespace ZtmDataViewer.Converters.MpkCzestochowa
             switch (transportType)
             {
                 case TransportType.Bus:
-                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeBus;
+                    return langConfig.MpkCzestochowa.TransportTypes.Bus;
                 case TransportType.BusSuburban:
-                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeBusSuburban;
+                    return langConfig.MpkCzestochowa.TransportTypes.BusSuburban;
                 case TransportType.BusNight:
-                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeBusNight;
+                    return langConfig.MpkCzestochowa.TransportTypes.BusNight;
                 case TransportType.Tram:
-                    return langConfig.MpkCzestochowa.MpkCzestochowaTransportTypes.MpkCzestochowaTransportTypeTram;
+                    return langConfig.MpkCzestochowa.TransportTypes.Tram;
             }
 
             return string.Empty;

@@ -15,14 +15,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.Info;
-using ZtmDataViewer.Events;
-using ZtmDataViewer.Pages;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Info;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Events;
+using PublicTransportDataViewer.Pages;
+using PublicTransportDataViewer.Utilities;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace ZtmDataViewer.Windows
+namespace PublicTransportDataViewer.Windows
 {
     public partial class MainWindow : WindowEx, INotifyPropertyChanged
     {
@@ -118,6 +120,28 @@ namespace ZtmDataViewer.Windows
         #endregion NAVIGATION MANAGEMENT METHODS
 
         #region PAGES MANAGER INTERACTION METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after force updating page header. </summary>
+        /// <param name="icon"> Page header icon. </param>
+        /// <param name="title"> Page header title. </param>
+        private void PagesController_OnHeaderPageForceUpdate(PackIconKind icon, string title)
+        {
+            titlePackIcon.Kind = icon;
+            titleTextBlock.Text = title;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after force updating main menu items. </summary>
+        /// <param name="mainMenuItems"> List of main menu items. </param>
+        private void PagesManager_OnMainMenuItemsForceUpdate(List<MainMenuItem> mainMenuItems)
+        {
+            if (mainMenuItems?.Any() ?? false)
+            {
+                mainMenu.ClearItems();
+                mainMenu.AddMenuItems(mainMenuItems);
+            }
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Method invoked after navigating to previous page. </summary>

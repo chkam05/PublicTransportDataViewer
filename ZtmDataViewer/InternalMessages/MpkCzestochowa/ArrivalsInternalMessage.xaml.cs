@@ -1,10 +1,10 @@
 ﻿using chkam05.Tools.ControlsEx.Data;
 using chkam05.Tools.ControlsEx;
 using chkam05.Tools.ControlsEx.InternalMessages;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.MpkCzestochowa;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.MpkCzestochowa;
 
-namespace ZtmDataViewer.InternalMessages.MpkCzestochowa
+namespace PublicTransportDataViewer.InternalMessages.MpkCzestochowa
 {
     public partial class ArrivalsInternalMessage : StandardInternalMessageEx
     {

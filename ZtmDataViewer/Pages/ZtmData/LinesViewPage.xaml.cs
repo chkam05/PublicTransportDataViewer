@@ -24,15 +24,15 @@ using ZtmDataDownloader.Data.Departures;
 using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.TimeTables;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.MainMenu;
-using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.InternalMessages.ZtmData;
-using ZtmDataViewer.Utilities;
-using ZtmDataViewer.Windows;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.InternalMessages.ZtmData;
+using PublicTransportDataViewer.Utilities;
+using PublicTransportDataViewer.Windows;
 
-namespace ZtmDataViewer.Pages.ZtmData
+namespace PublicTransportDataViewer.Pages.ZtmData
 {
     public partial class LinesViewPage : BasePage
     {

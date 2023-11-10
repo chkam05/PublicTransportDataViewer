@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Utilities
+namespace PublicTransportDataViewer.Utilities
 {
     public static class EnumHelper
     {

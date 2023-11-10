@@ -12,7 +12,7 @@
     "LineDetailsDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
     "LinesDownloadDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
     "LinesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-    "TimeTablesDownloadDesc": "Trwa pobieranie danych. \r\nProszę czekać...",
+    "TimeTablesDownloadDesc": "Trwa pobieranie danych rozkładów jazdy. \r\nProszę czekać...",
     "TimeTablesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas."
   },
 
@@ -63,7 +63,15 @@
       "Copyright": "Prawa autorskie: ",
       "DataSources": "Źródła danych: ",
       "Description": "Opis: "
-    }
+    },
+
+    "MenuItemAppearance": "Personalizacja",
+    "MenuItemAppearanceDesc": "Konfiguracja motywu i wyglądu aplikacji.",
+    "MenuItemGeneral": "Ogólne",
+    "MenuItemGeneralDesc": "Ogólne opcje konfiguracji.",
+    "MenuItemInfo": "Informacje",
+    "MenuItemInfoDesc": "Informacje o aplikacji.",
+    "Title": "Ustawienia"
   },
 
   "Ztm": {
@@ -117,6 +125,7 @@
   "MenuItemMpkCzestochowa": "MPK Częstochowa",
   "MenuItemSettings": "Ustawienia",
   "MenuItemZtm": "Zarząd Transportu Metropolitalnego",
+  "SourceTitle": "Źródło danych: ",
   "StartPageTitle": "Wybór miasta (przedsiębiorstwa komunikacyjnego)",
   "TimeTablesTitle": "Wybór rozkładu jazdy"
 }

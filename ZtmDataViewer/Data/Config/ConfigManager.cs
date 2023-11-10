@@ -7,13 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using ZtmDataViewer.Data.Config.Lang;
-using ZtmDataViewer.Data.Info;
+using PublicTransportDataViewer.Data.Config.Lang;
+using PublicTransportDataViewer.Data.Info;
+using static PublicTransportDataViewer.Data.Static.CustomEvents;
 
-namespace ZtmDataViewer.Data.Config
+namespace PublicTransportDataViewer.Data.Config
 {
     public class ConfigManager : BaseViewModel, IDisposable
     {
+
+        //  EVENTS
+
+        public LanguageUpdateEventHandler? LanguageUpdated;
+
 
         //  CONST
 
@@ -56,6 +62,7 @@ namespace ZtmDataViewer.Data.Config
             {
                 _langConfig = value;
                 OnPropertyChanged(nameof(LangConfig));
+                LanguageUpdated?.Invoke(value);
             }
         }
 
@@ -242,6 +249,20 @@ namespace ZtmDataViewer.Data.Config
         }
 
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        #region UTILITY METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Check if LanguageUpdated has a registered method. </summary>
+        /// <param name="method"> Method. </param>
+        /// <returns> True - LanguageUpdated has a registered method; False - otherwise. </returns>
+        public bool HasLanguageUpdatedRegisteredMethod(Delegate method)
+        {
+            return LanguageUpdated?.GetInvocationList()
+                .Any(h => h == method) ?? false;
+        }
+
+        #endregion UTILITY METHODS
 
     }
 }

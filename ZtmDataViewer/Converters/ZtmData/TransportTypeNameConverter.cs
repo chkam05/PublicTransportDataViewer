@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Static;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Converters.ZtmData
+namespace PublicTransportDataViewer.Converters.ZtmData
 {
     public class TransportTypeNameConverter : IValueConverter
     {

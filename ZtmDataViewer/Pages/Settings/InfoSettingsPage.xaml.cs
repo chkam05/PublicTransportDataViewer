@@ -13,10 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Pages.Settings
+namespace PublicTransportDataViewer.Pages.Settings
 {
     public partial class InfoSettingsPage : BasePage
     {

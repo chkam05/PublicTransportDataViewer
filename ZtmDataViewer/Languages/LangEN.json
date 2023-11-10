@@ -2,18 +2,18 @@
   "Name": "English",
 
   "Messages": {
-    "DownloadTitle": "Pobieranie danych",
-    "DownloadErrorTitle": "Błąd pobierania danych",
-    "ArrivalsDownloadDesc": "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...",
-    "ArrivalsDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
-    "DeparturesDownloadDesc": "Trwa pobieranie danych godzin odjazdów. \r\nProszę czekać ...",
-    "DeparturesDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin odjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
-    "LineDetailsDownloadDesc": "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...",
-    "LineDetailsDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-    "LinesDownloadDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
-    "LinesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-    "TimeTablesDownloadDesc": "Trwa pobieranie danych. \r\nProszę czekać...",
-    "TimeTablesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas."
+    "DownloadTitle": "Downloading data",
+    "DownloadErrorTitle": "Data download error",
+    "ArrivalsDownloadDesc": "Downloading arrival times data. \r\nPlease wait ...",
+    "ArrivalsDownloadErrorDesc": "There was a problem retrieving arrival times. \r\nPlease try again later.",
+    "DeparturesDownloadDesc": "Downloading departure times data. \r\nPlease wait ...",
+    "DeparturesDownloadErrorDesc": "There was a problem retrieving departure times. \r\nPlease try again later.",
+    "LineDetailsDownloadDesc": "Downloading line details data. \r\nPlease wait ...",
+    "LineDetailsDownloadErrorDesc": "There was a problem retrieving line details. \r\nPlease try again later.",
+    "LinesDownloadDesc": "Downloading line data. \r\nPlease wait...",
+    "LinesDownloadErrorDesc": "There was a problem retrieving line data. \r\nPlease try again later.",
+    "TimeTablesDownloadDesc": "Downloading time tables data. \r\nPlease wait...",
+    "TimeTablesDownloadErrorDesc": "There was a problem downloading timetable data. \r\nPlease try again later."
   },
 
   "MpkCzestochowa": {
@@ -22,7 +22,7 @@
     },
 
     "LineDetails": {
-      "OtherLines": "Inne linie odjeżdżające z tego przystanku: "
+      "OtherLines": "Other lines leaving from this stop: "
     },
 
     "Lines": {
@@ -30,46 +30,54 @@
     },
 
     "Messages": {
-      "Date": "Data obowiązywania: ",
-      "Lines": "Dotyczy linii: ",
-      "Title": "Komunikaty: "
+      "Date": "Effective date: ",
+      "Lines": "Applies to lines: ",
+      "Title": "Messages: "
     },
 
     "TransportTypes": {
-      "Bus": "Autobus",
-      "BusNight": "Autobus nocny",
-      "BusSuburban": "Autobus podmiejski",
-      "Tram": "Tramwaj"
+      "Bus": "Bus",
+      "BusNight": "Night bus",
+      "BusSuburban": "Suburban bus",
+      "Tram": "Tram"
     }
   },
 
   "Settings": {
     "Appearance": {
-      "ColorsHistoryTitle": "Ostatnio wybierane kolory: ",
-      "ColorsTitle": "Wybór koloru akcentu: ",
-      "ThemeDesc": "Ustaw motyw aplikacji.",
-      "ThemeOptionDark": "Ciemny",
-      "ThemeOptionLight": "Jasny",
-      "ThemeTitle": "Motyw"
+      "ColorsHistoryTitle": "Recently selected colors: ",
+      "ColorsTitle": "Accent color: ",
+      "ThemeDesc": "App theme setting.",
+      "ThemeOptionDark": "Dark",
+      "ThemeOptionLight": "Light",
+      "ThemeTitle": "Theme"
     },
 
     "General": {
-      "LangDesc": "Wybór języka aplikacji.",
-      "LangTitle": "Język"
+      "LangDesc": "Application language.",
+      "LangTitle": "Language"
     },
 
     "Info": {
-      "Author": "Autor: ",
-      "Copyright": "Prawa autorskie: ",
-      "DataSources": "Źródła danych: ",
-      "Description": "Opis: "
-    }
+      "Author": "Author: ",
+      "Copyright": "Copyright: ",
+      "DataSources": "Data sources: ",
+      "Description": "Description: "
+    },
+
+    "MenuItemAppearance": "Personalization",
+    "MenuItemAppearanceDesc": "Application theme and appearance configuration.",
+    "MenuItemGeneral": "General",
+    "MenuItemGeneralDesc": "General application configuration.",
+    "MenuItemInfo": "Information",
+    "MenuItemInfoDesc": "Information about application.",
+    "Title": "Settings"
   },
 
   "Ztm": {
     "Arrivals": {
-      "TripDistance": "Odległość",
-      "TripTime": "Czas podróży"
+      "TripDistance": "Distance",
+      "TripTime": "Travel time"
     },
 
     "LineDetails": {
@@ -81,42 +89,43 @@
     },
 
     "Messages": {
-      "Title": "Komunikaty: "
+      "Title": "Messages: "
     },
 
     "TimeTables": {
-      "FromTo": "Rozkład ważny",
-      "From": "od",
-      "To": "do"
+      "FromTo": "Timetable valid",
+      "From": "from",
+      "To": "to"
     },
 
     "TransportTypes": {
-      "Bus": "Autobus",
-      "BusAirport": "Autobus na lotnisko",
-      "BusMetropolitan": "Autobus metropolitalny",
-      "BusNight": "Autobus nocny",
-      "BusReplacement": "Autobus zastępczy",
-      "Tram": "Tramwaj",
-      "Trolley": "Trolejbus"
+      "Bus": "Bus",
+      "BusAirport": "Bus to the airport",
+      "BusMetropolitan": "Metropolitan bus",
+      "BusNight": "Night bus",
+      "BusReplacement": "Replacement bus",
+      "Tram": "Tram",
+      "Trolley": "Trolleybus"
     }
   },
 
-  "ArrivalsDeparture": "Godz.",
-  "ArrivalsStop": "Nazwa przystanku",
-  "ArrivalsTitle": "Godziny przyjazdów",
-  "ButtonCancel": "Anuluj",
-  "ButtonClose": "Zamknij",
-  "ButtonMessages": "Komunikaty",
-  "ButtonRefresh": "Odśwież",
-  "ButtonSelect": "Wybierz",
-  "LineDetailsDepartures": "Godziny odjazdów: ",
-  "LineDetailsDirection": "Wybór kierunku: ",
-  "LinesTitle": "Wybór linii",
-  "MenuItemLines": "Wybór linii",
-  "MenuItemMain": "Menu główne",
+  "ArrivalsDeparture": "Time.",
+  "ArrivalsStop": "Stop name",
+  "ArrivalsTitle": "Arrival times",
+  "ButtonCancel": "Cancel",
+  "ButtonClose": "Close",
+  "ButtonMessages": "Messages",
+  "ButtonRefresh": "Refresh",
+  "ButtonSelect": "Select",
+  "LineDetailsDepartures": "Departure times: ",
+  "LineDetailsDirection": "Direction selection: ",
+  "LinesTitle": "Line selection",
+  "MenuItemLines": "Line selection",
+  "MenuItemMain": "Main Menu",
   "MenuItemMpkCzestochowa": "MPK Częstochowa",
-  "MenuItemSettings": "Ustawienia",
-  "MenuItemZtm": "Zarząd Transportu Metropolitalnego",
-  "StartPageTitle": "Wybór miasta (przedsiębiorstwa komunikacyjnego)",
-  "TimeTablesTitle": "Wybór rozkładu jazdy"
+  "MenuItemSettings": "Settings",
+  "MenuItemZtm": "Metropolitan Transport Authority",
+  "SourceTitle": "Data source: ",
+  "StartPageTitle": "Choosing a city (communication company)",
+  "TimeTablesTitle": "Timetable selection"
 }

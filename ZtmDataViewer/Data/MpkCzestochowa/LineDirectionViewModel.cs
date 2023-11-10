@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ZtmDataViewer.Data.MpkCzestochowa
+namespace PublicTransportDataViewer.Data.MpkCzestochowa
 {
     public class LineDirectionViewModel : BaseViewModel
     {

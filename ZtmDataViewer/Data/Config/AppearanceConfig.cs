@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.Data.Config
+namespace PublicTransportDataViewer.Data.Config
 {
     public class AppearanceConfig : BaseViewModel
     {

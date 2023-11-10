@@ -10,7 +10,7 @@ using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.Static;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
     public class LineDetailsViewModel : BaseViewModel
     {

@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.MainMenu;
 
-namespace ZtmDataViewer.Pages
+namespace PublicTransportDataViewer.Pages
 {
-    public class BasePage : Page, INotifyPropertyChanged
+    public class BasePage : Page, INotifyPropertyChanged, IDisposable
     {
 
         //  DEPENDENCY PROPERTIES
@@ -94,6 +94,13 @@ namespace ZtmDataViewer.Pages
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BasePage),
                 new FrameworkPropertyMetadata(typeof(BasePage)));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Provides a mechanism for releasing unmanaged resources. </summary>
+        public virtual void Dispose()
+        {
+            //
         }
 
         #endregion CLASS METHODS
