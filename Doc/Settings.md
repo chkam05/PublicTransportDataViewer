@@ -4,7 +4,7 @@ Application section allowing its configuration.
 
 ### 1. Main settings page:
 
-![Settings Page (Images/settings_page.jpg)](Images/settings_page.png)
+![Settings Page (Images/.jpg.jpg)](Images/.jpg.png)
 
 ### 2. Appearance settings page:
 

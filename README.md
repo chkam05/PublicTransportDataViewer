@@ -3,7 +3,7 @@ Application and libraries to download and view Public Transport Data in Poland.
 
 ## Application overview:
 
-![Main Window (Doc/Images/main_page.jpg)](Doc/Images/main_page.png)
+![Main Window (Doc/Images/main_page.jpg)](Doc/Images/main_page.jpg)
 
 The application is divided into several main elements/libraries:
 - __PublicTransportDataViewer__ - main application that allows to display public transport data.
