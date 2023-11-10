@@ -156,7 +156,7 @@
                             Text="{Binding LangConfig.Settings.Info.Author, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                         <TextBlock
-                            Margin="0,0,0,8"
+                            Margin="0,0,0,16"
                             Text="{Binding AppCompany, Mode=OneWay, Source={StaticResource AppInfoManager}}"/>
 
                         <TextBlock
@@ -166,7 +166,7 @@
                             Text="{Binding LangConfig.Settings.Info.Copyright, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                         <TextBlock
-                            Margin="0,0,0,8"
+                            Margin="0,0,0,16"
                             Text="{Binding AppCopyright, Mode=OneWay, Source={StaticResource AppInfoManager}}"/>
 
                         <TextBlock
@@ -178,9 +178,21 @@
                         <cex:ListViewEx
                             ItemsSource="{Binding DataSources, Mode=OneWay, Source={StaticResource AppInfoManager}}"
                             ItemTemplate="{StaticResource DataSourceTemplate}"
-                            Margin="0,0,0,8"
+                            Margin="0,0,0,16"
                             Style="{StaticResource DataSourcesExStyle}"
                             PreviewMouseDoubleClick="SourcesListViewEx_PreviewMouseDoubleClick"/>
+
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Margin="0,0,0,2"
+                            Text="{Binding LangConfig.Settings.Info.ProjectUrl, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+
+                        <TextBlock
+                            Cursor="Hand"
+                            Margin="0,0,0,8"
+                            Text="{Binding ProjectUrl, Mode=OneWay, Source={StaticResource AppInfoManager}}"
+                            PreviewMouseDown="ProjectUrlTextBlock_PreviewMouseDown"/>
 
                     </StackPanel>
 

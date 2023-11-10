@@ -314,7 +314,7 @@
                         <TextBlock
                             FontSize="14"
                             FontWeight="SemiBold"
-                            Text="{Binding LangConfig.LineDetailsViewPageDepartures, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                            Text="{Binding LangConfig.LineDetailsDepartures, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
 
                     </StackPanel>
 

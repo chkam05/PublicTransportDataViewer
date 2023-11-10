@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PublicTransportDataViewer.Components;
 using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Info;
 
 namespace PublicTransportDataViewer.Pages.Settings
 {
@@ -57,6 +58,21 @@ namespace PublicTransportDataViewer.Pages.Settings
                     Process.Start(processStartInfo);
                 }
             }
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after double clicing on project url TextBlock. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Mouse Button Event Arguments. </param>
+        private void ProjectUrlTextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var processStartInfo = new ProcessStartInfo()
+            {
+                FileName = AppInfoManager.Instance.ProjectUrl,
+                UseShellExecute = true
+            };
+
+            Process.Start(processStartInfo);
         }
 
         #endregion DATA INTERACTION METHODS

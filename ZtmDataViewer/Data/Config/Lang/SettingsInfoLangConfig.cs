@@ -16,6 +16,7 @@ namespace PublicTransportDataViewer.Data.Config.Lang
         private string _copyright = string.Empty;
         private string _dataSources = string.Empty;
         private string _description = string.Empty;
+        private string _projectUrl = string.Empty;
 
 
         //  GETTERS & SETTERS
@@ -44,6 +45,12 @@ namespace PublicTransportDataViewer.Data.Config.Lang
             set => SetStringProperty(ref _description, nameof(Description), value);
         }
 
+        public string ProjectUrl
+        {
+            get => _projectUrl;
+            set => SetStringProperty(ref _projectUrl, nameof(ProjectUrl), value);
+        }
+
 
         //  METHODS
 
@@ -56,12 +63,14 @@ namespace PublicTransportDataViewer.Data.Config.Lang
             string? author = null,
             string? copyright = null,
             string? dataSources = null,
-            string? description = null)
+            string? description = null,
+            string? projectUrl = null)
         {
             Author = SetLanguageValue(author, "Autor: ");
             Copyright = SetLanguageValue(copyright, "Prawa autorskie: ");
             DataSources = SetLanguageValue(dataSources, "Źródła danych: ");
             Description = SetLanguageValue(description, "Opis: ");
+            ProjectUrl = SetLanguageValue(projectUrl, "Adres URL projektu: ");
         }
 
         #endregion CLASS METHODS

@@ -28,6 +28,8 @@ namespace PublicTransportDataViewer.Data.Info
 
         private Dictionary<string, string> _dataSources;
 
+        private string _projectUrl = "https://github.com/chkam05/PublicTransportDataViewer";
+
 
         //  GETTERS
 
@@ -124,6 +126,11 @@ namespace PublicTransportDataViewer.Data.Info
                     _dataSources = GetDataSources();
                 return _dataSources;
             }
+        }
+
+        public string ProjectUrl
+        {
+            get => _projectUrl;
         }
 
 

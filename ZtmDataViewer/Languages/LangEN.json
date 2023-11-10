@@ -62,7 +62,8 @@
       "Author": "Author: ",
       "Copyright": "Copyright: ",
       "DataSources": "Data sources: ",
-      "Description": "Description: "
+      "Description": "Description: ",
+      "ProjectUrl": "Project URL: "
     },
 
     "MenuItemAppearance": "Personalization",

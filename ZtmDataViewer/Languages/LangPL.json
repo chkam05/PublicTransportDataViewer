@@ -62,7 +62,8 @@
       "Author": "Autor: ",
       "Copyright": "Prawa autorskie: ",
       "DataSources": "Źródła danych: ",
-      "Description": "Opis: "
+      "Description": "Opis: ",
+      "ProjectUrl": "Adres URL projektu: "
     },
 
     "MenuItemAppearance": "Personalizacja",
