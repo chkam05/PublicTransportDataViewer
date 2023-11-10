@@ -18,12 +18,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.MainMenu;
-using ZtmDataViewer.Events;
-using static ZtmDataViewer.Events.EventsDefinitions;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config.Lang;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Events;
+using static PublicTransportDataViewer.Events.EventsDefinitions;
 
-namespace ZtmDataViewer.Components
+namespace PublicTransportDataViewer.Components
 {
     public partial class MainMenuController : UserControl, INotifyPropertyChanged
     {
@@ -223,6 +224,29 @@ namespace ZtmDataViewer.Components
 
         #endregion COMPONENT INTERACTION METHODS
 
+        #region COMPONENT MANAGEMENT METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after loading component. </summary>
+        /// <param name="sender"> Object from which method has been invoked. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!ConfigManager.Instance.HasLanguageUpdatedRegisteredMethod(OnLanguageUpdate))
+                ConfigManager.Instance.LanguageUpdated += OnLanguageUpdate;
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after unloading component. </summary>
+        /// <param name="sender"> Object from which method has been invoked. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ConfigManager.Instance.LanguageUpdated -= OnLanguageUpdate;
+        }
+
+        #endregion COMPONENT MANAGEMENT METHODS
+
         #region MENU ITEMS INTERACTION METHODS
 
         //  --------------------------------------------------------------------------------
@@ -370,6 +394,15 @@ namespace ZtmDataViewer.Components
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after updating language. </summary>
+        /// <param name="languageConfig"> Language configuration. </param>
+        protected void OnLanguageUpdate(LangConfig languageConfig)
+        {
+            //  Update menu header item.
+            _menuHeaderItem.Title = ConfigManager.Instance.LangConfig.MenuItemMain;
+        }
+
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
         #region SETUP METHODS
@@ -379,7 +412,7 @@ namespace ZtmDataViewer.Components
         private void SetupMainMenu()
         {
             _menuHeaderItem = new MainMenuItem(
-                ConfigManager.Instance.LangConfig.MainMenuItem, PackIconKind.HamburgerMenu, OnHeaderItemSelected);
+                ConfigManager.Instance.LangConfig.MenuItemMain, PackIconKind.HamburgerMenu, OnHeaderItemSelected);
 
             var menuItems = new List<MainMenuItem>()
             {

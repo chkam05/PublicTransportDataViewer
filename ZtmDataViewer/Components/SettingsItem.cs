@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ZtmDataViewer.Components
+namespace PublicTransportDataViewer.Components
 {
     public class SettingsItem : Control, INotifyPropertyChanged
     {

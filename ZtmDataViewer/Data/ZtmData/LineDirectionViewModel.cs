@@ -9,20 +9,14 @@ using System.Threading.Tasks;
 using ZtmDataDownloader.Data.Global;
 using ZtmDataDownloader.Data.Line;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
-    public class LineDirectionViewModel : INotifyPropertyChanged
+    public class LineDirectionViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
         private LineDirection _lineDirection;
-        private ObservableCollection<CityViewModel> _cities;
         private ObservableCollection<LineStopViewModel> _stops;
 
 
@@ -44,24 +38,13 @@ namespace ZtmDataViewer.Data.ZtmData
             get => _lineDirection.Direction;
         }
 
-        public ObservableCollection<CityViewModel> Cities
-        {
-            get => _cities;
-            private set
-            {
-                _cities = value;
-                _cities.CollectionChanged += OnCitiesCollectionChanged;
-                OnPropertyChanged(nameof(Cities));
-            }
-        }
-
         public ObservableCollection<LineStopViewModel> Stops
         {
             get => _stops;
             private set
             {
                 _stops = value;
-                _stops.CollectionChanged += OnStopsCollectionChanged;
+                AddCollectionChangedMethod(_stops, nameof(Stops));
                 OnPropertyChanged(nameof(Stops));
             }
         }
@@ -78,47 +61,11 @@ namespace ZtmDataViewer.Data.ZtmData
         {
             LineDirection = lineDirection;
 
-            Cities = new ObservableCollection<CityViewModel>(
-                lineDirection.Cities.Select(c => new CityViewModel(c)));
-
             Stops = new ObservableCollection<LineStopViewModel>(
                 lineDirection.Stops.Select(s => new LineStopViewModel(s)));
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after cities collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnCitiesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Cities));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after stops collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnStopsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Stops));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

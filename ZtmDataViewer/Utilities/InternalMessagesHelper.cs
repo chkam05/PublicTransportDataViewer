@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Utilities
+namespace PublicTransportDataViewer.Utilities
 {
     public static class InternalMessagesHelper
     {

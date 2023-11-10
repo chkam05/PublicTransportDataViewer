@@ -1,0 +1,3 @@
+﻿#1.	Move messages to separate IM
+#2.	Switch description source to links
+#3. Add links to pages as statusbar

@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
-    xmlns:cfg="clr-namespace:ZtmDataViewer.Data.Config">
+    xmlns:cfg="clr-namespace:PublicTransportDataViewer.Data.Config">
 
     <x:Static x:Key="ConfigManager" Member="cfg:ConfigManager.Instance" />
 
@@ -33,6 +33,7 @@
         <Setter Property="SelectedBackground" Value="{Binding ConfigData.AppearanceConfig.AccentSelectedColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
         <Setter Property="SelectedBorderBrush" Value="{Binding ConfigData.AppearanceConfig.AccentSelectedColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
         <Setter Property="SelectedForeground" Value="{Binding ConfigData.AppearanceConfig.AccentForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
 </ResourceDictionary>

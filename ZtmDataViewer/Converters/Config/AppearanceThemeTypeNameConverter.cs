@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Converters.Config
+namespace PublicTransportDataViewer.Converters.Config
 {
     public class AppearanceThemeTypeNameConverter : IValueConverter
     {
@@ -23,11 +23,11 @@ namespace ZtmDataViewer.Converters.Config
             switch (appearanceThemeType)
             {
                 case AppearanceThemeType.Light:
-                    return configManager.LangConfig.SettingsAppearanceThemeLight;
+                    return configManager.LangConfig.Settings.Appearance.ThemeOptionLight;
 
                 case AppearanceThemeType.Dark:
                 default:
-                    return configManager.LangConfig.SettingsAppearanceThemeDark;
+                    return configManager.LangConfig.Settings.Appearance.ThemeOptionDark;
             }
         }
 

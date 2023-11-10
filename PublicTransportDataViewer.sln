@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZtmDataViewer", "ZtmDataViewer\ZtmDataViewer.csproj", "{1235F43E-6AF9-4105-8806-EA5E336445CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicTransportDataViewer", "ZtmDataViewer\PublicTransportDataViewer.csproj", "{1235F43E-6AF9-4105-8806-EA5E336445CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47331E68-CB1C-4CC2-B148-98DB12A0B2E3}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,9 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZtmDataDownloader", "ZtmDataDownloader\ZtmDataDownloader.csproj", "{6C2D05D6-70F2-43CC-AB42-FE2B5595218D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZtmDataTester", "ZtmDataTester\ZtmDataTester.csproj", "{1AB83F8D-65D4-40A1-807A-3C9732C91226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTester", "ZtmDataTester\DataTester.csproj", "{1AB83F8D-65D4-40A1-807A-3C9732C91226}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloaderCore", "DownloaderCore\DownloaderCore.csproj", "{2D5665AE-E51B-46E7-B4A9-6736CA112FE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderCore", "DownloaderCore\DownloaderCore.csproj", "{2D5665AE-E51B-46E7-B4A9-6736CA112FE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MpkCzestochowaDownloader", "MpkCzestochowaDownloader\MpkCzestochowaDownloader.csproj", "{1EFB44D5-8DB4-474E-A628-CA84269CAD53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{2D5665AE-E51B-46E7-B4A9-6736CA112FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D5665AE-E51B-46E7-B4A9-6736CA112FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D5665AE-E51B-46E7-B4A9-6736CA112FE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EFB44D5-8DB4-474E-A628-CA84269CAD53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EFB44D5-8DB4-474E-A628-CA84269CAD53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EFB44D5-8DB4-474E-A628-CA84269CAD53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EFB44D5-8DB4-474E-A628-CA84269CAD53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,12 +18,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.MainMenu;
-using ZtmDataViewer.Pages;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config.Lang;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Pages;
 
-namespace ZtmDataViewer.Pages
+namespace PublicTransportDataViewer.Pages
 {
     public partial class StartPage : BasePage
     {
@@ -39,7 +40,7 @@ namespace ZtmDataViewer.Pages
         {
             get => new List<MainMenuItem>()
             {
-                new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemSettings, PackIconKind.Gear, OnSettingsMenuItemSelect),
             };
         }
 
@@ -64,9 +65,6 @@ namespace ZtmDataViewer.Pages
         /// <param name="pagesController"> Pages controller. </param>
         public StartPage(PagesController pagesController) : base(pagesController)
         {
-            //  Setup data.
-            InternalMenuSetup();
-
             //  Initialize user interface.
             InitializeComponent();
         }
@@ -101,14 +99,24 @@ namespace ZtmDataViewer.Pages
         {
             InternalMenuItems = new ObservableCollection<MainMenuItem>()
             {
-                new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageZtmMenuItem, PackIconKind.Transportation, OnZtmMenuItemSelect),
-                new MainMenuItem(ConfigManager.Instance.LangConfig.StartPageSettingsMenuItem, PackIconKind.Gear, OnSettingsMenuItemSelect)
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemMpkCzestochowa, PackIconKind.Transportation, OnMpkCzestochowaMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemZtm, PackIconKind.Transportation, OnZtmMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemSettings, PackIconKind.Gear, OnSettingsMenuItemSelect)
             };
         }
 
         #endregion INTERNAL MENU ITEMS MANAGEMENT METHODS
 
         #region MENU ITEMS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting mpk czestochowa menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnMpkCzestochowaMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new MpkCzestochowa.LinesViewPage(_pagesController));
+        }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Method invoked after selecting ztm menu item. </summary>
@@ -142,6 +150,29 @@ namespace ZtmDataViewer.Pages
         }
 
         #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+
+        #region PAGE METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after loading page. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void BasePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            //  Setup internal menu.
+            InternalMenuSetup();
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after unloading page. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void BasePage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //
+        }
+
+        #endregion PAGE METHODS
 
     }
 }

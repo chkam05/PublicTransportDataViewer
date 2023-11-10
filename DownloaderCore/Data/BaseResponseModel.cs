@@ -12,6 +12,7 @@ namespace DownloaderCore.Data
         //  VARIABLES
 
         public List<string>? ErrorMessages { get; private set; }
+        public string URL { get; set; }
 
 
         //  GETTERS & SETTERS

@@ -1,10 +1,13 @@
 ﻿using chkam05.Tools.ControlsEx.InternalMessages;
 using MaterialDesignThemes.Wpf;
+using MpkCzestochowaDownloader.Data.Line;
+using MpkCzestochowaDownloader.Data.Lines;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -22,16 +25,17 @@ using ZtmDataDownloader.Data.Departures;
 using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.TimeTables;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Converters.ZtmData;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.InternalMessages.ZtmData;
-using ZtmDataViewer.Utilities;
-using ZtmDataViewer.Windows;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Converters.ZtmData;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.InternalMessages.ZtmData;
+using PublicTransportDataViewer.Utilities;
+using PublicTransportDataViewer.Windows;
 using static System.Windows.Forms.LinkLabel;
 
-namespace ZtmDataViewer.Pages.ZtmData
+namespace PublicTransportDataViewer.Pages.ZtmData
 {
     public partial class LineDetailsViewPage : BasePage
     {
@@ -42,9 +46,19 @@ namespace ZtmDataViewer.Pages.ZtmData
         private LineDirectionViewModel _selectedLineDirectionViewModel;
         private LineStopViewModel _selectedLineStopViewModel;
         private ObservableCollection<LineDepartureGroupViewModel> _departures;
+        private string _sourceUrl;
 
 
         //  GETTERS & SETTERS
+
+        public override List<MainMenuItem> MainMenuItems
+        {
+            get => new List<MainMenuItem>()
+            {
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemLines, PackIconKind.ChartTimelineVariant, OnLinesMenuItemSelect),
+                new MainMenuItem(ConfigManager.Instance.LangConfig.MenuItemSettings, PackIconKind.Gear, OnSettingsMenuItemSelect),
+            };
+        }
 
         public LineDetailsViewModel LineDetailsViewModel
         {
@@ -87,6 +101,16 @@ namespace ZtmDataViewer.Pages.ZtmData
             }
         }
 
+        public string SourceUrl
+        {
+            get => _sourceUrl;
+            set
+            {
+                _sourceUrl = value;
+                OnPropertyChanged(nameof(SourceUrl));
+            }
+        }
+
 
         //  METHODS
 
@@ -95,10 +119,13 @@ namespace ZtmDataViewer.Pages.ZtmData
         //  --------------------------------------------------------------------------------
         /// <summary> LineDetailsViewPage class constructor. </summary>
         /// <param name="pagesController"> Pages controller. </param>
-        public LineDetailsViewPage(PagesController pagesController, LineDetailsViewModel lineDetailsViewModel) : base(pagesController)
+        /// <param name="lineDetailsViewModel"> Line details view model. </param>
+        /// <param name="sourceUrl"> Source url. </param>
+        public LineDetailsViewPage(PagesController pagesController, LineDetailsViewModel lineDetailsViewModel, string sourceUrl) : base(pagesController)
         {
             //  Initialize data.
             LineDetailsViewModel = lineDetailsViewModel;
+            SourceUrl = sourceUrl;
             SelectedLineDirectionViewModel = lineDetailsViewModel.Directions.FirstOrDefault();
 
             //  Initialize user interface.
@@ -116,136 +143,34 @@ namespace ZtmDataViewer.Pages.ZtmData
         /// <summary> Load line details data. </summary>
         private void LoadLineDetails()
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmLineDetailsViewLoadingTitle,
-                langConf.ZtmLineDetailsViewLoadingDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDetailsDataLoadedEventHandler((lineDetailsViewModel, sourceUrl) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                LineDetailsViewModel = lineDetailsViewModel;
+                SourceUrl = sourceUrl ?? string.Empty;
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
+                if (lineDetailsViewModel.Directions.Any())
+                    SelectedLineDirectionViewModel = LineDetailsViewModel.Directions.First();
+            });
 
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var lineDetails = ZtmDataDownloader.SimpleDownloader.DownloadLineDetails(
-                    LineDetailsViewModel.Line, LineDetailsViewModel.TimeTableId);
-
-                if (lineDetails != null)
-                {
-                    we.Result = lineDetails;
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we?.Result != null && we.Result is LineDetails lineDetails)
-                {
-                    var line = LineDetailsViewModel.Line;
-                    var timeTableId = LineDetailsViewModel.TimeTableId;
-
-                    imAwait.Close();
-
-                    if (lineDetails != null)
-                    {
-                        LineDetailsViewModel = new LineDetailsViewModel(line, lineDetails, timeTableId);
-                        SelectedLineDirectionViewModel = LineDetailsViewModel.Directions.FirstOrDefault();
-                    }
-                    else
-                        ShowDownloadingErrorMessage(
-                            langConf.ZtmLineDetailsViewDownloadErrorTitle,
-                            langConf.ZtmLineDetailsViewDownloadErrorDesc);
-                }
-                else
-                {
-                    imAwait.Close();
-                    ShowDownloadingErrorMessage(
-                        langConf.ZtmLineDetailsViewDownloadErrorTitle,
-                        langConf.ZtmLineDetailsViewDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLineDetailsData(LineDetailsViewModel.Line, _pagesController,
+                onDataLoadedEventHandler, LineDetailsViewModel.TimeTableId, true);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Load departures data. </summary>
         private void LoadDepartures()
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmDeparturesViewLoadingTitle,
-                langConf.ZtmDeparturesViewLoadingDesc,
-                PackIconKind.DepartureBoard)
+            var onDataLoadedEventHandler = new Loader.LineDearpturesDataLoadedEventHandler(
+                (lineDepartureGroupViewModelCollection, sourceUrl) =>
             {
-                AllowCancel = false,
-                AllowHide = false
-            };
+                Departures = lineDepartureGroupViewModelCollection;
+                SourceUrl = sourceUrl ?? string.Empty;
+            });
 
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var departures = ZtmDataDownloader.SimpleDownloader.DownloadDepartures(
-                    LineDetailsViewModel.Line,
-                    SelectedLineStopViewModel.LineStop);
-
-                if (departures?.Any() ?? false)
-                {
-                    we.Result = departures;
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we?.Result != null && we.Result is Dictionary<DepartureGroup, List<Departure>> departures)
-                {
-                    Departures = new ObservableCollection<LineDepartureGroupViewModel>(
-                        departures.Select(kvp => new LineDepartureGroupViewModel(kvp.Key, kvp.Value)));
-
-                    imAwait.Close();
-                }
-                else
-                {
-                    Departures = new ObservableCollection<LineDepartureGroupViewModel>();
-
-                    imAwait.Close();
-
-                    ShowDownloadingErrorMessage(
-                        langConf.ZtmDeparturesViewDownloadErrorTitle,
-                        langConf.ZtmDeparturesViewDownloadErrorDesc);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
+            Loader.LoadLineDepartures(
+                LineDetailsViewModel.Line,
+                SelectedLineStopViewModel.LineStop,
+                onDataLoadedEventHandler);
         }
 
         //  --------------------------------------------------------------------------------
@@ -253,85 +178,7 @@ namespace ZtmDataViewer.Pages.ZtmData
         /// <param name="lineDepartureViewModel"> Line departure view model. </param>
         private void LoadArrivals(LineDepartureViewModel lineDepartureViewModel)
         {
-            //  Get basic data.
-            var langConf = ConfigManager.Instance.LangConfig;
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-            var bgLoader = new BackgroundWorker();
-
-            //  Create await internal message.
-            var imAwait = new AwaitInternalMessageEx(imContainer,
-                langConf.ZtmArrivalsLoadingTitle,
-                langConf.ZtmArrivalsLoadingDesc,
-                PackIconKind.DepartureBoard)
-            {
-                AllowCancel = false,
-                AllowHide = false
-            };
-
-            InternalMessagesHelper.ApplyVisualStyle(imAwait);
-
-            //  Setup background worker methods.
-            bgLoader.DoWork += (s, we) =>
-            {
-                var departureDetails = ZtmDataDownloader.SimpleDownloader.DownloadArrivalsData(
-                    LineDetailsViewModel.Line,
-                    lineDepartureViewModel.Departure);
-
-                if (departureDetails != null)
-                {
-                    we.Result = new DepartureDetailsViewModel(departureDetails);
-                }
-                else
-                {
-                    we.Result = null;
-                }
-            };
-
-            bgLoader.RunWorkerCompleted += (s, we) =>
-            {
-                if (we?.Result != null && we.Result is DepartureDetailsViewModel departureDetalsViewModel)
-                {
-                    imAwait.Close();
-                    LoadArrivalsInternalMessage(departureDetalsViewModel);
-                }
-            };
-
-            //  Start downloading.
-            imContainer.ShowMessage(imAwait);
-            bgLoader.RunWorkerAsync();
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Load and show arrivals internal message. </summary>
-        /// <param name="departureDetailsViewModel"> Departure details view model. </param>
-        private void LoadArrivalsInternalMessage(DepartureDetailsViewModel departureDetailsViewModel)
-        {
-            //  Get basic data.
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-
-            var imArrivals = new ArrivalsInternalMessage(imContainer, departureDetailsViewModel);
-
-            imContainer.ShowMessage(imArrivals);
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Show download error internal message method. </summary>
-        /// <param name="title"> Error message title. </param>
-        /// <param name="message"> Error message. </param>
-        private void ShowDownloadingErrorMessage(string title, string message)
-        {
-            //  Get basic data.
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            var imContainer = mainWindow.InternalMessagesContainer;
-
-            var imError = InternalMessageEx.CreateErrorMessage(
-                imContainer, title, message);
-
-            InternalMessagesHelper.ApplyVisualStyle(imError);
-
-            imContainer.ShowMessage(imError);
+            Loader.LoadLineArrivals(LineDetailsViewModel.Line, lineDepartureViewModel.Departure);
         }
 
         #endregion DATA MANAGEMENT METHODS
@@ -382,8 +229,63 @@ namespace ZtmDataViewer.Pages.ZtmData
             LoadLineDetails();
             LoadDepartures();
         }
+        
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking refresh button. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void MessagesButtonEx_Click(object sender, RoutedEventArgs e)
+        {
+            //  Get basic data.
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            var imContainer = mainWindow.InternalMessagesContainer;
+
+            var imMessages = new MessagesInternalMessage(imContainer, LineDetailsViewModel);
+
+            imContainer.ShowMessage(imMessages);
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after clicking source text block. </summary>
+        /// <param name="sender"> Object that invoked the method. </param>
+        /// <param name="e"> Routed Event Arguments. </param>
+        private void SourceTextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2 && !string.IsNullOrEmpty(SourceUrl))
+            {
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = SourceUrl,
+                    UseShellExecute = true
+                };
+
+                Process.Start(processStartInfo);
+            }
+        }
 
         #endregion HEADER INTERACTION METHODS
+
+        #region MENU ITEMS METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting lines menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnLinesMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new ZtmData.LinesViewPage(_pagesController));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Method invoked after selecting settings menu item. </summary>
+        /// <param name="sender"> Object that invoked method. </param>
+        /// <param name="e"> Event Arguments. </param>
+        private void OnSettingsMenuItemSelect(object? sender, EventArgs e)
+        {
+            _pagesController?.LoadPage(new SettingsPage(_pagesController));
+        }
+
+        #endregion MENU ITEMS METHODS
 
         #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 

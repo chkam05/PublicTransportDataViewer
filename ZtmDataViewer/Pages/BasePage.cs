@@ -7,18 +7,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.MainMenu;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.MainMenu;
 
-namespace ZtmDataViewer.Pages
+namespace PublicTransportDataViewer.Pages
 {
-    public class BasePage : Page, INotifyPropertyChanged
+    public class BasePage : Page, INotifyPropertyChanged, IDisposable
     {
 
         //  DEPENDENCY PROPERTIES
 
         public static readonly DependencyProperty HeaderContentProperty = DependencyProperty.Register(
             nameof(HeaderContent),
+            typeof(object),
+            typeof(BasePage),
+            new PropertyMetadata(null));
+
+        public static readonly DependencyProperty FooterContentProperty = DependencyProperty.Register(
+            nameof(FooterContent),
             typeof(object),
             typeof(BasePage),
             new PropertyMetadata(null));
@@ -32,7 +38,7 @@ namespace ZtmDataViewer.Pages
         //  VARIABLES
 
         private PackIconKind _iconKind = PackIconKind.None;
-        protected PagesController? _pagesController = null;
+        protected PagesController _pagesController;
 
         public virtual List<MainMenuItem> MainMenuItems { get; }
 
@@ -46,6 +52,16 @@ namespace ZtmDataViewer.Pages
             {
                 SetValue(HeaderContentProperty, value);
                 OnPropertyChanged(nameof(HeaderContent));
+            }
+        }
+
+        public object FooterContent
+        {
+            get => GetValue(FooterContentProperty);
+            set
+            {
+                SetValue(FooterContentProperty, value);
+                OnPropertyChanged(nameof(FooterContent));
             }
         }
 
@@ -78,6 +94,13 @@ namespace ZtmDataViewer.Pages
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BasePage),
                 new FrameworkPropertyMetadata(typeof(BasePage)));
+        }
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Provides a mechanism for releasing unmanaged resources. </summary>
+        public virtual void Dispose()
+        {
+            //
         }
 
         #endregion CLASS METHODS

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Lines;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.Converters.ZtmData
+namespace PublicTransportDataViewer.Converters.ZtmData
 {
     public class LineColorSolidColorBrushConverter : IValueConverter
     {

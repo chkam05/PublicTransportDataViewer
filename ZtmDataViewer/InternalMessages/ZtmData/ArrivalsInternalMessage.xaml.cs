@@ -17,10 +17,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZtmDataDownloader.Data.TimeTables;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.ZtmData;
 
-namespace ZtmDataViewer.InternalMessages.ZtmData
+namespace PublicTransportDataViewer.InternalMessages.ZtmData
 {
     public partial class ArrivalsInternalMessage : StandardInternalMessageEx
     {
@@ -50,7 +50,7 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
         //  --------------------------------------------------------------------------------
         /// <summary> ArrivalsInternalMessage class constructor. </summary>
         /// <param name="parentContainer"> Parent InternalMessagesEx container. </param>
-        /// <param name="timeTables"> Time tables list. </param>
+        /// <param name="departureDetailsViewModel"> Departure details view model. </param>
         public ArrivalsInternalMessage(InternalMessagesExContainer parentContainer, DepartureDetailsViewModel departureDetailsViewModel)
             : base(parentContainer)
         {
@@ -82,7 +82,7 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
             ButtonEx cancelButton = GetButtonEx("cancelButton");
 
             if (cancelButton != null)
-                cancelButton.Content = langConfig.ZtmArrivalsCancelButton;
+                cancelButton.Content = langConfig.ButtonClose;
         }
 
         #endregion TEMPLATE METHODS

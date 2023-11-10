@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MpkCzestochowaDownloader\MpkCzestochowaDownloader.csproj" />
     <ProjectReference Include="..\ZtmDataDownloader\ZtmDataDownloader.csproj" />
   </ItemGroup>
 

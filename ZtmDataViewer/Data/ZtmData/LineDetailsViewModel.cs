@@ -10,15 +10,10 @@ using ZtmDataDownloader.Data.Line;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.Static;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
-    public class LineDetailsViewModel : INotifyPropertyChanged
+    public class LineDetailsViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -48,10 +43,7 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _lineDetails = value;
                 OnPropertyChanged(nameof(LineDetails));
-                OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(Description));
-                OnPropertyChanged(nameof(Information));
-                OnPropertyChanged(nameof(TransportType));
             }
         }
 
@@ -65,19 +57,9 @@ namespace ZtmDataViewer.Data.ZtmData
             }
         }
 
-        public string Name
-        {
-            get => _lineDetails.Name;
-        }
-
         public string Description
         {
             get => _lineDetails.Description;
-        }
-
-        public string Information
-        {
-            get => _lineDetails.Information;
         }
 
         public TransportType TransportType
@@ -91,7 +73,7 @@ namespace ZtmDataViewer.Data.ZtmData
             private set
             {
                 _directions = value;
-                _directions.CollectionChanged += OnDirectionsCollectionChanged;
+                AddCollectionChangedMethod(_directions, nameof(Directions));
                 OnPropertyChanged(nameof(Directions));
             }
         }
@@ -102,7 +84,7 @@ namespace ZtmDataViewer.Data.ZtmData
             private set
             {
                 _messages = value;
-                _messages.CollectionChanged += OnMessagesCollectionChanged;
+                AddCollectionChangedMethod(_messages, nameof(Messages));
                 OnPropertyChanged(nameof(Messages));
             }
         }
@@ -132,39 +114,6 @@ namespace ZtmDataViewer.Data.ZtmData
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after messages collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Messages));
-        }
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Method invoked after directions collection changed. </summary>
-        /// <param name="sender"> Object that invoked the method. </param>
-        /// <param name="e"> Notify Collection Changed Event Arguments. </param>
-        private void OnDirectionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Directions));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

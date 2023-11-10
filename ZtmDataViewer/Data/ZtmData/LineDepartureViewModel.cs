@@ -6,15 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ZtmDataDownloader.Data.Departures;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
-    public class LineDepartureViewModel : INotifyPropertyChanged
+    public class LineDepartureViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -30,11 +25,9 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _departure = value;
                 OnPropertyChanged(nameof(Departure));
-                OnPropertyChanged(nameof(Hour));
-                OnPropertyChanged(nameof(Minute));
+                OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsVariant));
                 OnPropertyChanged(nameof(LowFloor));
-                OnPropertyChanged(nameof(Variant));
                 OnPropertyChanged(nameof(Value));
             }
         }
@@ -42,16 +35,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public string Description
         {
             get => _departure.Description;
-        }
-
-        public int Hour
-        {
-            get => _departure.Hour;
-        }
-
-        public int Minute
-        {
-            get => _departure.Minute;
         }
 
         public bool IsVariant
@@ -62,11 +45,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public bool LowFloor
         {
             get => _departure.LowFloor;
-        }
-
-        public string Variant
-        {
-            get => _departure.Variant;
         }
 
         public string Value
@@ -92,30 +70,15 @@ namespace ZtmDataViewer.Data.ZtmData
         /// <returns> Value as string. </returns>
         public override string ToString()
         {
-            var hour = Hour < 10 ? $"0{Hour}" : $"{Hour}";
-            var minute = Minute < 10 ? $"0{Minute}" : $"{Minute}";
+            var hour = _departure.Hour < 10 ? $"0{_departure.Hour}" : $"{_departure.Hour}";
+            var minute = _departure.Minute < 10 ? $"0{_departure.Minute}" : $"{_departure.Minute}";
 
             return IsVariant
-                ? $"{hour}:{minute} {Variant}"
+                ? $"{hour}:{minute} {_departure.Variant}"
                 : $"{hour}:{minute}";
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Lines;
 using ZtmDataDownloader.Data.Static;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
-    public class LineViewModel : INotifyPropertyChanged
+    public class LineViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -37,7 +32,6 @@ namespace ZtmDataViewer.Data.ZtmData
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsPathChanged));
                 OnPropertyChanged(nameof(IsUpdated));
-                OnPropertyChanged(nameof(TransportType));
                 OnPropertyChanged(nameof(Value));
             }
         }
@@ -62,11 +56,6 @@ namespace ZtmDataViewer.Data.ZtmData
             get => _line.IsUpdated;
         }
 
-        public TransportType TransportType
-        {
-            get => _line.Type;
-        }
-
         public string Value
         {
             get => _line.Value;
@@ -86,21 +75,6 @@ namespace ZtmDataViewer.Data.ZtmData
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

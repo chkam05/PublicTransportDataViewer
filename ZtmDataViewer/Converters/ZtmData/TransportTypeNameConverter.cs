@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Static;
-using ZtmDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Config;
 
-namespace ZtmDataViewer.Converters.ZtmData
+namespace PublicTransportDataViewer.Converters.ZtmData
 {
     public class TransportTypeNameConverter : IValueConverter
     {
@@ -25,19 +25,19 @@ namespace ZtmDataViewer.Converters.ZtmData
             switch (transportType)
             {
                 case TransportType.Bus:
-                    return langConfig.ZtmTransportTypeBus;
+                    return langConfig.Ztm.TransportTypes.Bus;
                 case TransportType.BusAirport:
-                    return langConfig.ZtmTransportTypeBusAirport;
+                    return langConfig.Ztm.TransportTypes.BusAirport;
                 case TransportType.BusMetropolitan:
-                    return langConfig.ZtmTransportTypeBusMetropolitan;
+                    return langConfig.Ztm.TransportTypes.BusMetropolitan;
                 case TransportType.BusNight:
-                    return langConfig.ZtmTransportTypeBusNight;
+                    return langConfig.Ztm.TransportTypes.BusNight;
                 case TransportType.BusReplacement:
-                    return langConfig.ZtmTransportTypeBusReplacement;
+                    return langConfig.Ztm.TransportTypes.BusReplacement;
                 case TransportType.Tram:
-                    return langConfig.ZtmTransportTypeTram;
+                    return langConfig.Ztm.TransportTypes.Tram;
                 case TransportType.Trolley:
-                    return langConfig.ZtmTransportTypeTrolley;
+                    return langConfig.Ztm.TransportTypes.Trolley;
             }
 
             return string.Empty;

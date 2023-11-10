@@ -7,15 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ZtmDataDownloader.Data.Global;
 
-namespace ZtmDataViewer.Data.ZtmData
+namespace PublicTransportDataViewer.Data.ZtmData
 {
-    public class LineStopViewModel : INotifyPropertyChanged
+    public class LineStopViewModel : BaseViewModel
     {
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
 
         //  VARIABLES
 
@@ -31,7 +26,6 @@ namespace ZtmDataViewer.Data.ZtmData
             {
                 _lineStop = value;
                 OnPropertyChanged(nameof(City));
-                OnPropertyChanged(nameof(Color));
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsOptional));
                 OnPropertyChanged(nameof(Platform));
@@ -42,11 +36,6 @@ namespace ZtmDataViewer.Data.ZtmData
         public string City
         {
             get => _lineStop.City;
-        }
-
-        public Color Color
-        {
-            get => _lineStop.GetColor();
         }
 
         public string Name
@@ -83,21 +72,6 @@ namespace ZtmDataViewer.Data.ZtmData
         }
 
         #endregion CLASS METHODS
-
-        #region NOTIFY PROPERTIES CHANGED INTERFACE METHODS
-
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
     }
 }

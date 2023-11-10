@@ -17,11 +17,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZtmDataViewer.Components;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Components;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.Pages.Settings
+namespace PublicTransportDataViewer.Pages.Settings
 {
     public partial class AppearanceSettingsPage : BasePage
     {

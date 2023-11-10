@@ -7,22 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using ZtmDataViewer.Data.Info;
+using PublicTransportDataViewer.Data.Config.Lang;
+using PublicTransportDataViewer.Data.Info;
+using static PublicTransportDataViewer.Data.Static.CustomEvents;
 
-namespace ZtmDataViewer.Data.Config
+namespace PublicTransportDataViewer.Data.Config
 {
-    public class ConfigManager : INotifyPropertyChanged, IDisposable
+    public class ConfigManager : BaseViewModel, IDisposable
     {
+
+        //  EVENTS
+
+        public LanguageUpdateEventHandler? LanguageUpdated;
+
 
         //  CONST
 
         private static readonly string CONFIG_FILE_NAME = "config.json";
         private static readonly string LANGS_CATALOG_NAME = "Languages";
-
-
-        //  EVENTS
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
 
         //  VARIABLES
@@ -60,6 +62,7 @@ namespace ZtmDataViewer.Data.Config
             {
                 _langConfig = value;
                 OnPropertyChanged(nameof(LangConfig));
+                LanguageUpdated?.Invoke(value);
             }
         }
 
@@ -245,18 +248,21 @@ namespace ZtmDataViewer.Data.Config
                 LoadLanguage();
         }
 
-        //  --------------------------------------------------------------------------------
-        /// <summary> Invoke PropertyChangedEventHandler event method. </summary>
-        /// <param name="propertyName"> Changed property name. </param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
+        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
 
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+        #region UTILITY METHODS
+
+        //  --------------------------------------------------------------------------------
+        /// <summary> Check if LanguageUpdated has a registered method. </summary>
+        /// <param name="method"> Method. </param>
+        /// <returns> True - LanguageUpdated has a registered method; False - otherwise. </returns>
+        public bool HasLanguageUpdatedRegisteredMethod(Delegate method)
+        {
+            return LanguageUpdated?.GetInvocationList()
+                .Any(h => h == method) ?? false;
         }
 
-        #endregion NOTIFY PROPERTIES CHANGED INTERFACE METHODS
+        #endregion UTILITY METHODS
 
     }
 }

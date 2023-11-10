@@ -31,17 +31,23 @@ namespace ZtmDataDownloader.Downloaders
             if (rawData == null)
                 throw new DataSerializationException(typeof(LineDetailsResponseModel));
 
-            return DeserializeData(rawData, request.TransportType);
+            return DeserializeData(rawData, request.URL, request.TransportType);
         }
 
         //  --------------------------------------------------------------------------------
         /// <summary> Deserialize raw lines data from http response. </summary>
         /// <param name="rawData"> Raw lines data from http response. </param>
+        /// <param name="parameters"> Additional deserialize parameters. </param>
         /// <returns> Lines response data model. </returns>
-        private LineDetailsResponseModel DeserializeData(string rawData, Data.Static.TransportType transportType)
+        protected override LineDetailsResponseModel DeserializeData(string rawData, params object[] parameters)
         {
             var serializer = new LineDetailsSerializer();
-            var result = serializer.Deserialize(rawData, new object[] { transportType });
+            var result = serializer.Deserialize(rawData, new object[]
+            {
+                (Data.Static.TransportType)parameters[1]
+            });
+
+            result.URL = (string)parameters[0];
 
             return result;
         }

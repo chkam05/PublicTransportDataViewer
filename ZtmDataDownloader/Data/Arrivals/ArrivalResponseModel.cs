@@ -29,7 +29,7 @@ namespace ZtmDataDownloader.Data.Arrivals
 
         //  --------------------------------------------------------------------------------
         /// <summary> ArrivalResponseModel class constructor. </summary>
-        public ArrivalResponseModel()
+        public ArrivalResponseModel() : base()
         {
             //
         }

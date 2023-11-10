@@ -1,74 +1,131 @@
 {
   "Name": "Polski",
-  "MainMenuItem": "Menu Główne",
+
+  "Messages": {
+    "DownloadTitle": "Pobieranie danych",
+    "DownloadErrorTitle": "Błąd pobierania danych",
+    "ArrivalsDownloadDesc": "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...",
+    "ArrivalsDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
+    "DeparturesDownloadDesc": "Trwa pobieranie danych godzin odjazdów. \r\nProszę czekać ...",
+    "DeparturesDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin odjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
+    "LineDetailsDownloadDesc": "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...",
+    "LineDetailsDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
+    "LinesDownloadDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
+    "LinesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
+    "TimeTablesDownloadDesc": "Trwa pobieranie danych rozkładów jazdy. \r\nProszę czekać...",
+    "TimeTablesDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas."
+  },
+
+  "MpkCzestochowa": {
+    "Arrivals": {
+
+    },
+
+    "LineDetails": {
+      "OtherLines": "Inne linie odjeżdżające z tego przystanku: "
+    },
+
+    "Lines": {
+
+    },
+
+    "Messages": {
+      "Date": "Data obowiązywania: ",
+      "Lines": "Dotyczy linii: ",
+      "Title": "Komunikaty: "
+    },
+
+    "TransportTypes": {
+      "Bus": "Autobus",
+      "BusNight": "Autobus nocny",
+      "BusSuburban": "Autobus podmiejski",
+      "Tram": "Tramwaj"
+    }
+  },
+
+  "Settings": {
+    "Appearance": {
+      "ColorsHistoryTitle": "Ostatnio wybierane kolory: ",
+      "ColorsTitle": "Wybór koloru akcentu: ",
+      "ThemeDesc": "Ustaw motyw aplikacji.",
+      "ThemeOptionDark": "Ciemny",
+      "ThemeOptionLight": "Jasny",
+      "ThemeTitle": "Motyw"
+    },
+
+    "General": {
+      "LangDesc": "Wybór języka aplikacji.",
+      "LangTitle": "Język"
+    },
+
+    "Info": {
+      "Author": "Autor: ",
+      "Copyright": "Prawa autorskie: ",
+      "DataSources": "Źródła danych: ",
+      "Description": "Opis: "
+    },
+
+    "MenuItemAppearance": "Personalizacja",
+    "MenuItemAppearanceDesc": "Konfiguracja motywu i wyglądu aplikacji.",
+    "MenuItemGeneral": "Ogólne",
+    "MenuItemGeneralDesc": "Ogólne opcje konfiguracji.",
+    "MenuItemInfo": "Informacje",
+    "MenuItemInfoDesc": "Informacje o aplikacji.",
+    "Title": "Ustawienia"
+  },
+
+  "Ztm": {
+    "Arrivals": {
+      "TripDistance": "Odległość",
+      "TripTime": "Czas podróży"
+    },
+
+    "LineDetails": {
+
+    },
+
+    "Lines": {
+
+    },
+
+    "Messages": {
+      "Title": "Komunikaty: "
+    },
+
+    "TimeTables": {
+      "FromTo": "Rozkład ważny",
+      "From": "od",
+      "To": "do"
+    },
+
+    "TransportTypes": {
+      "Bus": "Autobus",
+      "BusAirport": "Autobus na lotnisko",
+      "BusMetropolitan": "Autobus metropolitalny",
+      "BusNight": "Autobus nocny",
+      "BusReplacement": "Autobus zastępczy",
+      "Tram": "Tramwaj",
+      "Trolley": "Trolejbus"
+    }
+  },
+
+  "ArrivalsDeparture": "Godz.",
+  "ArrivalsStop": "Nazwa przystanku",
+  "ArrivalsTitle": "Godziny przyjazdów",
+  "ButtonCancel": "Anuluj",
+  "ButtonClose": "Zamknij",
+  "ButtonMessages": "Komunikaty",
+  "ButtonRefresh": "Odśwież",
+  "ButtonSelect": "Wybierz",
+  "LineDetailsDepartures": "Godziny odjazdów: ",
+  "LineDetailsDirection": "Wybór kierunku: ",
+  "LinesTitle": "Wybór linii",
+  "MenuItemLines": "Wybór linii",
+  "MenuItemMain": "Menu główne",
+  "MenuItemMpkCzestochowa": "MPK Częstochowa",
+  "MenuItemSettings": "Ustawienia",
+  "MenuItemZtm": "Zarząd Transportu Metropolitalnego",
+  "SourceTitle": "Źródło danych: ",
   "StartPageTitle": "Wybór miasta (przedsiębiorstwa komunikacyjnego)",
-  "StartPageZtmMenuItem": "Zarząd Transportu Metropolitalnego",
-  "StartPageSettingsMenuItem": "Ustawienia",
-  "SettingsPageTitle": "Ustawienia",
-  "SettingsPageAppearanceMenuItem": "Personalizacja",
-  "SettingsPageAppearanceMenuItemDesc": "Konfiguracja motywu i wyglądu aplikacji.",
-  "SettingsPageGeneralMenuItem": "Ogólne",
-  "SettingsPageGeneralMenuItemDesc": "Ogólne opcje konfiguracji.",
-  "SettingsPageInfoMenuItem": "Informacje",
-  "SettingsPageInfoMenuItemDesc": "Informacje o aplikacji.",
-  "SettingsAppearancePageTitle": "Personalizacja",
-  "SettingsAppearanceTheme": "Motyw",
-  "SettingsAppearanceThemeDesc": "Ustaw motyw aplikacji.",
-  "SettingsAppearanceThemeDark": "Ciemny",
-  "SettingsAppearanceThemeLight": "Jasny",
-  "SettingsAppearnaceAccentColors": "Wybór koloru akcentu:",
-  "SettingsAppearanceAccentColorsHistory": "Ostatnio wybierane kolory:",
-  "SettingsGeneralPageTitle": "Ogólne",
-  "SettingsGeneralPageLanguage": "Język",
-  "SettingsGeneralPageLanguageDesc": "Wybór języka aplikacji.",
-  "SettingsInfoPageTitle": "Informacje",
-  "SettingsInfoPageDescription": "Opis:",
-  "SettingsInfoPageAuthor": "Autor:",
-  "SettingsInfoPageCopyright": "Prawa autorskie:",
-  "SettingsInfoPageLocation": "Lokalizacja:",
-  "ZtmArrivalsLoadingTitle": "Pobieranie danych",
-  "ZtmArrivalsLoadingDesc": "Trwa pobieranie danych godzin przyjazdów. \r\nProszę czekać ...",
-  "ZtmArrivalsDownloadErrorTitle": "Błąd pobierania danych",
-  "ZtmArrivalsDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin przyjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
-  "ZtmArrivalsTitle": "Godziny przyjazdów",
-  "ZtmArrivalsCancelButton": "Zamknij",
-  "ZtmArrivalStopHeader": "Nazwa przystanku",
-  "ZtmArrivalDepartureHeader": "Godz.",
-  "ZtmArrivalTripTimeHeader": "Czas podróży",
-  "ZtmArrivalTripDistanceHeader": "Odległość",
-  "ZtmDeparturesViewLoadingTitle": "Pobieranie danych",
-  "ZtmDeparturesViewLoadingDesc": "Trwa pobieranie danych godzin odjazdów. \r\nProszę czekać ...",
-  "ZtmDeparturesViewDownloadErrorTitle": "Błąd pobierania danych",
-  "ZtmDeparturesViewDownloadErrorDesc": "Wystąpił problem podczas pobierania godzin odjazdów. \r\nProszę spróbować ponownie za jakiś czas.",
-  "ZtmLineDetailsViewLoadingTitle": "Pobieranie danych",
-  "ZtmLineDetailsViewLoadingDesc": "Trwa pobieranie szczegółowych danych linii. \r\nProszę czekać ...",
-  "ZtmLineDetailsViewPageDirection": "Wybór kierunku:",
-  "ZtmLineDetailsViewPageMessages": "Komunikaty:",
-  "ZtmLineDetailsViewPageDepartures": "Godziny odjazdów:",
-  "ZtmLineDetailsViewDownloadErrorTitle": "Błąd pobierania danych",
-  "ZtmLineDetailsViewDownloadErrorDesc": "Wystąpił problem podczas pobierania szczegółowych danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-  "ZtmLineViewPageTitle": "Wybór linii",
-  "ZtmLineViewLinesMenuItem": "Wybór linii",
-  "ZtmLineViewLoadingTitle": "Pobieranie danych",
-  "ZtmLineViewLoadingDesc": "Trwa pobieranie danych linii. \r\nProszę czekać...",
-  "ZtmLineViewRefreshButton": "Odśwież",
-  "ZtmLineViewDownloadErrorTitle": "Błąd pobierania danych",
-  "ZtmLineViewDownloadErrorDesc": "Wystąpił problem podczas pobierania danych linii. \r\nProszę spróbować ponownie za jakiś czas.",
-  "ZtmTimeTableSelectionLoadingTitle": "Pobieranie danych",
-  "ZtmTimeTableSelectionLoadingDesc": "Trwa pobieranie danych rozkładów jazdy. \r\nProszę czekać ...",
-  "ZtmTimeTableSelectionTitle": "Wybór rozkładu jazdy",
-  "ZtmTimeTableSelectionOkButton": "Wybierz",
-  "ZtmTimeTableSelectionCancelButton": "Anuluj",
-  "ZtmTimeTableSelectionFromToTitle": "Rozkład ważny",
-  "ZtmTimeTableSelectionFrom": "od",
-  "ZtmTimeTableSelectionTo": "do",
-  "ZtmTimeTableSelectionDownloadErrorTitle": "Błąd pobierania danych",
-  "ZtmTimeTableSelectionDownloadErrorDesc": "Wystąpił problem podczas pobierania danych rozkładów jazdy. \r\nProszę spróbować ponownie za jakiś czas.",
-  "ZtmTransportTypeBus": "Autobus",
-  "ZtmTransportTypeBusAirport": "Autobus na lotnisko",
-  "ZtmTransportTypeBusMetropolitan": "Autobus metropolitalny",
-  "ZtmTransportTypeBusNight": "Autobus nocny",
-  "ZtmTransportTypeBusReplacement": "Autobus zastępczy",
-  "ZtmTransportTypeTram": "Tramwaj",
-  "ZtmTransportTypeTrolley": "Trolejbus"
+  "TimeTablesTitle": "Wybór rozkładu jazdy"
 }

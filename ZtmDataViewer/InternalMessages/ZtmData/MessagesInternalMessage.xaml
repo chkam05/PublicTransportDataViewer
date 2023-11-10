@@ -1,0 +1,185 @@
+﻿<cexIM:StandardInternalMessageEx
+    x:Class="PublicTransportDataViewer.InternalMessages.ZtmData.MessagesInternalMessage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:cex="clr-namespace:chkam05.Tools.ControlsEx;assembly=chkam05.Tools.ControlsEx"
+    xmlns:cexIM="clr-namespace:chkam05.Tools.ControlsEx.InternalMessages;assembly=chkam05.Tools.ControlsEx"
+    xmlns:cfg="clr-namespace:PublicTransportDataViewer.Data.Config"
+    xmlns:local="clr-namespace:PublicTransportDataViewer.InternalMessages.ZtmData"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    mc:Ignorable="d"
+    
+    d:DesignWidth="800"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    Background="{Binding ConfigData.AppearanceConfig.ThemeBackgroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    BorderBrush="{Binding ConfigData.AppearanceConfig.ThemeShadeBackgroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    BottomBackground="{Binding ConfigData.AppearanceConfig.ThemeShadeBackgroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    BottomBorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    BottomPadding="8"
+    ButtonBackground="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonBorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonForeground="{Binding ConfigData.AppearanceConfig.AccentForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonMouseOverBackground="{Binding ConfigData.AppearanceConfig.AccentMouseOverColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonMouseOverBorderBrush="{Binding ConfigData.AppearanceConfig.AccentMouseOverColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonMouseOverForeground="{Binding ConfigData.AppearanceConfig.AccentForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonPressedBackground="{Binding ConfigData.AppearanceConfig.AccentPressedColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonPressedBorderBrush="{Binding ConfigData.AppearanceConfig.AccentPressedColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    ButtonPressedForeground="{Binding ConfigData.AppearanceConfig.AccentForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    Foreground="{Binding ConfigData.AppearanceConfig.ThemeForegroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    HeaderBackground="{Binding ConfigData.AppearanceConfig.ThemeShadeBackgroundColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    HeaderBorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Source={StaticResource ConfigManager}, Mode=OneWay}"
+    HeaderPadding="8"
+    IconKind="Message"
+    MinWidth="512"
+    Padding="0"
+    Title="{Binding LangConfig.Ztm.Messages.Title, Mode=OneWay, Source={x:Static cfg:ConfigManager.Instance}}"
+    UseCustomSectionBreaksBorderBrush="True">
+
+    <cexIM:StandardInternalMessageEx.Resources>
+        <ResourceDictionary>
+
+            <x:Static x:Key="ConfigManager" Member="cfg:ConfigManager.Instance" />
+
+            <!-- STYLES -->
+
+            <Style x:Key="MessageListViewItemExStyle" BasedOn="{StaticResource ListViewItemExStyle}" TargetType="{x:Type cex:ListViewItemEx}">
+                <Setter Property="Background" Value="{Binding ConfigData.AppearanceConfig.ThemeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                <Setter Property="BorderBrush" Value="{Binding ConfigData.AppearanceConfig.ThemeBackgroundColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+                <Setter Property="Margin" Value="0,2"/>
+                <Setter Property="Padding" Value="4"/>
+            </Style>
+
+            <Style x:Key="MessageListViewExStyle" BasedOn="{StaticResource ListViewExStyle}" TargetType="{x:Type cex:ListViewEx}">
+                <Setter Property="ItemContainerStyle" Value="{StaticResource MessageListViewItemExStyle}"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+
+            <!-- DATA TEMPLATES -->
+
+            <DataTemplate x:Key="MessageDataTemplate">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:PackIcon
+                        Grid.Column="0"
+                        Height="24"
+                        Kind="CommentTextOutline"
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Width="24"/>
+
+                    <StackPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        VerticalAlignment="Center">
+
+                        <TextBlock
+                            Text="{Binding MessageText}"/>
+
+                        <Border
+                            BorderBrush="{Binding ConfigData.AppearanceConfig.AccentColorBrush, Mode=OneWay, Source={StaticResource ConfigManager}}"
+                            BorderThickness="0,1,0,0"
+                            Margin="0,4,0,0"
+                            Padding="0,4,0,0">
+
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasDates}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <StackPanel
+                                Orientation="Vertical">
+
+                                <TextBlock
+                                    Text="{Binding DateDescription}"/>
+
+                                <StackPanel
+                                    Margin="0,4,0,0"
+                                    Orientation="Horizontal">
+
+                                    <StackPanel
+                                        Orientation="Horizontal">
+
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasStartDate}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock
+                                            Text="{Binding LangConfig.Ztm.TimeTables.FromTo, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+
+                                        <TextBlock
+                                            Margin="4,0,0,0"
+                                            Text="{Binding StartDate, Mode=OneWay}"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Margin="4,0,0,0"
+                                        Orientation="Horizontal">
+
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasEndDate}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock
+                                            Text="{Binding LangConfig.Ztm.TimeTables.To, Mode=OneWay, Source={StaticResource ConfigManager}}"/>
+
+                                        <TextBlock
+                                            Margin="4,0,0,0"
+                                            Text="{Binding EndDate, Mode=OneWay}"/>
+
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                            </StackPanel>
+
+                        </Border>
+
+                    </StackPanel>
+
+                </Grid>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </cexIM:StandardInternalMessageEx.Resources>
+
+    <Grid>
+
+        <cex:ScrollViewerEx
+            VerticalScrollBarVisibility="Auto">
+
+            <cex:ListViewEx
+                ItemsSource="{Binding LineDetailsViewModel.Messages}"
+                ItemTemplate="{StaticResource MessageDataTemplate}"
+                Style="{StaticResource MessageListViewExStyle}"/>
+
+        </cex:ScrollViewerEx>
+
+    </Grid>
+    
+</cexIM:StandardInternalMessageEx>

@@ -5,10 +5,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.Info;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.Info;
 
-namespace ZtmDataViewer
+namespace PublicTransportDataViewer
 {
     public partial class App : Application
     {

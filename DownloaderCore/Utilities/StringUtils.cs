@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataDownloader.Utilities
+namespace DownloaderCore.Utilities
 {
-    internal class StringUtils
+    public static class StringUtils
     {
 
         //  METHODS

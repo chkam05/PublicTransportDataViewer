@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZtmDataViewer.Events
+namespace PublicTransportDataViewer.Events
 {
     public static class EventsDefinitions
     {

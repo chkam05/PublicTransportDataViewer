@@ -19,11 +19,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using ZtmDataDownloader.Data.Lines;
-using ZtmDataViewer.Data.Config;
-using ZtmDataViewer.Data.ZtmData;
-using ZtmDataViewer.Utilities;
+using PublicTransportDataViewer.Data.Config;
+using PublicTransportDataViewer.Data.ZtmData;
+using PublicTransportDataViewer.Utilities;
 
-namespace ZtmDataViewer.InternalMessages.ZtmData
+namespace PublicTransportDataViewer.InternalMessages.ZtmData
 {
     public partial class TimeTableSelectorInternalMessage : StandardInternalMessageEx
     {
@@ -163,13 +163,13 @@ namespace ZtmDataViewer.InternalMessages.ZtmData
 
             if (okButton != null)
             {
-                okButton.Content = langConfig.ZtmTimeTableSelectionOkButton;
+                okButton.Content = langConfig.ButtonSelect;
                 okButton.IsEnabled = false;
                 _okButton = okButton;
             }
 
             if (cancelButton != null)
-                cancelButton.Content = langConfig.ZtmTimeTableSelectionCancelButton;
+                cancelButton.Content = langConfig.ButtonCancel;
         }
 
         #endregion TEMPLATE METHODS
